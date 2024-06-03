@@ -5,9 +5,9 @@ function [vectors, values]= getJacEigs(x, params)
     [V1,D1]=eigs(Df0);
     % sort the eigenvalues and eigenvectors by increasing real part
     [d, ind]=sort(diag(real(D1)));
-    if real(D1(ind(1))) < real(D1(ind(end)))
+    % if real(D1(ind(1))) < real(D1(ind(end)))
         ind = flip(ind);
-    end
+    % end
     D=D1(ind,ind);
     V=V1(:,ind);
     
