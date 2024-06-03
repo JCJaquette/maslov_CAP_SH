@@ -2,7 +2,7 @@
 
 % Set initial seed for Newton's method 
 [x,params, mflds] = init_sol_val_tests();
-
+phi_normal_form = pi;
 params.normalizeBasis = 0;
 
 disp('Choice of Parameters')
@@ -18,7 +18,6 @@ s_ic = [-0.190343484893489 ; 0.128234936941383 ; 0.193875175006471 ; -0.16831165
 
 L1=params.L;
 
-
 [V, D]=asym_un_vecs(params);
 v1=real(V(:,1));
 
@@ -29,7 +28,7 @@ v1=real(V(:,1));
 %  time_vec=full_phi1(:,1);
 
 %%% Option to use NF solution
-sol=BK_nf_4dim(params,0,L1, 0);
+sol=BK_nf_4dim(params,phi_normal_form,L1, 0);
 time_vec=sol(:,1);
 sol=sol(:,2:5);
 
