@@ -12,6 +12,7 @@ disp(['Manifold order: ', num2str(params.mfld.order)])
 
 disp(['Initial choice for phi1, phi2, psi: ', num2str(x.phi1), ', ', num2str(x.phi2), ', ', num2str(x.psi)]);
 
+% Here I have changed the code by adding a comment. 
 
 u_ic = [-0.190343484893489 ; -0.128234936941383 ; 0.193875175006471 ; 0.168311653800752];
 s_ic = [-0.190343484893489 ; 0.128234936941383 ; 0.193875175006471 ; -0.168311653800752];
