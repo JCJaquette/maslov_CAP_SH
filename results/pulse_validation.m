@@ -32,6 +32,8 @@ sol=BK_nf_4dim(params,phi_normal_form,L1, 0);
 time_vec=sol(:,1);
 sol=sol(:,2:5);
 
+
+
  figure
  tiledlayout(4,1)
  nexttile
