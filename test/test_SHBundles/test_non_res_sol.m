@@ -1,3 +1,4 @@
+clear
 x = zeros(1, 4); 
 params.lambda = 0; 
 params.mu = 0.05; 
@@ -52,7 +53,7 @@ disp(vecnorm(should_be_0_dp))
 
 figure 
 hold on 
-plot(x_range, real(u_dp(:,1)))
+plot(x_range, real(u_dp(:,1))*params.scale)
 plot(x_range, real(u_pm(:,1)))
 
 

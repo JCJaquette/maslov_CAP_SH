@@ -11,6 +11,6 @@ function y = chebcoeff_to_function(coeff)
         Ti = 2.*dom'.*polys(:,i-1) - polys(:,i-2);
         polys(:,i) = Ti;
     end
-    
+    coeff(2:end)=2*coeff(2:end);
     y = polys*coeff';
 end

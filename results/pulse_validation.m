@@ -2,7 +2,7 @@
 
 % Set initial seed for Newton's method 
 [x,params, mflds] = init_sol_val_tests();
-phi_normal_form = pi;
+phi_normal_form = 0;
 params.normalizeBasis = 0;
 
 disp('Choice of Parameters')
@@ -184,16 +184,18 @@ plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
 legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
 hold off
 
-
-
+% color_stable = '#554b1c';
+% color_unstable = "#7E2F8E";
+color_stable = 'b';
+color_unstable = 'r';
 figure
 grid on 
 hold on
-surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceAlpha',0.4, 'FaceColor', '#554b1c', edgeColor = "none");
+surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceAlpha',0.4, 'FaceColor', color_stable , edgeColor = "none");
 xlabel('$x_1$', Interpreter = 'latex');
 ylabel('$x_2$', Interpreter = 'latex');
 zlabel('$x_4$', Interpreter = 'latex')
-surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4, 'FaceColor',"#7E2F8E", edgeColor = "none"); 
+surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4, 'FaceColor',color_unstable, edgeColor = "none"); 
 plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
 plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
 plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")

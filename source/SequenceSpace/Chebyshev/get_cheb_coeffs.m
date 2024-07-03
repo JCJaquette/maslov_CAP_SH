@@ -9,11 +9,21 @@ function cheb_coeff = get_cheb_coeffs(sol_vec, params)
     x2=chebfun(sol_vec(:,2),'trunc', M);
     x3=chebfun(sol_vec(:,3),'trunc', M);
     x4=chebfun(sol_vec(:,4),'trunc', M);
-    
+
+    % x1=chebfun(sol_vec(:,1),'equi', M);
+    % x2=chebfun(sol_vec(:,2),'equi', M);
+    % x3=chebfun(sol_vec(:,3),'equi', M);
+    % x4=chebfun(sol_vec(:,4),'equi', M);
+    % 
     a1=chebcoeffs(x1);
     a2=chebcoeffs(x2);
     a3=chebcoeffs(x3);
     a4=chebcoeffs(x4);
+
+    % a1(2:end)=a1(2:end)/2;
+    % a2(2:end)=a2(2:end)/2;
+    % a3(2:end)=a3(2:end)/2;
+    % a4(2:end)=a4(2:end)/2;
     
     cheb_coeff=[a1, a2, a3, a4];
     
