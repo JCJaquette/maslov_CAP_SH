@@ -4,7 +4,6 @@
 [x,params, mflds] = init_sol_val_tests();
 phi_normal_form = 0;
 params.normalizeBasis = 0;
-%hi
 
 disp('Choice of Parameters')
 disp(params)
