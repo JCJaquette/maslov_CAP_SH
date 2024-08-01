@@ -1,4 +1,4 @@
-function plots=plot_manifold(coeff,order,color)
+function [plotpoints]=plot_manifold(coeff,order,color)
     p=30;
     
     % We plot them in polar coordinates 
