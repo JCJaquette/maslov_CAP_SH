@@ -65,7 +65,7 @@ sol = S.normalForm.sol(:,1);
 full_sol = S.getFunctionFromFourierCoeffs(S.fourier.full_coeff_from_half_newton, "full");
 if S.vfParams.mu == .2 
     sol = 1/3.*sol; 
-    full_sol(:,2) = 1/3.*full_sol(:, 2);
+    % full_sol(:,2) = 1/3.*full_sol(:, 2);
 end
 
 figure 
