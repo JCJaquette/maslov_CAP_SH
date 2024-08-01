@@ -3,7 +3,7 @@
 %   S = S.mainPulse()
 %   S = mainPulse(S) 
 % 
-function [S,soln_vec] = mainPulse(S)
+function S = mainPulse(S)
 
     % get pulse approximation from normal form. Determines where to
     % truncate spatial domain so $\varphi'(L) \approx 0$. 
@@ -12,7 +12,7 @@ function [S,soln_vec] = mainPulse(S)
     S = BKNormalForm4d_halfline(S); 
     
     % refine Fourier coefficients with Newton's method
-    [S,soln_vec] = S.Newton_halfline_vec(); 
+    S = S.Newton_halfline(); 
 
     % get Jacobian 
     DF = S.DFFourier(S.fourier.full_coeff_from_half_newton);

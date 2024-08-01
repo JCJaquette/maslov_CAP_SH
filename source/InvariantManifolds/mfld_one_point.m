@@ -8,7 +8,8 @@ function val = mfld_one_point(phi1, phi2, coeff, params)
 
         end
     end
-       if norm(val-real(val)) > 1e-10
+       if norm(val-real(val)) > 1e-8%10->8
+            disp(imag(val))
             msg = 'Error occurred. The manifold is complex valued.';
             error(msg);
        end

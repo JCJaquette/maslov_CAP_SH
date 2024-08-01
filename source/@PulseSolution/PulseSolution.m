@@ -53,7 +53,7 @@ classdef PulseSolution
     methods( Access = public, Static = false )
         % main function to obtain pulse approximation and unstable
         % eigenvalues associated to it
-        S = mainPulse(S)
+        [S,soln_vec] = mainPulse(S)
         
         % Normal form solution via Burke and Knobloch 
         S = BKNormalForm4d_halfline(S)

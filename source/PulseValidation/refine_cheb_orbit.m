@@ -27,10 +27,10 @@ function x = refine_cheb_orbit(x, mflds, params)
             disp(['F3: ', num2str(G2{3})])
             
             disp('The max elements of (F4)_n,...,(F7)_n are: ')
-            disp(['max(F4)_n: ', num2str(max(G2{4}))])
-            disp(['max(F5)_n: ', num2str(max(G2{5}))])
-            disp(['max(F6)_n: ', num2str(max(G2{6}))])
-            disp(['max(F7)_n: ', num2str(max(G2{7}))])
+            disp(['max(F4)_n: ', num2str(max(abs(G2{4})))])
+            disp(['max(F5)_n: ', num2str(max(abs(G2{5})))])
+            disp(['max(F6)_n: ', num2str(max(abs(G2{6})))])
+            disp(['max(F7)_n: ', num2str(max(abs(G2{7})))])
             disp(' ')
             nozeros=abs(nonzeros(x.a4));
             max_ord=my_order(max(nozeros));

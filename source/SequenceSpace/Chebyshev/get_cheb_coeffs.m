@@ -5,11 +5,11 @@ function cheb_coeff = get_cheb_coeffs(sol_vec, params)
     step=1:1:M;
     
     % must call chebfun on a column vector
-    x1=chebfun(sol_vec(:,1),'trunc', M);
-    x2=chebfun(sol_vec(:,2),'trunc', M);
-    x3=chebfun(sol_vec(:,3),'trunc', M);
-    x4=chebfun(sol_vec(:,4),'trunc', M);
-    
+    x1=chebfun(sol_vec(:,1),'equi', M);
+    x2=chebfun(sol_vec(:,2),'equi', M);
+    x3=chebfun(sol_vec(:,3),'equi', M);
+    x4=chebfun(sol_vec(:,4),'equi', M);
+
     a1=chebcoeffs(x1);
     a2=chebcoeffs(x2);
     a3=chebcoeffs(x3);

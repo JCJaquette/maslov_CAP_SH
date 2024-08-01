@@ -1,4 +1,4 @@
-function [x,params, mflds] = init_sol_val_tests()
+function [x,params, mflds, vecs,vals] = init_sol_val_tests()
 m=450;
 
 
@@ -7,7 +7,7 @@ m=450;
 x.phi1=cos(5.755195195195195);
 x.phi2=sin(5.755195195195195);
 x.psi=3.669582882882883;
-params.L = 3.922100000013819;
+params.L = 3.922100000013819*1;
 params.rho = 1 - .01;
 params.scale = 3e-1;
 
@@ -36,6 +36,6 @@ params.mfld.order=25;
 
 params.tol=4e-16;
 
-mflds=get_mflds(params);
+[mflds,vecs,vals]=get_mflds(params);
 
 end

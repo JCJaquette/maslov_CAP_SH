@@ -1,5 +1,5 @@
 % params must contain mu, nu, scale, mflds.order
-function params = get_mflds(params)
+function [params,vectors,values] = get_mflds(params)
     % get scaled eigenvectors 
     [vectors, values]= getJacEigs(0, params);
     

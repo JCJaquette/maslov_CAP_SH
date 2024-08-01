@@ -189,13 +189,16 @@ figure
 grid on 
 hold on
 surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceAlpha',0.4, 'FaceColor', '#554b1c', edgeColor = "none");
-xlabel('$x_1$', Interpreter = 'latex');
-ylabel('$x_2$', Interpreter = 'latex');
-zlabel('$x_4$', Interpreter = 'latex')
+% xlabel('$x_1$', Interpreter = 'latex');
+% ylabel('$x_2$', Interpreter = 'latex');
+% zlabel('$x_4$', Interpreter = 'latex')
 surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4, 'FaceColor',"#7E2F8E", edgeColor = "none"); 
+return
 plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
 plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
 plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
 %title('Validated Manifolds and $\varphi(x)$ Trajectory from ');
 legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
 hold off
+
+disp(mflds.pts.s(:,:,1))
