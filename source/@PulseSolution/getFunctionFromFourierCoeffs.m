@@ -8,10 +8,11 @@
 function sol = getFunctionFromFourierCoeffs(S,coeffs, interval_type)
 order = S.fourier.order; 
 
+time_spacing = .01;
 if interval_type == "half"
-    T=0:.05:S.time;
+    T=0:time_spacing :S.time;
 else
-    T=-S.time:.05:S.time;
+    T=-S.time:time_spacing :S.time;
 end
 
 f       = 0*T;
