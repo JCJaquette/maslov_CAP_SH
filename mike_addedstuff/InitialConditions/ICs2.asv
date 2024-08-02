@@ -41,7 +41,7 @@ elseif n == 2
 
     new = 1.05;
 
-elseif n == 3
+    elseif n == 3
 
     params.rho = 1 - .01;
     params.scale = 3e-1;

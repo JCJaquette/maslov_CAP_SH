@@ -6,14 +6,14 @@ mu = 0.05;
 nu = 1.6; 
 
 
-[S,~,psoln1] = generate_results(0, mu, nu);
+%generate_results(0, mu, nu);
 %generate_results(pi, mu, nu);
 
 % snaking region 
 % TODO Add comment to readme about scaling for stable mu
 mu = .2; 
 nu = 1.6; 
-%generate_results(0, mu, nu);
+[S,~,psoln3] = generate_results(0, mu, nu);
 
 
 
@@ -21,7 +21,7 @@ nu = 1.6;
 
 
 
-function [S,C,soln_vec] = generate_results(branch, mu, nu)
+function [S,C,full_sol] = generate_results(branch, mu, nu)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                            PARAMETERS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,7 +57,7 @@ disp(' ')
 S = PulseSolution(fourier, vfParams, normalForm, time);
 
 % perform Newton's method
-[S,soln_vec] = S.mainPulse();
+[S] = S.mainPulse();
 
 
 % Plot normal form approximation and pulse approximation obtained by
@@ -70,7 +70,6 @@ if S.vfParams.mu == .2
 %    sol = 1/3.*sol; 
 %    full_sol(:,2) = 1/3.*full_sol(:, 2);
 end
-
 
 figure 
 hold on 
