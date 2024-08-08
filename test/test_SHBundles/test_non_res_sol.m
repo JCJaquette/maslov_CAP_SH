@@ -3,9 +3,9 @@ x = zeros(1, 4);
 params.lambda = 0; 
 params.mu = 0.05; 
 params.nu = 1.6; 
-params.scale = 1/3;
+params.scale = 1/5;
 
-order = 8; 
+order = 63; 
 params.order = order; 
 params.mfld.order = order; 
 [eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 

@@ -18,6 +18,10 @@ function coeffs = getStBundleCoefficients(params)
     mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
     A = DFQbundle(params, mflds); 
     Q0 = [vectors.s, vectors.u]; 
+    figure(10)
+    hold on
+    plot_manifold(mflds.coeff.s,order,'r');
+    hold off
 
 
     %coeffs = zeros(4, order + 1, order + 1); 
