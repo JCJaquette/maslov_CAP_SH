@@ -3,7 +3,7 @@
 %-------------------------------------------------------------------------
 % first we calculate the size of the eigenvector/eigenvalue enclosures
 point=[0,0,0,0];
-params=[0.05,1.6]; % in the order [mu,nu']
+params=[0.2,1.6]; % in the order [mu,nu']
 Df0=JacSH(0,params(1),params(2));
 [V1,D1]=eigs(Df0);
 [d, ind]=sort(real(diag(D1)));
@@ -34,7 +34,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=16;
+order=35;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')

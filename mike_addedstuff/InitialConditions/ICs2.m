@@ -44,15 +44,15 @@ elseif n == 2
 elseif n == 3
 
     params.rho = 1 - .01;
-    params.scale = 3e-1;
+    params.scale = 9e-1;
     params.mu=0.2;
     params.nu=1.6;
     params.lambda = 0;
     params.cheb.order=450;
     params.mfld.order=35;
-    params.tol=4e-16;
+    params.tol=4e-15;
 
-    bd_scale = .1;
+    bd_scale = .6;
     
     load("psoln3.mat");
     psoln = psoln3;
