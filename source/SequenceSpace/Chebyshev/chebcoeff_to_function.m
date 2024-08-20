@@ -1,5 +1,5 @@
 function y = chebcoeff_to_function(coeff)
-    dom = -1:.05:1;
+    dom = -1:.01:1;
     n = max(size(coeff));
     m = max(size(dom));
     polys = zeros(m,n);

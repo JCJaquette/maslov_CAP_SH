@@ -1,7 +1,7 @@
 clear
-
+close all
 %1 is mu=.05,nu=1.6, 0 branch, 2 is mu=.05,nu=1.6, π branch, 3 is mu=.2,nu=1.6
-n = 3;
+n = 1;
 
 
 
@@ -13,8 +13,9 @@ if n == 1
     params.nu=1.6;
     params.lambda = 0;
     params.cheb.order=450;
-    params.mfld.order=35;
+    params.mfld.order=40;
     params.tol=4e-16;
+    params.L = 0;
 
     bd_scale = .05;
     
@@ -33,6 +34,7 @@ elseif n == 2
     params.cheb.order=450;
     params.mfld.order=35;
     params.tol=4e-16;
+    params.L = 0;
 
     bd_scale = .08;
     
@@ -44,25 +46,40 @@ elseif n == 2
 elseif n == 3
 
     params.rho = 1 - .01;
-    params.scale = 9e-1;
+    params.scale = 3e-1;
     params.mu=0.2;
     params.nu=1.6;
     params.lambda = 0;
-    params.cheb.order=450;
-    params.mfld.order=35;
+    params.cheb.order=2^10;
+    params.mfld.order=25;
     params.tol=4e-15;
-
-    bd_scale = .6;
+    bd_scale = .1;
+    params.L = 0;
     
     load("psoln3.mat");
     psoln = psoln3;
 
-    new = 1.05;
+    new = 1.01;
 
 end
 
-
     mflds = get_mflds(params);
+
+%    [mflds.unstable.error,mflds.stable.error] = runManifoldValidation(params,mflds);
+
+%    for convenience
+    if n == 1
+        load('mError1');
+        mflds.stable.error = mError1;
+        mflds.unstable.error = mError1;
+    elseif n == 2
+        load('mError2');
+        mflds.error = mError2;
+    else
+        load('error3');
+        mflds.error = mError3;
+    end
+
     hold on
     [u_pts,u_phi1phi2s] = plot_manifold(mflds.unstable.coeffs,25,'red');
     s_pts = plot_manifold(mflds.stable.coeffs,25,'blue');
@@ -124,7 +141,7 @@ end
     phi1 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),1);
     phi2 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),2);
 
-    y = chebfuncoeffs(Lsoln);
+    y = chebfuncoeffs(Lsoln,params.cheb.order);
     y.phi1 = phi1;
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
@@ -136,11 +153,19 @@ end
     
     plot3(Lsoln(1,1),Lsoln(1,2),Lsoln(1,4),'. black','MarkerSize',16)
     plot3(Lsoln(end,1),Lsoln(end,2),Lsoln(end,4),'. black','MarkerSize',16)
-
-    legend('Unstable Manifold','Stable Manifold', 'Pulse')
     
 
     new_y = refine_cheb_orbit(y,mflds,params);
+
+    yo1 = chebcoeff_to_function(new_y.a1);
+    yo2 = chebcoeff_to_function(new_y.a2);
+    yo3 = chebcoeff_to_function(new_y.a3);
+    yo4 = chebcoeff_to_function(new_y.a4);
+    plot3(yo1 ,yo2 ,yo4 ,'LineWidth',1)
+
+    legend('Unstable Manifold','Stable Manifold', 'Pulse')
+
+    
     verify_homoclinic_orbit(params,mflds,new_y,new);
 
 

@@ -1,9 +1,10 @@
-%clear all 
+function [unstable_bound,stable_bound] = runManifoldValidation(prms,mflds)
+%copy pasted manifold_validation.m but replaced some stuff with variables,
+%added outputs for the error
 
-%-------------------------------------------------------------------------
 % first we calculate the size of the eigenvector/eigenvalue enclosures
 point=[0,0,0,0];
-params=[0.05,1.6]; % in the order [mu,nu']
+params=[prms.mu,prms.nu]; % in the order [mu,nu']
 Df0=JacSH(0,params(1),params(2));
 [V1,D1]=eigs(Df0);
 [d, ind]=sort(real(diag(D1)));
@@ -21,7 +22,7 @@ error=max(error);
 %----------------------------------------------------------------------
 % Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the
 % last component is on the order of machine precision.
-tau=3e-1;
+tau=prms.scale;
 Vscale=V*tau;
 
 % Separate the eigenvalues and associated vectors into those with positive
@@ -34,7 +35,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=40;
+order=mflds.mfld.order;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
@@ -56,24 +57,6 @@ for i = 1:k
     end  
 end
 
-figure
-tiledlayout(2,2) 
-
-nexttile
-plot_coeff(uncoeff,order);
-title('Coefficient norms for unstable parameterization')
-
-nexttile
-plot_coeff(stabcoeff,order);
-title('Coefficient norms for stable parameterization')
- 
-nexttile
-plot_manifold(uncoeff,order);
-title('Unstable Manifold')
-
-nexttile
-plot_manifold(stabcoeff,order);
-title('Stable Manifold')
 
 %--------------------------------------------------------------------------
 % Now we apply Lemma 10.4.1 to validate the parameterization we computed 
@@ -89,6 +72,8 @@ title('Stable Manifold')
   disp(unstable_bound)
   disp('The error on the parameterization for the stable manifold is: ')
  disp(stable_bound)
+
+end
 
 %%%%%%%%%%%%%%%%%%%%%% FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -226,43 +211,6 @@ function val=radiipoly(params,coeff, Q,Lambda,order)
     poly=val;
 end
 
-
-% This function evaluates the function P on a grid of points and plots them
-% Inputs: coeff - corresponds to the coefficients computed for either the
-%                 stable or unstable manifold
-%         order - order of the parameterization 
-% Outputs: plots = 0
-%          also generates a 3D plot. In this case, we omit the third
-%          component (seemed to generate the best plot)
-function plots=plot_manifold(coeff,order)
-    p=10;
-    theta=linspace(0,2*pi,p);
-    r=linspace(0,1,p);
-    plotpoints=zeros(p,p,4);
-    
-    for j=1:p
-        for k=1:p
-        ps1s2 = zeros(4,1);
-        s1=r(j)*cos(theta(k));
-        s2=r(j)*sin(theta(k));
-        for n=0:order
-            for m=0:n
-                %disp(n)
-                %disp(m)
-                point=reshape(coeff(n-m+1,m+1,:),[4,1]);
-                ps1s2=ps1s2+point*(s1+1i*s2)^(n-m)*(s1-1i*s2)^(m);
-                
-            end
-        end 
-        plotpoints(j,k,:)=real(ps1s2);
-        end
-    end
-    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), plotpoints(:,:,3));
-    xlabel('x1')
-    ylabel('x2')
-    zlabel('x4')
-    plots=0; 
-end 
 
 % this function plots the log of the norms of the coefficients against
 % their order. This is done to check for decay. 

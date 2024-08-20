@@ -7,10 +7,8 @@ function verif = verify_homoclinic_orbit(params, mflds, x, nu)
     
     disp('First we check that the matrix Am is injective.')
     
-    % mflds.stable.error = 1e-12;
-    % mflds.unstable.error = 1e-12;
-    mflds.stable.error = 4.9334e-22;
-    mflds.unstable.error = 4.9334e-22;
+     % mflds.stable.error = 1e-12;
+     % mflds.unstable.error = 1e-12;
     
     injective = check_A_injective(x,params,mflds);
     
