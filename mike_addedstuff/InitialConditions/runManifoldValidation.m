@@ -4,8 +4,8 @@ function [unstable_bound,stable_bound] = runManifoldValidation(prms,mflds)
 
 % first we calculate the size of the eigenvector/eigenvalue enclosures
 point=[0,0,0,0];
-params=[prms.mu,prms.nu]; % in the order [mu,nu']
-Df0=JacSH(0,params(1),params(2));
+prams=[prms.mu,prms.nu]; % in the order [mu,nu']
+Df0=JacSH(0,prams(1),prams(2));
 [V1,D1]=eigs(Df0);
 [d, ind]=sort(real(diag(D1)));
 D=D1(ind,ind);
@@ -15,7 +15,7 @@ rstar=1e-15;
 
 error=zeros(1,4);
 for i=1:4
-    error(i)=eig_enclosure(point,params,D(i,i),V(:,i),rstar);
+    error(i)=eig_enclosure(point,prams,D(i,i),V(:,i),rstar);
 end
 error=max(error);
 
@@ -39,11 +39,11 @@ order=mflds.mfld.order;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
-uncoeff=calc_proj_coeff(order,uneigs,unvec,params);
+uncoeff=calc_proj_coeff(order,uneigs,unvec,prams);
 
 % stable 
 disp('Calculating the coefficients for the stable manifold.')
-stabcoeff=calc_proj_coeff(order,stabeigs,stabvec,params);
+stabcoeff=calc_proj_coeff(order,stabeigs,stabvec,prams);
 
 
 k=6;
@@ -62,10 +62,10 @@ end
 % Now we apply Lemma 10.4.1 to validate the parameterization we computed 
 
 
- unpoly=radiipoly(params,uncoeff,V,D,order);
+ unpoly=radiipoly(prams,uncoeff,V,D,order);
  unstable_bound = min(unpoly(find(unpoly > 0)));
 
- stpoly=radiipoly(params,stabcoeff,V,D,order);
+ stpoly=radiipoly(prams,stabcoeff,V,D,order);
  stable_bound = min(stpoly(find(stpoly > 0)));
 %  
   disp('The error on the parameterization for the unstable manifold is: ')

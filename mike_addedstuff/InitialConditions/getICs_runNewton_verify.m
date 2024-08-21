@@ -1,7 +1,7 @@
 clear
 close all
 %1 is mu=.05,nu=1.6, 0 branch, 2 is mu=.05,nu=1.6, π branch, 3 is mu=.2,nu=1.6
-n = 1;
+n = 3;
 
 
 
@@ -28,7 +28,7 @@ elseif n == 2
 
     params.rho = 1 - .01;
     params.scale = 2.5e-1;
-    params.mu=0.2;
+    params.mu=0.05;
     params.nu=1.6;
     params.lambda = 0;
     params.cheb.order=450;
@@ -65,20 +65,22 @@ end
 
     mflds = get_mflds(params);
 
-%    [mflds.unstable.error,mflds.stable.error] = runManifoldValidation(params,mflds);
+    [mflds.unstable.error,mflds.stable.error] = runManifoldValidation(params,mflds);
 
 %    for convenience
-    if n == 1
-        load('mError1');
-        mflds.stable.error = mError1;
-        mflds.unstable.error = mError1;
-    elseif n == 2
-        load('mError2');
-        mflds.error = mError2;
-    else
-        load('error3');
-        mflds.error = mError3;
-    end
+    % if n == 1
+    %     load('mError1');
+    %     mflds.stable.error = mError1;
+    %     mflds.unstable.error = mError1;
+    % elseif n == 2
+    %     load('mError2');
+    %     mflds.stable.error = mError2;
+    %     mflds.unstable.error = mError2;
+    % else
+    %     load('error3');
+    %     mflds.stable.error = mError3;
+    %     mflds.unstable.error = mError3;
+    % end
 
     hold on
     [u_pts,u_phi1phi2s] = plot_manifold(mflds.unstable.coeffs,25,'red');
