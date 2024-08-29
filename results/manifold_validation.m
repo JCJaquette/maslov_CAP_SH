@@ -34,7 +34,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=40;
+order=25;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
@@ -74,7 +74,7 @@ title('Unstable Manifold')
 nexttile
 plot_manifold(stabcoeff,order);
 title('Stable Manifold')
-
+return
 %--------------------------------------------------------------------------
 % Now we apply Lemma 10.4.1 to validate the parameterization we computed 
 

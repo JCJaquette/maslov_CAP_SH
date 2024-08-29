@@ -1,40 +1,8 @@
 clear 
-% copy pasted from pulse validation to get cheb coeffs of phi
-% I changed the function init_sol_val_tests to get the evecs/evals out
-% Set initial seed for Newton's method 
-[x,params, mflds,evecs,evals] = init_sol_val_tests();
 
-params.normalizeBasis = 0;
+load('verifiedpulse1.mat')
 
-disp('Choice of Parameters')
-disp(params)
-disp(['Chebyshev order: ', num2str(params.cheb.order)])
-disp(['Manifold order: ', num2str(params.mfld.order)])
-
-disp(['Initial choice for phi1, phi2, psi: ', num2str(x.phi1), ', ', num2str(x.phi2), ', ', num2str(x.psi)]);
-
-
-L1=params.L;
-
-
-%%% Option to use NF solution
-sol=BK_nf_4dim(params,0,L1, 0);
-time_vec=sol(:,1);
-sol=sol(:,2:5);
-
-
-cheb_coeff = get_cheb_coeffs(sol, params);
-x.a1=cheb_coeff(:,1)';
-x.a2=cheb_coeff(:,2)';
-x.a3=cheb_coeff(:,3)';
-x.a4=cheb_coeff(:,4)';
-
-% Perform Newton's method 
-
-new_x = refine_cheb_orbit(x, mflds, params);
-% new_x.a1 gives bs
-
-phi_cheb = new_x.a1;
+phi_cheb = new_y.a1;
 %%
 
 phi = chebfun(1);
@@ -109,7 +77,7 @@ end
 
 
 detA = (H.a11 .* H.a42) - (H.a12 .* H.a41);
-plot(L1*(-1:.05:1),detA)
+%plot(L1*(-1:.05:1),detA)
 
 
 
