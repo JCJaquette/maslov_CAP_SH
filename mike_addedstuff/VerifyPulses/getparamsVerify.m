@@ -1,4 +1,4 @@
-function [params,mflds,psoln] = getparams(n)
+function [params,mflds,psoln] = getparamsVerify(n)
 
 
 if n == 1

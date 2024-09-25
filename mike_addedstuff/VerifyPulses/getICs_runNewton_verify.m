@@ -4,7 +4,7 @@ close all
 
     n = 3;
 
-    [params,mflds,psoln] = getparams(n);
+    [params,mflds,psoln] = getparamsVerify(n);
 
 
     hold on

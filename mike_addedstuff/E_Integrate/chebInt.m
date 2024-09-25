@@ -1,8 +1,18 @@
 clear 
 
 load('verifiedpulse1.mat')
+params = getparamsInt(1);
 
 phi_cheb = new_y.a1;
+
+yo1 = (chebcoeff_to_function(new_y.a1))';
+yo2 = (chebcoeff_to_function(new_y.a2))';
+yo3 = (chebcoeff_to_function(new_y.a3))';
+yo4 = (chebcoeff_to_function(new_y.a4))';
+phi = [yo1;yo2;yo3;yo4];
+
+phiPrime = RHSofIVP(phi,yo1,params.mu,params.nu,params.L);
+
 %%
 
 phi = chebfun(1);
@@ -23,10 +33,10 @@ end
 
 
 N = chebop(-1,1);
-N.op = @(t,h1,h2,h3,h4) [diff(h1)-L1*(h4);
-                   diff(h2)-L1*(h3-2*h4);
-                   diff(h3)-L1*(-h1+(2*params.nu*phi-3*phi^2-params.mu)*h1);
-                   diff(h4)-L1*(h2)];
+N.op = @(t,h1,h2,h3,h4) [diff(h1)-params.L*(h4);
+                   diff(h2)-params.L*(h3-2*h4);
+                   diff(h3)-params.L*(-h1+(2*params.nu*phi-3*phi^2-params.mu)*h1);
+                   diff(h4)-params.L*(h2)];
 
 N.lbc = v_u;
 [h1,h2,h3,h4] = N\0;
@@ -59,7 +69,7 @@ end
 disp('norm of F(h) at end of Newton:')
 disp(norm(chebF(h,v_u,phi_cheb,NN,params)))
 
-if i == 1  %make one of these phi'                                                                                                                                                                      %hi
+if i == 1                                                                                                                                                                        %hi
     H.a11 = chebcoeff_to_function(h(1:NN));
     H.a21 = chebcoeff_to_function(h(NN+1:2*NN));
     H.a31 = chebcoeff_to_function(h(2*NN+1:3*NN));
@@ -77,7 +87,7 @@ end
 
 
 detA = (H.a11 .* H.a42) - (H.a12 .* H.a41);
-%plot(L1*(-1:.05:1),detA)
+%plot(params.L*(-1:.05:1),detA)
 
 
 
