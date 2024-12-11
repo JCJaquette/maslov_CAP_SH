@@ -1,4 +1,4 @@
-function [phiprime] = RHSofIVP(pulse,phi,mu,nu)
+function [phiprime] = RHSofIVP(pulse,phi,mu,nu,L)
 
     phiprime = 0*pulse;
 

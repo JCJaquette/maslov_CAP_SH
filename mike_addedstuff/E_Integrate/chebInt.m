@@ -15,6 +15,8 @@ phiPrime = RHSofIVP(phi,yo1,params.mu,params.nu,params.L);
 
 %%
 
+load('varbs.mat')
+
 phi = chebfun(1);
 phi.domain = [-1,1];
 phi.funs{1,1}.onefun.coeffs = [phi_cheb(1),2*phi_cheb(2:end)]';

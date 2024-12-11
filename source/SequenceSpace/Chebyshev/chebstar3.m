@@ -1,4 +1,19 @@
 function vec = chebstar3(a,b,c,order)
+
+    N=max(size(a));
+    M=max(size(b));
+    P=max(size(c));
+    
+    if (max(size(a)) == order) == 0
+        a=[a,zeros(1,order-N)];
+    end
+    if (max(size(b)) == order) == 0
+        b=[b,zeros(1,order-M)];
+    end
+    if (max(size(c)) == order) == 0
+        c=[c,zeros(1,order-M)];
+    end
+
     vec=[];
     for k=0:order-1
         %disp('-------------------------------')
