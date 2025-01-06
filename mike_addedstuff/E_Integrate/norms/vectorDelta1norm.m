@@ -1,4 +1,5 @@
 function normout = vectorDelta1norm(vec,del)
+% weighted 1-norm
 
     N = length(vec);
 

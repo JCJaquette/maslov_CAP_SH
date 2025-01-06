@@ -1,4 +1,6 @@
-function [out] = chebDF(b,N,params)
+function [out] = Dphi_forZ1(b,N,params)
+%copy paste of DF but without the diagonal which comes from LHS of the
+%functional equation
 
     alt = ones(1,N-1);
     for k = 1:N-1
@@ -12,10 +14,6 @@ function [out] = chebDF(b,N,params)
     twos = 2*alt.*ones(1,N-1);
 
     lowright = zeros(N-1,N-1);
-
-    for i = 1:N-1
-        lowright(i,i) = 2*i;
-    end
 
     diagM = [1,twos;
            zeros(N-1,1),lowright];
@@ -48,8 +46,8 @@ function [out] = chebDF(b,N,params)
     Dcmns = shftbkwd*Dc;
     Dcpls = shftfwd*Dc;
 
-    Z = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
-    Z(1,1:N) = zeros(1,N);
+    A = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
+    A(1,1:N) = zeros(1,N);
     % A is derivative of psi_3 wrt a_1 which is a bit more complicated due
     % to cProds
 
@@ -57,8 +55,8 @@ function [out] = chebDF(b,N,params)
 
     out = [diagM, zps, zps, LOL;
         zps, diagM, LOL, -2*LOL;
-        Z, zps, diagM, zps;
+        A, zps, diagM, zps;
         zps, LOL, zps, diagM];
     % full DF matrix
-
 end
+

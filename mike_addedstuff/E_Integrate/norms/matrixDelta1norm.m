@@ -1,4 +1,5 @@
 function normout = matrixDelta1norm(mat,del)
+% matrix norm for weighted 1-norm
 
     [~,n] = size(mat);
 
