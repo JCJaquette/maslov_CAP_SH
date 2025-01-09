@@ -71,7 +71,7 @@ function out = computeZ1(A,N,b,del,params)
 
     shftfwd = diag(ones(1,3*N-1),1);
     shftbkwd = diag(ones(1,3*N-1),-1);
-    bigDcPP = BigDcPProd_r(b);
+    bigDcPP = BigDcPProd_r(b,b);
     bigDcP = BigDcProd_r(b);
 
     bigDc = 2*params.nu*bigDcP - 3*bigDcPP;

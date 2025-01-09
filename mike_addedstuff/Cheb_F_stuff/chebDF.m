@@ -39,7 +39,7 @@ function [out] = chebDF(b,N,params)
 
     shftfwd = diag(ones(1,N-1),1);
     shftbkwd = diag(ones(1,N-1),-1);    
-    DcPP = DcPProd(b);
+    DcPP = DcPProd(b,b);
     DcP = DcProd(b);
 
     Dc = 2*params.nu*DcP - 3*DcPP;
