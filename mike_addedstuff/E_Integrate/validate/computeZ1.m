@@ -1,31 +1,30 @@
 function out = computeZ1(A,N,b,del,params)
 
-    %to bound \pi_N A_N \pi_N D\psi \pi_\infty 
-    %use this for L: b = A(1:450,1351:1800)*lvec;
-    %               vectorDelta1norm(b,1.001) for the matrices, separate
-    %               the Ls out
+    %to bound A_N \pi_N D\psi \pi_\infty 
+
     Anorm = matrix4Ellnorm(A,N,del);
-    L_rNorm = params.L/del;
+
+    % remainder matrix = [B_r,   0,   0, L_r;
+    %                      0, B_r, L_r, 2*L_r;
+    %                    Z_r,   0, B_r, 0;
+    %                      0, L_r,   0, B_r];
+
+    % norm of 
+
     B_rNorm = 2/del^(N+1);
-    Z_rNorm = (del^-1 + del)*(1 + params.mu + 8*params.nu*vectorDelta1norm(b,del) + 48*vectorDelta1norm(b,del)^2);
-
-    % remainderNorms = [B_rNorm, 0, 0, L_rNorm;
-    %                   0, B_rNorm, L_rNorm, 2*L_rNorm;
-    %                   Z_rNorm, 0, B_rNorm, 0;
-    %                   0, L_rNorm, 0, B_rNorm];
-
     AB_contribution = Anorm*B_rNorm;
 
     % norm of A*(the L part)
-
+    
+    AL_rs = zeros(4,4,N);
     lvec = zeros(N,1);
     lvec(end) = params.L;
-    AL_rs = zeros(4,4,N);
 
     for i = 1:4
         for j = 1:4
 
-            AL_rs(i,j,:) = A((i-1)*N + 1: i*N, (j-1)*N + 1: j*N)*lvec; 
+            oAL_rs(i,j,:) = A((i-1)*N + 1: i*N, (j-1)*N + 1: j*N)*lvec; %simplified this by multiplying last column of Aij by L
+            AL_rs(i,j,:) = params.L * A((i-1)*N + 1: i*N, j*N);
 
         end
     end
@@ -64,12 +63,10 @@ function out = computeZ1(A,N,b,del,params)
 
     bigA13(1:N,1:N) = A(1:N,2*N + 1:3*N);
     bigA23(1:N,1:N) = A(N + 1:2*N,2*N + 1:3*N);
-    bigA33(1:N,1:N) = A(2*N + 1:3*N,2*N + 1:3*N);
-
-    for i = N+1:3*N
-        bigA33(i,i) = 1/(2*i);
-    end
-
+    bigA33(1:N,1:N) = A(2*N + 1:3*N,2*N + 1:3*N); 
+    % for i = N+1:3*N
+    %     bigA33(i,i) = 1/(2*i);
+    % end
     bigA43(1:N,1:N) = A(3*N + 1:4*N,2*N + 1:3*N);
 
     shftfwd = diag(ones(1,3*N-1),1);
@@ -81,10 +78,10 @@ function out = computeZ1(A,N,b,del,params)
 
     Dcmns = shftbkwd*bigDc;
     Dcpls = shftfwd*bigDc;
-    bigLOL = params.L*(shftbkwd + shftfwd)*eye(3*N);
-    bigLOL(1,:) = zeros(1,3*N);
 
-    bigZ = -params.L*(Dcmns - Dcpls) - (1+params.mu)*bigLOL;
+    bigZ = -params.L*(Dcmns - Dcpls);
+    bigZ(N,N+1) = bigZ(N,N+1) - params.L*(1+params.mu);
+    bigZ(N+1,N+2) = bigZ(N+1,N+2) - params.L*(1+params.mu);
 
     AZnorms = zeros(1,4);
 

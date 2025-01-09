@@ -1,7 +1,7 @@
 clear 
 
-load('verifiedpulse2.mat')
-[params,IC] = getparamsInt(2);
+load('verifiedpulse1.mat')
+[params,IC] = getparamsInt(1);
 
 phi_cheb = new_y.a1;
 

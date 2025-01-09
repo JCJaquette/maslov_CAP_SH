@@ -8,7 +8,7 @@ function [outmat] = BigDcPProd_r(a)
     outmat = zeros(size);
 
     for i = 1:N
-        for j = N:size
+        for j = N+1:size
 
             outmat(i,j) = dcProdidbj(a,i-1,j);
 
