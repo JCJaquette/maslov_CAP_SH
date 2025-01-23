@@ -23,8 +23,9 @@ function out = computeZ1(A,N,b,del,params)
     for i = 1:4
         for j = 1:4
 
-            oAL_rs(i,j,:) = A((i-1)*N + 1: i*N, (j-1)*N + 1: j*N)*lvec; %simplified this by multiplying last column of Aij by L
-            AL_rs(i,j,:) = params.L * A((i-1)*N + 1: i*N, j*N);
+            AL_rs(i,j,:) = A((i-1)*N + 1: i*N, (j-1)*N + 1: j*N)*lvec;
+
+            %AL_rs(i,j,:) = params.L * A((i-1)*N + 1: i*N, j*N);
 
         end
     end
@@ -50,7 +51,7 @@ function out = computeZ1(A,N,b,del,params)
         Lnorms(i,4) = vectorDelta1norm(vec,del);
     end
 
-    AL_contribution = norm(Lnorms,inf);
+    AL_contribution = norm(Lnorms,inf)/del^(N+1);
 
     % norm of A*(the Z part)
     % Since the Z part is only the (1,3) element in the matrix of operators 

@@ -1,7 +1,7 @@
 clear 
-
-load('verifiedpulse1.mat')
-[params,IC] = getparamsInt(1);
+ord = 1700;
+load('verifiedpulse3.mat')
+[params,IC] = getparamsInt(3);
 
 phi_cheb = new_y.a1;
 
@@ -12,17 +12,27 @@ yo4 = (chebcoeff_to_function(new_y.a4))';
 pulse = [yo1;yo2;yo3;yo4];
 
 pulsePrime = RHSofIVP(pulse,yo1,params.mu,params.nu,params.L);
-params.cheb.order = 450;
+phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
+params.cheb.order = ord;
 a = get_cheb_coeffs(pulsePrime, params);
+a(101:end,:) = zeros(ord - 100,4);
+ICvec = a(1,:);
+h = [a(:,1);a(:,2);a(:,3);a(:,4)];
+h = h';
+
+    for j = 1:5
+
+        h = h - (chebDF(phi_cheb,ord,params)\chebF(h,ICvec,phi_cheb,ord,params))';
+
+    end
+
 
 %%
 
-Ad_N = chebDF(phi_cheb,450,params);
+Ad_N = chebDF(phi_cheb,ord,params);
 A_N = inv(Ad_N);
-matrix4Ellnorm(A_N,450,1);
 
-lvec = 0*phi_cheb';
-lvec(end) = params.L;
+a_bar = h;
 
 
 
@@ -34,7 +44,7 @@ phi.funs{1,1}.onefun.coeffs = [phi_cheb(1),2*phi_cheb(2:end)]';
 
 
 
-for i = 1:2
+for i = 1:1
     
     % chebfun integrator
     
@@ -99,7 +109,7 @@ end
 
 
 
-detA = (H.a11 .* H.a42) - (H.a12 .* H.a41);
+%detA = (H.a11 .* H.a42) - (H.a12 .* H.a41);
 %plot(params.L*(-1:.05:1),detA)
 
 
@@ -110,17 +120,17 @@ A_N = Ad_N^-1;
 a_bar = h;
 delta = 1.001;
 
-Y0 = computeY0(A_N,a_bar,phi_cheb,params,NN,v_u,delta)
-
-Z0 = computeZ0(A_N,Ad_N,NN,delta)
+% Y0 = computeY0(A_N,a_bar,phi_cheb,params,NN,v_u,delta)
+% 
+% Z0 = computeZ0(A_N,Ad_N,NN,delta)
 
 % Ad=intval(Ad);
 % A=intval(A);
 % a_bar=intval(a_bar);
 % delta=intval(delta);
 % 
-% Y0 = computeY0(A,a_bar,phi_cheb,params,NN,v_u,delta)
+Y0 = computeY0(A,a_bar,phi_cheb,params,NN,ICvec,delta)
 % 
-% Z0 = computeZ0(A,Ad,NN,delta)
+Z0 = computeZ0(A,Ad,NN,delta)
 
 

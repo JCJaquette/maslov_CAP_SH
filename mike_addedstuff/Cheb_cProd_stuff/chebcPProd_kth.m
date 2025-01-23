@@ -1,5 +1,5 @@
 function [sum] = chebcPProd_kth(a,b,c,k)
-%kth element of the Cauchy product a*b*c, k = 0 gives (a*b*c)_0, 1 gives (a*b*c)_1...
+%kth element of the convolution product a*b*c, k = 0 gives (a*b*c)_0, 1 gives (a*b*c)_1...
 
     lc = length(c);
     lb = length(b);

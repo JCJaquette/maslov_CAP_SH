@@ -13,14 +13,14 @@ function [out] = Dphi_forZ1(b,N,params)
 
     twos = 2*alt.*ones(1,N-1);
 
-    lowright = zeros(N-1,N-1);
+    lowright = zeros(N-1,N-1); %do nothing since we want to take out the K part
 
     diagM = [1,twos;
            zeros(N-1,1),lowright];
     % diagM is derivative of psi_i wrt (a_i), appears as
     % the diagonal blocks
  
-    subLOL = zeros(N-1,N);
+    subLOL = zeros(N-1,N); 
     
     for i = 1:N-1
 

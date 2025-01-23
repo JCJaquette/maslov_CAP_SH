@@ -2,12 +2,15 @@ function normout = vectorDelta1norm(vec,del)
 % weighted 1-norm
 
     N = length(vec);
+    [m,~] = size(vec);
 
-    for i = 1:N
-        vec(i) = del^(i-1)*vec(i);
+    if m == 1
+        weightedvec = (del.^(0:N-1)).*vec;
+    else
+        weightedvec = (del.^(0:N-1)').*vec;   
     end
 
-    normout = norm(vec,1);
+    normout = norm(weightedvec,1);
 
 end
 

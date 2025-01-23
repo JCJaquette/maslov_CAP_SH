@@ -1,10 +1,11 @@
 function [outmat] = DcPProd(a,b)
 % gives jacobian of a*b*h wrt h
 
-    mat1 = DcProd(a);
-    mat2 = DcProd(b);
+    N = length(a);
 
-    outmat = mat1*mat2;
+    c = chebstar2(a,b,N);
+
+    outmat = DcProd(c);
 
 end
 

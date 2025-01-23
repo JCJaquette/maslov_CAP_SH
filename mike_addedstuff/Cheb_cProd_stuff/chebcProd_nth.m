@@ -1,5 +1,5 @@
 function [out] = chebcProd_nth(a,b,k)
-%kth element of the Cauchy product a*b, k = 0 gives (a*b)_0, 1 gives (a*b)_1... 
+%kth element of the convolution product a*b, k = 0 gives (a*b)_0, 1 gives (a*b)_1... 
     
     N = max(length(a),length(b));
     if N == length(a)

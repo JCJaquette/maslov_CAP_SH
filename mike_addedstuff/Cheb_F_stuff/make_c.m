@@ -1,15 +1,8 @@
 function [c] = make_c(a1,a2,a3,a4,b,params,N)
 % makes c from thesis p231
 
-    ba1 = 0*a1;
-    for i = 1:N
-        ba1(i) = chebcProd_nth(a1',b',i-1);
-    end
-
-    bba1 = 0*a1;
-    for i = 1:N
-        bba1(i) = chebcPProd_kth(a1',b',b',i-1);
-    end
+    ba1 = chebstar2(b,a1,N);
+    bba1 = chebstar2(b,ba1,N);
 
     c = zeros(4,N);
     c(1,:) = a4;
