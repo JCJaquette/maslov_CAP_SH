@@ -54,9 +54,8 @@ phi_cheb = new_x.a1;
 h1 = rand(1,1800);
 h2 = rand(1,1800);
 
-eps = 1e-8;
-
-
+eps = 1e-10;
+phi_cheb = phi_cheb(1:450);
 fperth = (chebF(h1 +eps*h2,2*[1,1,1,1],phi_cheb,450,params) - chebF(h1,2*[1,1,1,1],phi_cheb,450,params))/eps;
 
 dfh = chebDF(phi_cheb,450,params)*h2';
@@ -64,7 +63,7 @@ dfh = chebDF(phi_cheb,450,params)*h2';
 diff = fperth - dfh;
 
 norm(diff)
-
+mean(diff)
 
 
 

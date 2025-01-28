@@ -24,14 +24,13 @@ function [Fout] = chebF(h,hu,b,N,params)
     Fai0(3) = h3(1) + 2*dot(alt,h3(2:N)) - hu(3);
     Fai0(4) = h4(1) + 2*dot(alt,h4(2:N)) - hu(4);
 
-    c = make_c(h1,h2,h3,h4,b,params,N);
-    
+    c = make_c(h1,h2,h3,h4,b,params,N);    
 
     Fa1 = zeros(N-1,1);
     Fa2 = Fa1;
     Fa3 = Fa1;
     Fa4 = Fa1;
-    
+
     for k = 1:N-1
 
         if k+2 <= N

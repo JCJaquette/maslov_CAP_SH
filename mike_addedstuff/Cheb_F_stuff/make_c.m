@@ -3,6 +3,7 @@ function [c] = make_c(a1,a2,a3,a4,b,params,N)
 
     ba1 = chebstar2(b,a1,N);
     bba1 = chebstar2(b,ba1,N);
+    
 
     c = zeros(4,N);
     c(1,:) = a4;

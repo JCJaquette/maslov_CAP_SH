@@ -48,8 +48,8 @@ function [out] = chebDF(b,N,params)
     Dcmns = shftbkwd*Dc;
     Dcpls = shftfwd*Dc;
 
-    Z = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
-    Z(1,1:N) = zeros(1,N);
+    C = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
+    C(1,1:N) = zeros(1,N);
     % A is derivative of psi_3 wrt a_1 which is a bit more complicated due
     % to cProds
 
@@ -57,7 +57,7 @@ function [out] = chebDF(b,N,params)
 
     out = [diagM, zps, zps, LOL;
         zps, diagM, LOL, -2*LOL;
-        Z, zps, diagM, zps;
+        C, zps, diagM, zps;
         zps, LOL, zps, diagM];
     % full DF matrix
 
