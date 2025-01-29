@@ -5,41 +5,48 @@ load('verifiedpulse1.mat')
 [params,IC] = getparamsInt(1);
 ord = params.ord;
 
-phi_cheb = new_y.a1;
-phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
+Q = [1, 0, 0, 0;
+     0, 0, 1, 0;
+     0, 2, 0, 1;
+     0, 1, 0, 0]; %Q brings you from thesis Ch9 coords to Ch12 coords
 
 yo1 = (chebcoeff_to_function(new_y.a1))';
 yo2 = (chebcoeff_to_function(new_y.a2))';
 yo3 = (chebcoeff_to_function(new_y.a3))';
 yo4 = (chebcoeff_to_function(new_y.a4))';
-pulse = [yo1;yo2;yo3;yo4];
 
-pulsePrime = RHSofODE(pulse,params.mu,params.nu);
+pulse9 = [yo1;yo2;yo3;yo4];
+pulse12 = Q*pulse9;
+
+phi = pulse9(1,:);
+phi_cheb = new_y.a1;% pulse is same in both coordinate systems
+phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
+
+pulsePrime9 = RHSofODE(pulse9,params.mu,params.nu);
+pulsePrime12 = Q*pulsePrime9;
 params.cheb.order = ord;
-a = get_cheb_coeffs(pulsePrime, params);
+a = get_cheb_coeffs(pulsePrime12, params);
 a(101:end,:) = zeros(ord - 100,4);
-pulseICvec = pulsePrime(:,1);
+pulse12ICvec = pulsePrime12(:,1);
 
 h = [a(:,1);a(:,2);a(:,3);a(:,4)]';
 
     for j = 1:5
 
-        h = h - (chebDF(phi_cheb,ord,params)\chebF(h,pulseICvec,phi_cheb,ord,params))';
+        h = h - (chebDF(phi_cheb,ord,params)\chebF(h,pulse12ICvec,phi_cheb,ord,params))';
 
     end
 
-norm(chebF(h,pulseICvec,phi_cheb,ord,params))
+domn = linspace(-params.L,params.L,201);
+hold on
+plot(domn,phi)
 
-% domn = linspace(-params.L,params.L,201);
-% hold on
-% plot(domn,yo1)
-% 
-% hold on
-% plot(domn,pulsePrime(1,:))
-% 
-% hold on
-% pulseprimenew1 = chebcoeff_to_function(h(1:ord));
-% plot(domn,pulseprimenew1)
+hold on
+plot(domn,pulsePrime12(1,:))
+
+hold on
+pulseprimenew1 = chebcoeff_to_function(h(1:ord));
+plot(domn,pulseprimenew1)
 
 
 %%
@@ -63,7 +70,7 @@ unstableVec2 = unstableVec1;
 unstableVec1(:,1) = real(IC(1,1,:));
 unstableVec2(:,1) = imag(IC(1,1,:));
 
-intICvec = getICvec(pulseICvec,unstableVec1,unstableVec2);
+intICvec = getICvec(pulse12ICvec,unstableVec1,unstableVec2);
 
 N = chebop(-1,1);
 N.op = @(t,h1,h2,h3,h4) [diff(h1)-params.L*(h4);
