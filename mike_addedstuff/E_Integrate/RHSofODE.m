@@ -3,7 +3,7 @@ function [phiprime] = RHSofODE(pulse,mu,nu)
 
     phiprime = 0*pulse;
 
-    % This is RHS of IVP
+    % now RHS of ODE
 
     phiprime(1,:) = pulse(2,:);
     phiprime(2,:) = pulse(3,:);
