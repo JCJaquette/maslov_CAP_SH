@@ -110,7 +110,7 @@ plot(linspace(-1,1,201),chebcoeff_to_function(h(((1-1)*n)+1:1*n)))
 %% CAP
 
 phi_cheb_int = intval(1)*phi_cheb;
-Ad_N = chebDF_intval(phi_cheb_int,ord,params);
+Ad_N = chebDF(phi_cheb_int,ord,params);
 A_N = Ad_N^-1;
 a_bar = intval(1)*h;
 
@@ -120,9 +120,10 @@ Z1 = computeZ1(A_N,ord,phi_cheb_int,params.del,params);
 
 rs = 0:10^-14:10^-12;
 radii_poly = Y0 - (1-Z0-Z1)*rs;
+
 plot(rs,radii_poly);
 
-good_r = Y0/(1-Z0-Z1);
+
 
 %%
 

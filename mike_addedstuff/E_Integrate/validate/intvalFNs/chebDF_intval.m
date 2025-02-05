@@ -1,26 +1,28 @@
-function [out] = Dphi_forZ1(b,N,params)
-%copy paste of DF but without the diagonal which comes from LHS of the
-%functional equation
+function [out] = chebDF_intval(b,N,params)
 
-    alt = ones(1,N-1);
+    alt = intval(1)*ones(1,N-1);
     for k = 1:N-1
 
         if mod(k,2) == 1
-            alt(k) = -1;
+            alt(k) = -alt(k);
         end
 
     end    
 
-    twos = 2*alt.*ones(1,N-1);
+    twos = 2*alt;
 
-    lowright = zeros(N-1,N-1); %do nothing since we want to take out the K part
+    lowright = intval(1)*zeros(N-1,N-1);
 
-    diagM = [1,twos;
+    for i = 1:N-1
+        lowright(i,i) = intval(2*i);
+    end
+
+    diagM = [intval(1),twos;
            zeros(N-1,1),lowright];
     % diagM is derivative of psi_i wrt (a_i), appears as
     % the diagonal blocks
  
-    subLOL = zeros(N-1,N); 
+    subLOL = intval(1)*zeros(N-1,N);
     
     for i = 1:N-1
 
@@ -31,12 +33,12 @@ function [out] = Dphi_forZ1(b,N,params)
 
     end
 
-    LOL = [zeros(1,N);subLOL];
+    LOL = [intval(1)*zeros(1,N);intval(1)*subLOL];
     % LOL matrix comes up in derivative of psi_i wrt (a_j) with i=/=j  
     % if a_j appears in c_i
 
-    shftfwd = diag(ones(1,N-1),1);
-    shftbkwd = diag(ones(1,N-1),-1);    
+    shftfwd = intval(1)*diag(ones(1,N-1),1);
+    shftbkwd = intval(1)*diag(ones(1,N-1),-1);    
     DcPP = DcPProd_intval(b,b);
     DcP = DcProd_intval(b);
 
@@ -58,5 +60,5 @@ function [out] = Dphi_forZ1(b,N,params)
         C, zps, diagM, zps;
         zps, LOL, zps, diagM];
     % full DF matrix
-end
 
+end

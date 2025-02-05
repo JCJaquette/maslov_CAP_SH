@@ -2,7 +2,7 @@ function out = computeZ1(A,N,b,del,params)
 
     %to bound A_N \pi_N D\psi \pi_\infty 
 
-    Anorm = matrix4Ellnorm(A,N,del);
+    Anorm = matrix4Ellnorm_intval(A,N,del);
 
     % remainder matrix = [B_r,   0,   0, L_r;
     %                      0, B_r, L_r, 2*L_r;
@@ -16,7 +16,7 @@ function out = computeZ1(A,N,b,del,params)
 
     % norm of A*(the L part)
     
-    AL_rs = zeros(4,4,N);
+    AL_rs = intval(0)*zeros(4,4,N);
     lvec = zeros(N,1);
     lvec(end) = params.L;
 
@@ -30,11 +30,11 @@ function out = computeZ1(A,N,b,del,params)
         end
     end
 
-    Lnorms = zeros(4,4); %going through the norms of A*Lr matrix
+    Lnorms = intval(0)*zeros(4,4); %going through the norms of A*Lr matrix
     % the first column is all zero => these norms stay 0
 
     % norm function doesn't work with thing(i,j,:), so i do this
-    vec = zeros(1,N);
+    vec = intval(0)*zeros(1,N);
 
     for i = 1:4 
         vec(:) = AL_rs(i,4,:); 
@@ -57,7 +57,7 @@ function out = computeZ1(A,N,b,del,params)
     % Since the Z part is only the (1,3) element in the matrix of operators 
     % we only need the 3rd column of A for this part
 
-    bigA13 = zeros(3*N);
+    bigA13 = intval(0)*zeros(3*N);
     bigA23 = bigA13;
     bigA33 = bigA13;
     bigA43 = bigA13;
@@ -72,8 +72,8 @@ function out = computeZ1(A,N,b,del,params)
 
     shftfwd = diag(ones(1,3*N-1),1);
     shftbkwd = diag(ones(1,3*N-1),-1);
-    bigDcPP = BigDcPProd_r(b,b);
-    bigDcP = BigDcProd_r(b);
+    bigDcPP = BigDcPProd_r_intval(b,b);
+    bigDcP = BigDcProd_r_intval(b);
 
     bigDc = 2*params.nu*bigDcP - 3*bigDcPP;
 
@@ -84,12 +84,12 @@ function out = computeZ1(A,N,b,del,params)
     bigZ(N,N+1) = bigZ(N,N+1) - params.L*(1+params.mu);
     bigZ(N+1,N+2) = bigZ(N+1,N+2) - params.L*(1+params.mu);
 
-    AZnorms = zeros(1,4);
+    AZnorms = intval(0)*zeros(1,4);
 
-    AZnorms(1) = matrixDelta1norm(bigA13*bigZ,del);
-    AZnorms(2) = matrixDelta1norm(bigA23*bigZ,del);
-    AZnorms(3) = matrixDelta1norm(bigA33*bigZ,del);
-    AZnorms(4) = matrixDelta1norm(bigA43*bigZ,del);
+    AZnorms(1) = matrixDelta1norm_intval(bigA13*bigZ,del);
+    AZnorms(2) = matrixDelta1norm_intval(bigA23*bigZ,del);
+    AZnorms(3) = matrixDelta1norm_intval(bigA33*bigZ,del);
+    AZnorms(4) = matrixDelta1norm_intval(bigA43*bigZ,del);
 
     AZ_contribution = max(AZnorms);
 
@@ -100,7 +100,7 @@ function out = computeZ1(A,N,b,del,params)
     longb = [b, zeros(1,2*N)];
     bigDF = Dphi_forZ1(longb,3*N,params);
 
-    z1b = matrix4Ellnorm(bigDF,3*N,del)/(2*N);
+    z1b = matrix4Ellnorm_intval(bigDF,3*N,del)/(2*N);
 
     out = z1a + z1b;
 

@@ -1,5 +1,5 @@
 function orthog = getICvec(pulseIC,basisVec1,basisVec2)
-% project pulse IC into E^u_- and then find orthogonal vector
+% project pulse IC into E^u_- and then find orthogonal vector in E^u_-
 
     A = [basisVec1,basisVec2];
     projectedIC = A*inv(A'*A)*A' * pulseIC;
@@ -10,9 +10,13 @@ function orthog = getICvec(pulseIC,basisVec1,basisVec2)
         vec = basisVec2;
     end
   
-    proj = dot(projectedIC,vec)/dot(vec,vec) * vec;
+    proj = dot(vec,projectedIC)/dot(projectedIC,projectedIC) * projectedIC;
 
-    orthog = projectedIC - proj;
+    orthog = vec - proj;
+
+    % dot(orthog,vec)
+    % dot(orthog,proj)
+    % dot(orthog,projectedIC)
 
 end
 

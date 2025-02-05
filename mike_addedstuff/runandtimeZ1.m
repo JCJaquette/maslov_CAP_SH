@@ -1,6 +1,6 @@
 %% for verified pulse 1
 
-% y0 = computeY0(A_N,a_bar,phi_cheb,params,ord,pulseICvec,params.del);
+% y0 = computeY0(A_N,a_bar,phi_cheb,params,ord,pulse12ICvec,params.del);
 % z0 = computeZ0(A_N,Ad_N,ord,params.del);
 % z1 = computeZ1(A_N,ord,phi_cheb,params.del,params); %approx .26 with ord=800, del= 1.005
 

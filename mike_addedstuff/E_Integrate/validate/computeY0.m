@@ -1,8 +1,8 @@
 function Y0 = computeY0(A,a_bar,b,params,N,v,del)
 
-    finitepart = A*chebF(a_bar,v,b,N,params);
+    finitepart = A*chebF_intval(a_bar,v,b,N,params);
 
-    Y0s = zeros(1,4);%*intval(0);
+    Y0s = zeros(1,4)*intval(0);
 
     for i = 1:4
         Y0s(1) = vectorDelta1norm(finitepart(1:N),del);
