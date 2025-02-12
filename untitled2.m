@@ -1,1 +1,0 @@
-computeY0(A_N,a_bar,phi_cheb,params,1300,ICvec,1.0033)

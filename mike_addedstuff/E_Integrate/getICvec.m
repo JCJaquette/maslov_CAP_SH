@@ -2,6 +2,11 @@ function orthog = getICvec(pulseIC,basisVec1,basisVec2)
 % project pulse IC into E^u_- and then find orthogonal vector in E^u_-
 
     A = [basisVec1,basisVec2];
+
+    
+
+
+
     projectedIC = A*inv(A'*A)*A' * pulseIC;
 
     if dot(projectedIC,basisVec1) > 10^-3

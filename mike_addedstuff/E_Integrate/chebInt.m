@@ -1,8 +1,8 @@
 clear 
 close all
 
-load('verifiedpulse2.mat')
-[params,IC] = getparamsInt(2);
+load('verifiedpulse1.mat')
+[params,IC] = getparamsInt(1);
 ord = params.cheb.order;
 
 Q = [1, 0, 0, 0;
@@ -37,9 +37,9 @@ h = [pulsePrime_skewSym_cheb(:,1);pulsePrime_skewSym_cheb(:,2);pulsePrime_skewSy
 
     end
 
-% domn = linspace(-params.L,params.L,201);
-% hold on
-% plot(domn,phi)
+domn = linspace(-params.L,params.L,201);
+hold on
+plot(domn,phi)
 % 
 % hold on
 % plot(domn,pulsePrime_skewSym(1,:))
@@ -101,10 +101,11 @@ end
 disp('norm of F(h) at end of Newton:')
 disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
 
-plot(h1)
+i = 1; plot(h1)
 hold on
-plot(linspace(-1,1,201),chebcoeff_to_function(h(((1-1)*n)+1:1*n)))
+plot(linspace(-1,1,201),chebcoeff_to_function(h(((i-1)*ord)+1:i*ord)))
 
+% plot(log(abs(h((i-1)*ord+1:i*ord))))
 
 
 %% CAP
@@ -125,6 +126,9 @@ plot(rs,radii_poly);
 good_r = Y0/(1-Z0-Z1);
 
 %%
+
+
+
 
 % 
 % H.a11 = chebcoeff_to_function(h(1:NN));
