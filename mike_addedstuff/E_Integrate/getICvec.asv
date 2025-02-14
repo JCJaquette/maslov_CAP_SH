@@ -16,9 +16,12 @@ function orthog = getICvec(pulseIC,basisVec1,basisVec2)
   
     basis_proj = dot(basisvec,projectedIC)/dot(projectedIC,projectedIC) * projectedIC;
 
+
+
     orthog = basisvec - basis_proj;
 
-    % dot(orthog,basis_proj)
+    % dot(orthog,vec)
+    % dot(orthog,proj)
     % dot(orthog,projectedIC)
 
 end

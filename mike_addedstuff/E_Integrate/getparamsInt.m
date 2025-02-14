@@ -1,4 +1,4 @@
-function [params,IC] = getparamsInt(n)
+function [params,manifold_u] = getparamsInt(n)
 %params for E_Integrate
 
 if n == 1
@@ -10,7 +10,10 @@ if n == 1
     params.del = 1.01;
     
     load('VerifyPulses/saved_things/mflds1.mat')
-    IC = mflds.unstable.coeffs(1,2,:);
+    manifold_u.coeffs = mflds.unstable.coeffs;
+    load('phis1.mat')
+    manifold_u.pulseIC_phi = phis;
+
     return
 
 elseif n == 2
@@ -22,7 +25,9 @@ elseif n == 2
     params.del = 1.01;
         
     load('VerifyPulses/saved_things/mflds2.mat')
-    IC = mflds.unstable.coeffs(1,2,:);
+    manifold_u.coeffs = mflds.unstable.coeffs;
+    load('phis2.mat')
+    manifold_u.pulseIC_phi = phis;
 
     return
 
@@ -35,7 +40,9 @@ elseif n == 3
     params.del = 1.02;
 
     load('VerifyPulses/saved_things/mflds3.mat')
-    IC = mflds.unstable.coeffs(1,2,:);
+    manifold_u.coeffs = mflds.unstable.coeffs;
+    load('phis3.mat')
+    manifold_u.pulseIC_phi = phis;
 
     return
 

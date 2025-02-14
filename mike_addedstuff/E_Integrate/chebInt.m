@@ -2,7 +2,7 @@ clear
 close all
 
 load('verifiedpulse1.mat')
-[params,IC] = getparamsInt(1);
+[params,mfld_u] = getparamsInt(1);
 ord = params.cheb.order;
 
 Q = [1, 0, 0, 0;
@@ -27,13 +27,13 @@ pulsePrime_natural = RHSofODE(pulse_natural,params.mu,params.nu);
 pulsePrime_skewSym = Q*pulsePrime_natural;
 pulsePrime_skewSym_cheb = get_cheb_coeffs(pulsePrime_skewSym, params);
 pulsePrime_skewSym_cheb(101:end,:) = zeros(ord - 100,4);
-pulse_skewSym_ICvec = pulsePrime_skewSym(:,1);
+pulsePrime_skewSym_ICvec = pulsePrime_skewSym(:,1);
 
 h = [pulsePrime_skewSym_cheb(:,1);pulsePrime_skewSym_cheb(:,2);pulsePrime_skewSym_cheb(:,3);pulsePrime_skewSym_cheb(:,4)]';
 
     for j = 1:5
 
-        h = h - (chebDF(phi_cheb,ord,params)\chebF(h,pulse_skewSym_ICvec,phi_cheb,ord,params))';
+        h = h - (chebDF(phi_cheb,ord,params)\chebF(h,pulsePrime_skewSym_ICvec,phi_cheb,ord,params))';
 
     end
 
@@ -56,13 +56,18 @@ phi = chebfun(1);
 phi.domain = [-1,1];
 phi.funs{1,1}.onefun.coeffs = [phi_cheb(1),2*phi_cheb(2:end)]';
 
-unstableVec1 = zeros(4,1);
-unstableVec2 = unstableVec1;
+[unstableVec1,unstableVec2] = getEu_minusL(mfld_u.coeffs,mfld_u.pulseIC_phi);
+unstableVec_re = real(unstableVec1);
+unstableVec_im = imag(unstableVec1);
 
-unstableVec1(:,1) = real(IC(1,1,:));
-unstableVec2(:,1) = imag(IC(1,1,:));
+% transform to symplectic coord 
 
-intICvec = getICvec(pulse_skewSym_ICvec,unstableVec1,unstableVec2);
+unstableVec_re_sym = Q*unstableVec_re;
+unstableVec_im_sym = Q*unstableVec_im;
+
+intICvec = getICvec(pulsePrime_skewSym_ICvec,unstableVec_re_sym,unstableVec_im_sym);
+
+
 
 Ch12ODE = chebop(-1,1);
 Ch12ODE.op = @(t,h1,h2,h3,h4) [diff(h1)-params.L*(h4);
@@ -71,7 +76,7 @@ Ch12ODE.op = @(t,h1,h2,h3,h4) [diff(h1)-params.L*(h4);
                    diff(h4)-params.L*(h2)];
 
 Ch12ODE.lbc = intICvec;
-[h1,h2,h3,h4] = Ch12ODE\0;
+[h1,h2,h3,h4] = Ch12ODE\0; %#ok<RHSFN>
 
 
 
