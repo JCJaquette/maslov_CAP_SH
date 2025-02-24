@@ -127,11 +127,11 @@ Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
 Z1 = computeZ1(A_N,ord,phi_cheb_int,params.del,params);
 
-rs = 0:10^-14:10^-12;
+rs = 0:10^-12:10^-6;
 radii_poly = Y0 - (1-Z0-Z1)*rs;
 plot(rs,radii_poly);
 
-good_r = Y0/(1-Z0-Z1);
+good_r = sup(Y0/(1-Z0-Z1))
 
 %%
 

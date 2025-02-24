@@ -1,8 +1,8 @@
 function [c] = make_c_intval(a1,a2,a3,a4,b,params,N)
 % makes c from thesis p231
 
-    ba1 = chebstar2fft_intval(b,a1);
-    bba1 = chebstar2fft_intval(b,ba1);
+    ba1 = chebstar2fft_intb(b,a1,N);
+    bba1 = chebstar2(b,ba1,N);
     ba1 = ba1(1:N);
     bba1 = bba1(1:N);
     

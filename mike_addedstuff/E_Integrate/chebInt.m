@@ -1,8 +1,8 @@
 clear 
 close all
 
-load('verifiedpulse3.mat')
-[params,mfld_u] = getparamsInt(3);
+load('verifiedpulse1.mat')
+[params,mfld_u] = getparamsInt(1);
 ord = params.cheb.order;
 
 Q = [1, 0, 0, 0;
@@ -37,9 +37,9 @@ h = [pulsePrime_skewSym_cheb(:,1);pulsePrime_skewSym_cheb(:,2);pulsePrime_skewSy
 
     end
 
-domn = linspace(-params.L,params.L,201);
-hold on
-plot(domn,phi)
+% domn = linspace(-params.L,params.L,201);
+% hold on
+% plot(domn,phi)
 
 
 
@@ -109,9 +109,9 @@ end
 disp('norm of F(h) at end of Newton:')
 disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
 
-i = 1; plot(h1)
-hold on
-plot(linspace(-1,1,201),chebcoeff_to_function(h(((i-1)*ord)+1:i*ord)))
+% i = 1; plot(h1)
+% hold on
+% plot(linspace(-1,1,201),chebcoeff_to_function(h(((i-1)*ord)+1:i*ord)))
 
 % plot(log(abs(h((i-1)*ord+1:i*ord))))
 
@@ -127,11 +127,17 @@ Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
 Z1 = computeZ1(A_N,ord,phi_cheb_int,params.del,params);
 
-rs = 0:10^-14:10^-12;
+rs = 0:10^-12:10^-6;
 radii_poly = Y0 - (1-Z0-Z1)*rs;
 plot(rs,radii_poly);
 
-good_r = Y0/(1-Z0-Z1)
+good_r = sup(Y0/(1-Z0-Z1))
+
+% pulse1 soln validated with good_r = 3.8977e-07
+% pulse2 soln validated with good_r = 5.6446e-07
+% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function,
+% good_r = 7.8102e-06
+
 
 %%
 

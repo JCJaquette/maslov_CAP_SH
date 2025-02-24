@@ -12,9 +12,11 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
     end
 
     a_bar3 = a_bar(2*N+1:3*N);
-    prod_2 = chebstar2(b,a_bar3,3*N);
+    prod_2 = chebstar2fft_intval(b,a_bar3);
+    prod_2 = prod_2(1:3*N);
     %prod_3 = chebstar3(b,b,a_bar3,3*N);
-    prod_3new = chebstar2(b,prod_2,3*N);
+    prod_3new = chebstar2fft_intval(b,prod_2);
+    prod_3new = prod_3new(1:3*N);
     y3tail = params.nu * prod_2 - 3*prod_3new;
     
     for i = 1:3*N
