@@ -20,6 +20,10 @@ function orthog = getICvec(pulseIC,basisVec1,basisVec2)
 
     % dot(orthog,basis_proj)
     % dot(orthog,projectedIC)
+    % dot(pulseIC,orthog)
+    % x = A*inv(A'*A)*A' * orthog;
+    % norm(x-orthog)
+
 
 end
 

@@ -131,7 +131,7 @@ rs = 0:10^-14:10^-12;
 radii_poly = Y0 - (1-Z0-Z1)*rs;
 plot(rs,radii_poly);
 
-good_r = Y0/(1-Z0-Z1)
+good_r = Y0/(1-Z0-Z1);
 
 %%
 
