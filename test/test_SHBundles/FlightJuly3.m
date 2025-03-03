@@ -4,13 +4,13 @@
 
 % clear
 
-BOOL_PLOT = 0; 
-BOOL_FFT = 0; 
+BOOL_PLOT = 1; 
+BOOL_FFT = 1; 
 BOOL_NORM = 0;
 BOOL_A_inverse = 1; 
 delta_grid =0.1;
 N_inverse = 63;
-N=64;
+N=32;
 
 try
     lambda_s_1 =eigenvalues.s(:,1);

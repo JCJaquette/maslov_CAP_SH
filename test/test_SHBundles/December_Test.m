@@ -3,8 +3,8 @@
 % v *K^3u + 4Kv *K^2u + (6K^2 v+2v) *Ku +4(K^3v+K*v) *u
 
 % clear
-N=31;
-BOOL_PLOT = 1; 
+N=15;
+BOOL_PLOT = 0; 
 delta_grid =0.1;
 
 try
@@ -20,22 +20,6 @@ try
     N=max([N,length(v_coeff_pm)-1]);
 end
 
-
-% A=(rand(N+1,N+1)-.5);
-% B=(rand(N+1,N+1)-.5);
-% 
-% tic
-% prod1 = conv2(A,B);
-% toc
-% tic
-% prod2 = Cauchyfft2(A,B);
-% toc
-% % return
-% 
-% diff=prod1-prod2
-% norm(diff)
-% return
-% sum(abs(diff),'all')
 
 
 tic
@@ -53,12 +37,12 @@ for i=1:N+1
     weights(:,i)=weights(:,i)+abs(col);
 end
 
-% Define W
+% Define W_s
 W_coeff = 1*(rand(N+1,N+1)-.5)+1i*(rand(N+1,N+1)-.5);
 
 % weights=((1:N+1)'*(1:N+1));
 weights(1,1)=1;
-weights=10.^weights;
+weights=5.^weights;
 
 W_coeff =W_coeff ./weights;
 W_coeff(1,1)=1;
@@ -100,7 +84,7 @@ end
 % coeff_pad(1:N+1,1:N+1)=W_coeff;
 
 disp('Computing Inverse')
-N_inv=2*N+2;
+N_inv=1*(N+1);
 W_coeff_inv = zeros(N_inv,N_inv); 
 base =W_coeff(1,1);
 try
@@ -157,47 +141,50 @@ U_coeff(1,1)=1;
 
 
 
-L_deriv = K.^3+2*lambda_s_1*K.^2+2*(1+lambda_s_1^2)*K;
+L_deriv = K.^3;
 L_deriv_inv=L_deriv.^-1;
 L_deriv_inv(1,1)=1;
 
 
-% 
-% disp('Computing Norm')
-% 
-% 
-% op_norms = zeros(N+1,N+1);
-% for i=0:N
-%     i
-%     for j = 0:N
-%         U_coeff_local = zeros(N+1,N+1);
-%         U_coeff_local(i+1,j+1)=1;
-% 
-%         M = -M_operator( U_coeff_local, W_coeff,K,lambda_s_1);
-% 
-% 
-%         next = conv2(M,W_coeff_inv);
-%         next_trunc = next(1:N+1,1:N+1);
-%         next_trunc =L_deriv_inv.*next_trunc ;
-% 
-%         M = -M_operator( next_trunc, W_coeff,K,lambda_s_1);
-%         next = conv2(M,W_coeff_inv);
-%         next_trunc = next(1:N+1,1:N+1);
-%         next_trunc =L_deriv_inv.*next_trunc ;
-% 
-%         op_norms(i+1,j+1) = sum(abs(next_trunc),'all');
-% 
-%     end
-% end
-% 
-% 
 W_coeff=intval(W_coeff);
 U_coeff=intval(U_coeff);
 K=intval(K);
 toc
 
+% initial output  vv = -( L e + Me ) = - Me 
+vv = -M_operator( U_coeff, W_coeff,K,lambda_s_1);
+vv=mid(vv);
+Livv = Cauchyfft2(vv,W_coeff_inv);
+Livv=mid(Livv);
+Livv=Livv(1:N+1,1:N+1);
+
+Livv =K.^(-3).*Livv;
+Livv(1,1)=0;
+
+Livv_vec = reshape(Livv,(N+1)*(N+1),1);
 
 
+disp('Computing Bdagger')
+Bdag = Bdagger( W_coeff,K,lambda_s_1,W_coeff_inv);
+
+answer_vec  = mid(Bdag)\mid(Livv_vec(2:end));
+
+answer_vec=[0;answer_vec  ];  
+
+answer=reshape(answer_vec,N+1,N+1);
+answer(1,1)=1;
+
+% Compute Bounds
+yy = (K.^3).*answer ;
+yy(1,1)=0;
+f_of_x_a = Cauchyfft2(W_coeff,yy);
+f_of_x_b = + M_operator( answer, W_coeff,K,lambda_s_1);
+
+f_of_x = f_of_x_a + f_of_x_b ;
+
+sum(abs(f_of_x),'all')
+
+return
 
 tic
 disp('Iterating')
@@ -430,7 +417,7 @@ return
 function prod_trunc = Cauchyfft2( A,B)
 N1 = length(A);
 N2 = length(B);
-N = N1+N2;
+N = 2*max(N1,N2);
 
 coeff_pad = intval(0)*zeros(2*N,2*N);
 A_pad = coeff_pad;
@@ -440,20 +427,84 @@ B_pad(1:N2,1:N2)=B;
 
 
 % 
+% prod = (fft(fft(A_pad,1).',1).') .* (fft(fft(B_pad,1).',1).');
+% prod = fft(fft(prod,-1).',-1).';
 prod = (verifyfft(verifyfft(A_pad,1).',1).') .* (verifyfft(verifyfft(B_pad,1).',1).');
 prod = verifyfft(verifyfft(prod,-1).',-1).';
 prod_trunc = prod(1:N,1:N);
 
 end
 
+function Bdag = Bdagger( W,K,lambda,wI)
+N=length(W);
+% 2N truncation
+multiple = 1;
+N_large = multiple*N;
+
+Bdag = intval(0)*zeros(N_large^2-1,N_large ^2-1);
+
+% h=zeros(N_large,N_large);
+
+Bdag_data = intval(0)*zeros(N_large,N_large,N_large^2-1);
+
+for i=1:N_large
+    i
+    for j = 1:N_large
+        
+        if i==1 && j==1 
+            continue
+        end
+
+        h=zeros(N_large,N_large);
+        h(i,j)=1;
+    
+        Mh = M_operator( h, W,K,lambda);
+        wIMh = Cauchyfft2(wI,Mh);
+        wIMh=wIMh(1:N,1:N);
+
+
+        AMh = K.^(-3).*wIMh ;
+
+        vec_out=reshape(AMh,N*N,1);
+
+        Bdag_data(i,j,:)=vec_out(2:end);
+
+        % index= (i-1)*N_large+(j-1);
+        % Bdag(:,j)=vec_out(2:end);
+    end
+end
+
+for i=1:N_large
+    i
+    for j = 1:N_large
+        if i==1 && j==1 
+            continue
+        end
+        index= (j-1)*N_large+(i-1);
+        Bdag(:,index)=Bdag_data(i,j,:);
+    end
+end
+Bdag =Bdag + eye(N_large^2-1);
+
+
+end
+
+
+
 function out = M_operator( U, W,K,lambda)
+% U - w_u
+% W - w_s
 K_2 = K.^2;
 K_3 = K.^3;
 K_2(1,1)=intval(0);
 K_3(1,1)=intval(0);
-B = 4*Cauchyfft2(K.*W,K_2.*U);
-C = Cauchyfft2(4*lambda*K.*W+6*K_2.*W,K.*U);
-D = 4*Cauchyfft2((1+lambda^2)*K.*W+K_3.*W,U);
+a2=(2*lambda*W+4*K.*W);
+a1=((1+lambda^2)*W+ 4*lambda*K.*W+6*K_2.*W);
+a0=4*( (1+lambda^2)*K.*W+K_3.*W);
+
+B = Cauchyfft2(a2,K_2.*U);
+C = Cauchyfft2(a1,K.*U);
+D = Cauchyfft2(a0,U);
 
 % U_coeff
 % B = 4*conv2(K.*W,K.^2.*U);
