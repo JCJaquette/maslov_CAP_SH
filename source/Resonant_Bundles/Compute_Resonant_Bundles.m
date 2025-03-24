@@ -41,12 +41,96 @@ N_inv = 2*N;
 % w_I-w_I_mat
 % 
 % return
+% Includes 0,0 entry
 [LinvM_mat] = LinvM(w_I,w_s,mu_s);
 
 B_dagger_N_N = eye((N+1)^2)+LinvM_mat;
- 
-B=inv(B_dagger_N_N);
+
+B_dagger_N_N_restrict = B_dagger_N_N(2:end,2:end);
+B_N_N_restrict = inv(B_dagger_N_N_restrict);
+
+[V0,D0]=eig(B_N_N_restrict);
+% [V0,D]=eig(B_dagger_N_N_restrict);
+
+% d0 =diag(D0);
+% d1 =diag(D);
+% hold on 
+% scatter(real(d0),imag(d0))
+% scatter(real(d1),imag(d1))
+
+% keyboard
+
+% TODO the matrix B_N_N is horrible ill conditioned. 
+
+% invert thing except for the zero eval
+[V,D]=eig(B_dagger_N_N);
+D_diag= diag(D);
+[~,ord]=sort(abs(D_diag));
+V_sort = V(:,ord);
+Inver_E = 1./D_diag(ord);
+Inver_E(1)=0;
+
+Approx_inv = V_sort*diag(Inver_E)*inv(V_sort);
+
+scatter(real(D_diag),imag(D_diag))
+figure
+
+B_N_N_old=inv(B_dagger_N_N);
+B_N_N=Approx_inv;
+
+e_00=0*w_s;
+e_00(1,1)=1;
+
+
+f_0 = M_op(e_00,w_s,mu_s);
+f_0=f_0(1:N+1,1:N+1);
+
+N_ApproxMax = 5*N+1;
+w_u_bar = zeros(N_ApproxMax ,N_ApproxMax );
+
+% Af0_out = A_op(w_I,w_s,B_N_N_restrict,mu_s,-f_0,N);
+
+
+% w_u_bar = Af0_out;
+% w_u_bar(1,1)=1; 
+
+
+
+disp('Improving')
+for i = 1:20
+        disp('Run next')
+    [F_out] = F_op(w_u_bar,w_s,mu_s);
+    sum(abs(F_out),'all')
+
+    Y0 = A_op(w_I,w_s,B_N_N,mu_s,F_out,N);
+    % Y0 = A_op(w_I,w_s,B_N_N,mu_s,F_out,N);
+    sum(abs(Y0),'all')
+
+    w_u_bar = w_u_bar-Y0(1:N_ApproxMax ,1:N_ApproxMax );
+    surf(log(abs(F_out))/log(10))
+    surf(log(abs(Y0))/log(10))
+%     xlim([0,30])
+% ylim([0,30])
+% zlim([-50,10])
+    keyboard
+end
+
+
+% sum(abs(F_out),'all')
+
+% approx_sol(1,1)=-1; 
+% [F_out] = F_op(approx_sol,w_s,mu_s);
+
+% sum(abs(F_out),'all')
+
+
+zlim([-50,10])
+
+
+keyboard
 % Define Bdagger ( as a matrix )
+
+% Define B
 
 % Define B_{N,N} 
 % Define B_{infty,N} 

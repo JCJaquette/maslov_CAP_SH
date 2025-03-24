@@ -3,6 +3,7 @@ clear
 cd ..
 cd("results")
 load ('Manifold_DATA.mat')
+load ('Manifold_DATA_50.mat')
 cd ..
 cd("test")
  

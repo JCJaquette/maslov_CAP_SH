@@ -6,8 +6,8 @@ function [LinvM_mat] = LinvM(w_I,w_s,mu_s)
 beta = real(mu_s);
 gamma = imag(mu_s);
 N=n-1;
-a0_prod = 4*( 1+(-mu_s)^2)* K_op(w_s,mu_s,1) + K_op(w_s,mu_s,3);
-a1_prod = ( 1+(-mu_s)^2)* w_s - 4* mu_s* K_op(w_s,mu_s,1)+6*K_op(w_s,mu_s,2);
+a0_prod = 4*( 1+(-mu_s)^2)* K_op(w_s,mu_s,1) + 4*K_op(w_s,mu_s,3);
+a1_prod = 2*( 1+(-mu_s)^2)* w_s - 4* mu_s* K_op(w_s,mu_s,1)+6*K_op(w_s,mu_s,2);
 a2_prod = -2*mu_s*w_s +4*K_op(w_s,mu_s,1)  ;
 
 a0 = conv2(w_I,a0_prod);
@@ -70,7 +70,7 @@ K_entry = left+left';
 % % end
 % % left = diff_mat*mu_s;
 % % K_entry_inv = 1./(left+left'); 
-K_entry_inv =1./K_entry
+K_entry_inv =1./K_entry;
 K_entry_inv(1,1)=0;
 
 K_mat=reshape(K_entry,(N+1)^2,1);
