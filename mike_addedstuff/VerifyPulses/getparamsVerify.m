@@ -31,13 +31,13 @@ if n == 1
 elseif n == 2
 
     params.rho = 1 - .01;
-    params.scale = 2.5e-1;
+    params.scale = 1.1e-1;
     params.mu=0.05;
     params.nu=1.6;
     params.lambda = 0;
     params.cheb.order=450;
-    params.mfld.order=35;
-    params.tol=4e-16;
+    params.mfld.order=25;
+    params.tol=4e-15;
     params.L = 0;
 
     params.bd_scale = .08;
@@ -47,9 +47,11 @@ elseif n == 2
 
     params.new = 1.05;
 
-    load('mflds2.mat');
+    mflds = get_mflds(params);
+    mError2 = runManifoldValidation(params,mflds);
+    %load('mflds2.mat');
 
-    load('mError2');
+    %load('mError2');
     mflds.stable.error = mError2;
     mflds.unstable.error = mError2;
 

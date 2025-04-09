@@ -28,7 +28,7 @@ function [ab] = chebstar2fft(a,b)
 
     norm(ab - chebstar2(a,b,n/2)) 
     % check makes it so that this fn can do chebstar with a row or column but
-    % chebstar2 only puts out rows
+    % careful chebstar2 only puts out rows
     % more tests:
     % a = rand(1,ceil(100*rand(1,1)));
     % b = rand(1,length(a));

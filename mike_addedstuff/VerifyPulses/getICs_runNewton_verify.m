@@ -2,7 +2,7 @@ clear
 close all
 %1 is mu=.05,nu=1.6, 0 branch, 2 is mu=.05,nu=1.6, π branch, 3 is mu=.2,nu=1.6
 
-    n = 3;
+    n = 2;
 
     [params,mflds,psoln] = getparamsVerify(n);
 
@@ -76,8 +76,8 @@ close all
     
     plot3(Lsoln(:,1),Lsoln(:,2),Lsoln(:,4),'black','LineWidth',1)
     
-    plot3(right_endpt_s(1),right_endpt_s(2),right_endpt_s(4),'. black','MarkerSize',16);
-    plot3(left_endpt_u(1),left_endpt_u(2),left_endpt_u(4),'. black','MarkerSize',16);
+    % plot3(right_endpt_s(1),right_endpt_s(2),right_endpt_s(4),'. black','MarkerSize',16);
+    % plot3(left_endpt_u(1),left_endpt_u(2),left_endpt_u(4),'. black','MarkerSize',16);
     
     plot3(Lsoln(1,1),Lsoln(1,2),Lsoln(1,4),'. black','MarkerSize',16)
     plot3(Lsoln(end,1),Lsoln(end,2),Lsoln(end,4),'. black','MarkerSize',16)
@@ -94,6 +94,6 @@ close all
     legend('Unstable Manifold','Stable Manifold', 'Pulse')
 
     
-    %verify_homoclinic_orbit(params,mflds,new_y,params.new);
+    verify_homoclinic_orbit(params,mflds,new_y,params.new);
 
 

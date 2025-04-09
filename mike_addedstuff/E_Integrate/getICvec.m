@@ -5,8 +5,8 @@ function orthog = getICvec(pulseIC,basisVec1,basisVec2)
 
     projectedIC = A*inv(A'*A)*A' * pulseIC;
 
-    disp("Diff from phi ' and its projection")
-    pulseIC-projectedIC
+    % disp("Diff from phi ' and its projection")
+    % pulseIC-projectedIC
 
     if dot(projectedIC,basisVec1) > 10^-3
         basisvec = basisVec1;

@@ -24,7 +24,7 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
         if i < N
             y3tail(i) = 0;
         else
-            y3tail(i) = y3tail(i)/(N+1);
+            y3tail(i) = y3tail(i)/(i+1);
         end
 
     end
