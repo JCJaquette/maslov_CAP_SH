@@ -86,4 +86,26 @@ LinvM_mat_2 = K_inv3_mat*Cauchy_Mat_rep_trunc(a2 ,N)*K_mat*K_mat;
 
 LinvM_mat=LinvM_mat_0+LinvM_mat_1+LinvM_mat_2;
 
+%%%%%%
+
+L = Cauchy_Mat_rep_trunc(w_s,N )*K_mat*K_mat*K_mat;
+M=L*LinvM_mat;
+
+LM= L+M;
+
+[v,d]=eig(LM);
+D_diag0= diag(d);
+[~,ord0]=sort(abs(D_diag0));
+D_diag0=D_diag0(ord0);
+V_sort = v(:,ord0);
+
+vec_0 = V_sort(:,1);
+vec_0 = reshape(vec_0,1+N,1+N);
+
+vec_1 = V_sort(:,2);
+vec_1 = reshape(vec_1,1+N,1+N);
+
+scatter(real(1./D_diag0(3:end)),imag(1./D_diag0(3:end)))
+
+
 end

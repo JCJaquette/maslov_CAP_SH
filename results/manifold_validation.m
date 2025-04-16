@@ -34,7 +34,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=50;
+order=30;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')

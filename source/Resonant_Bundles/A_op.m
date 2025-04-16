@@ -16,10 +16,10 @@ La_size = size(La_pi_infty);
 N_La = La_size(1);
 
 La_N_vec = reshape(La_pi_N,(N+1)^2,1);
-% La_N_vec(1)=[]; 
-% B_La_N= 0*(1:(N+1)^2);
-% B_La_N(2:end) = B_N_N*La_N_vec;
-B_La_N = B_N_N*La_N_vec;
+La_N_vec(1)=[]; 
+B_La_N= 0*(1:(N+1)^2);
+B_La_N(2:end) = B_N_N*La_N_vec;
+% B_La_N = B_N_N*La_N_vec;
 B_La_N = reshape(B_La_N,N+1,N+1);
 
 % compute -Bdagger_{infty,N}
