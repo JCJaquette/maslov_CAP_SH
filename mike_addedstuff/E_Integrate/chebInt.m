@@ -109,14 +109,14 @@ h(2*ord+1) = h(2*ord+1)*2;
 h(3*ord+1:3*ord+n) = chebcoeffs(h4)/2;
 h(3*ord+1) = h(3*ord+1)*2;
 
-for j = 1:3
-
-    h = h - (chebDF(phi_cheb,ord,params)\chebF(h,intICvec,phi_cheb,ord,params))';
-
-end
-
-disp('norm of F(h) at end of Newton:')
-disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
+% for j = 1:3
+% 
+%     h = h - (chebDF(phi_cheb,ord,params)\chebF(h,intICvec,phi_cheb,ord,params))';
+% 
+% end
+% 
+% disp('norm of F(h) at end of Newton:')
+% disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
 
 % i = 1; plot(h1)
 % hold on
@@ -132,7 +132,6 @@ Ad_N = chebDF_intval(phi_cheb_int,ord,params);
 A_N = Ad_N^-1;
 a_bar = intval(1)*h;
 
-%%
 
 Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);%Y0 for pulse 3 is 7.454173333836001e-06
 %Y0 = 7.454173333836001e-06;
