@@ -10,6 +10,8 @@ cd("test")
 [N,n,j] = size(stabcoeff);
 N=N-1;
 
+
+
 mu_s = stabeigs(1);
 mu_s2 = stabeigs(1);
 
@@ -32,26 +34,9 @@ vs1 = diff_mat*non_res_coeff ;
 % vs2 = non_res_coeff*diff_mat;
 vs2=vs1';
 
-Compute_Resonant_Bundles_2(mu_s,vs1,g_1,params)
+Compute_Resonant_Bundles(mu_s,vs1,g_1,params)
 
 return 
-% Shift up
-non_res_coeff(1:end-1,:)=non_res_coeff(2:end,:);
-non_res_coeff(end,:)=0*non_res_coeff(end,:);
-
-w_s = non_res_coeff(:,:,1);
-w_s=w_s/w_s(1,1);
-% Trim
-% www=w_s;
-% w_s=zeros(2*N+1,2*N+1);
-% w_s(1:N+1,1:1+N)=www;
-% w_s(:,end)=[];
-% w_s(end,:)=[];
-
-
-
-mu_s = stabeigs(1);
-
-Compute_Resonant_Bundles(w_s,mu_s)
+ 
  
 

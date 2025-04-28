@@ -36,9 +36,14 @@ sol_mat =reshape(sol_mat,N+1,N+1);
 % out2 = out1 - [0;g_1_vec];
 
 surf(log(abs(sol_mat))/log(10))
+sol=intval(1)*sol;
+mu_s=intval(1)*mu_s;
 fout = F_op(sol,mu_s,vs1_shift,vs2_shift,g_1,params);
 
-keyboard
+% sol
+Y_0 = sum(abs(fout),"all")
+surf(log(sup(abs(fout)))/log(10))
+% keyboard
 return 
 
  
