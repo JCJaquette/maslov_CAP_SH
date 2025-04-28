@@ -1,4 +1,4 @@
-function [resonant_bundle_strc] = Compute_Resonant_Bundles_2(mu_s,vs1,g_1,params)
+function [resonant_bundle_strc] = Compute_Resonant_Bundles(mu_s,vs1,g_1,params)
 %UNTITLED3 Summary of this function goes here
 %   Detailed explanation goes here
 
