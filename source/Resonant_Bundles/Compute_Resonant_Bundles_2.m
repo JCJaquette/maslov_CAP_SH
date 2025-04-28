@@ -27,21 +27,19 @@ g_1_vec = reshape(g_1,(N+1)^2,1);
 
 g_1_vec(1)=[];
 
-sol = A_dag_short\g_1_vec;
+sol = -A_dag_short\g_1_vec;
 
 sol_mat = [0;sol];
 sol_mat =reshape(sol_mat,N+1,N+1);
 
+% out1 = A_dag*[0;sol];
+% out2 = out1 - [0;g_1_vec];
 
 surf(log(abs(sol_mat))/log(10))
+fout = F_op(sol,mu_s,vs1_shift,vs2_shift,g_1,params);
 
 keyboard
 return 
 
  
-
  
-[LinvM_mat] = LinvM(w_I,w_s,mu_s);
-
-
-end
