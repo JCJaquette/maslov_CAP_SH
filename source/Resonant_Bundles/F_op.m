@@ -42,26 +42,28 @@ vs2_shift(:,end+1)=0*vs2_shift(:,end);
 N=N+1;
 % Evaluate
 
-% Leading Operator
-L_entry = 0*a_vec(1)*zeros(N+1,N+1);
-for m=0:N
-    for n=0:N
-        xi = -(1+((m-1)*mu_s+n*mu_s')^2)^2-mu;
-        if (m==2&&n==0)||(m==1&&n==1)
-            xi=0*a_vec(1); % Going to be zero anywhay
-        elseif m==1&&n==0
-            xi = -1-mu+0*a_vec(1);
-        end
-        if isnan(xi)
-            keyboard
-        end
-        L_entry(m+1,n+1)=xi;
-    end
-end
+% % Leading Operator
+% L_entry = 0*a_vec(1)*zeros(N+1,N+1);
+% for m=0:N
+%     for n=0:N
+%         xi = -(1+((m-1)*mu_s+n*mu_s')^2)^2-mu;
+%         if (m==2&&n==0)||(m==1&&n==1)
+%             xi=0*a_vec(1); % Going to be zero anywhay
+%         elseif m==1&&n==0
+%             xi = -1-mu+0*a_vec(1);
+%         end
+%         if isnan(xi)
+%             keyboard
+%         end
+%         L_entry(m+1,n+1)=xi;
+%     end
+% end
 
+[ L_entry,~ ] = L_op(N,mu_s,mu);
 
 % g_1_w = conv2(g_1,a_2index);
 g_1_w = Cauchyfft2(g_1,a_2index);
+
 Initial_Sum = L_entry.*a_2index +vs1_shift*alpha_1 + vs2_shift*alpha_2+g_1; 
 
 F_out = g_1_w;

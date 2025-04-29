@@ -12,23 +12,24 @@ mu=params(1);
 
 g_mat = Cauchy_Mat_rep_trunc(g_1,N );
  
-% Leading Operator
-L_entry = zeros(N+1,N+1);
-for m=0:N
-    for n=0:N
-        xi = -(1+((m-1)*mu_s+n*mu_s')^2)^2-mu;
-        if (m==2&&n==0)||(m==1&&n==1)
-            xi=0; % Going to be zero anywhay
-        end
-        L_entry(m+1,n+1)=xi;
-    end
-end
+% % Leading Operator
+% L_entry = zeros(N+1,N+1);
+% for m=0:N
+%     for n=0:N
+%         xi = -(1+((m-1)*mu_s+n*mu_s')^2)^2-mu;
+%         if (m==2&&n==0)||(m==1&&n==1)
+%             xi=0; % Going to be zero anywhay
+%         end
+%         L_entry(m+1,n+1)=xi;
+%     end
+% end
+% 
+% L_mat=reshape(L_entry,(N+1)^2,1); 
+% 
+% 
+% L_mat=diag(L_mat); 
 
-L_mat=reshape(L_entry,(N+1)^2,1); 
-
-
-L_mat=diag(L_mat); 
-
+[ L_entry,L_mat ] = L_op(N,mu_s,mu);
 
 %  Note! Tricky how this is organized. 
 % vs1 (2,0) % 3

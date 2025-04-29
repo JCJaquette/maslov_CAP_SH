@@ -57,12 +57,11 @@ Z_1 = sum(abs(g_1),'all')/A_infty_bound ; % Also needs the difference in the fin
 Y_0 = calc_Y_0(A_N,sol,mu_s,vs1_shift,vs2_shift,g_1,params);
 
 Y_0
-Y_0_hat = 1e-15;
+Y_0_hat = 
 Z_0
 Z_1
-Z_1_hat = 1e-3;
 
-r_min = (intval(Y_0.sup)+Y_0_hat)/(1-Z_0-Z_1-Z_1_hat )
+r_min = intval(Y_0.sup)/(1-Z_0-Z_1)
 r_min.sup
 % keyboard
 return 
