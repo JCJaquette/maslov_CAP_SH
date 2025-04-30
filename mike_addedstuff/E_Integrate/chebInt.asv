@@ -64,7 +64,7 @@ Q = [1, 0, 0, 0;
 
 pulse_natural_cheb = [new_y.a1; new_y.a2; new_y.a3; new_y.a4];
 pulse_natural_cheb = [pulse_natural_cheb, zeros(4,ord - length(pulse_natural_cheb))];
-phi_cheb = pulse_natural_cheb(1,:);
+phi_cheb = new_y.a1;
 pulse_skewSym_cheb = Q*pulse_natural_cheb;
 
 pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params.mu,params.nu);

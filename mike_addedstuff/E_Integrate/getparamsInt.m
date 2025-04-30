@@ -11,7 +11,7 @@ if n == 1
     % cheb series error is 2.4e-8, mani is 3.2e-11
     params.rho = 2.4e-8 + 3.2e-11;
     
-    load('VerifyPulses/saved_things/mflds1.mat')
+    load('ValidatePulses/saved_things/mflds1.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
     load('phis1.mat')
     manifold_u.pulseIC_phi = phis;
@@ -28,7 +28,7 @@ elseif n == 2
     % cheb series error is 3.5e-9, mani is 7.7e-13
     params.rho = 3.7e-9 + 7.7e-13;
 
-    load('VerifyPulses/saved_things/mflds2.mat')
+    load('ValidatePulses/saved_things/mflds2.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
     load('phis2.mat')
     manifold_u.pulseIC_phi = phis;
@@ -45,7 +45,7 @@ elseif n == 3
     % cheb series error is 3.5e-13, mani is 1.9e-18
     params.rho = 3.5e-13 + 1.9e-18;
 
-    load('VerifyPulses/saved_things/mflds3.mat')
+    load('ValidatePulses/saved_things/mflds3.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
     load('phis3.mat')
     manifold_u.pulseIC_phi = phis;
