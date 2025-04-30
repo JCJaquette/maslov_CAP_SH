@@ -1,49 +1,48 @@
-% clear 
-% close all
-% 
-% load('verifiedpulse1.mat')
-% [params,mfld_u] = getparamsInt(1);
-% ord = params.cheb.order;
-% rho = params.rho;
-% 
-% Q = [1, 0, 0, 0;
-%      0, 0, 1, 0;
-%      0, 2, 0, 1;
-%      0, 1, 0, 0]; %Q brings you from natural coords to skew symmetric coords
-% 
-% x1 = (chebcoeff_to_function(new_y.a1))';
-% x2 = (chebcoeff_to_function(new_y.a2))';
-% x3 = (chebcoeff_to_function(new_y.a3))';
-% x4 = (chebcoeff_to_function(new_y.a4))';
-% 
-% pulse_natural = [x1;x2;x3;x4];
-% pulse_skewSym = Q*pulse_natural;
-% 
-% phi = pulse_natural(1,:);
-% phi_cheb = new_y.a1;
-% phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
-% 
-% 
-% pulsePrime_natural = RHSofODE(pulse_natural,params.mu,params.nu);
-% pulsePrime_skewSym = Q*pulsePrime_natural;
-% 
-% pulsePrime_skewSym_cheb = 0*phi_cheb;
-% 
-% for i = 1:4
-%     pulsePrime_skewSym_cheb(i,:) = get_cheb_coeffs2(pulsePrime_skewSym(i,:),ord);
-% end
-% 
-% pulsePrime_skewSym_cheb = pulsePrime_skewSym_cheb';
-% pulsePrime_skewSym_ICvec = pulsePrime_skewSym(:,1);
-% 
-% h = [pulsePrime_skewSym_cheb(:,1);
-%     pulsePrime_skewSym_cheb(:,2);
-%     pulsePrime_skewSym_cheb(:,3);
-%     pulsePrime_skewSym_cheb(:,4)]';
-% 
-% norm(chebF(h,pulsePrime_skewSym_ICvec,phi_cheb,ord,params),1)
-% 
-% % domn = linspace(-params.L,params.L,201);
+clear 
+close all
+
+load('verifiedpulse2.mat')
+[params,mfld_u] = getparamsInt(2);
+ord = params.cheb.order;
+rho = params.rho;
+
+Q = [1, 0, 0, 0;
+     0, 0, 1, 0;
+     0, 2, 0, 1;
+     0, 1, 0, 0]; %Q brings you from natural coords to skew symmetric coords
+
+x1 = (chebcoeff_to_function(new_y.a1))';
+x2 = (chebcoeff_to_function(new_y.a2))';
+x3 = (chebcoeff_to_function(new_y.a3))';
+x4 = (chebcoeff_to_function(new_y.a4))';
+
+pulse_natural = [x1;x2;x3;x4];
+pulse_skewSym = Q*pulse_natural;
+
+phi = pulse_natural(1,:);
+phi_cheb = new_y.a1;
+phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
+
+
+pulsePrime_natural = RHSofODE(pulse_natural,params.mu,params.nu);
+pulsePrime_skewSym = Q*pulsePrime_natural;
+
+
+for i = 1:4
+    pulsePrime_skewSym_cheb(i,:) = get_cheb_coeffs2(pulsePrime_skewSym(i,:),ord);
+end
+
+pulsePrime_skewSym_cheb = pulsePrime_skewSym_cheb';
+pulsePrime_skewSym_ICvec = pulsePrime_skewSym(:,1);
+
+h = [pulsePrime_skewSym_cheb(:,1);
+    pulsePrime_skewSym_cheb(:,2);
+    pulsePrime_skewSym_cheb(:,3);
+    pulsePrime_skewSym_cheb(:,4)]';
+
+norm(chebF(h,pulsePrime_skewSym_ICvec,phi_cheb,ord,params),1)
+
+% domn = linspace(-params.L,params.L,201);
 % hold on
 % plot(domn,phi)
 
@@ -52,8 +51,8 @@
 clear 
 close all
 
-load('verifiedpulse1.mat')
-[params,mfld_u] = getparamsInt(1);
+load('verifiedpulse3.mat')
+[params,mfld_u] = getparamsInt(3);
 ord = params.cheb.order;
 rho = params.rho;
 
@@ -64,11 +63,13 @@ Q = [1, 0, 0, 0;
 
 pulse_natural_cheb = [new_y.a1; new_y.a2; new_y.a3; new_y.a4];
 pulse_natural_cheb = [pulse_natural_cheb, zeros(4,ord - length(pulse_natural_cheb))];
+pulse_natural_cheb = pulse_natural_cheb(:,1:ord);
 phi_cheb = pulse_natural_cheb(1,:);
 pulse_skewSym_cheb = Q*pulse_natural_cheb;
 
 pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params.mu,params.nu);
 pulsePrime_skewSym_cheb = (Q*pulsePrime_natural_cheb)';
+
 
 for i = 1:4
     pulsePrime_skewSym_ICvec(i) = [chebSum(pulsePrime_skewSym_cheb(:,i),-1)];
@@ -158,7 +159,7 @@ h(3*ord+1) = h(3*ord+1)*2;
 
 % plot(log(abs(h((i-1)*ord+1:i*ord))))
 
-
+1
 %% CAP
 
 phi_cheb_int = intval(1)*phi_cheb;
@@ -179,7 +180,7 @@ radii_poly = Y0 + Y0hat - (1-Z0-Z1-Z2hat)*rs;
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat))
 
-% pulse1 soln validated with good_r = 2.4672e-07
+% pulse1 soln validated with good_r = 1.3423e-07
 % pulse2 soln validated with good_r = 2.4366e-07
 % pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function,
 % good_r = 7.8659e-06
@@ -192,4 +193,3 @@ detA = h1*chebfun(chebcoeff_to_function(pulsePrime_skewSym_cheb(:,4)'),'equi') .
     - h4*chebfun(chebcoeff_to_function(pulsePrime_skewSym_cheb(:,1)'),'equi');
 
 plot(detA)
-
