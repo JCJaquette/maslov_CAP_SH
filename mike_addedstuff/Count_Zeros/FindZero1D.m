@@ -1,4 +1,4 @@
-function roots = FindZero1D(dom,f)
+function [roots,flag] = FindZero1D(dom,f)
 %take in f values, check if there is zero in domain
 
 plot(dom,f,'Color','black')
@@ -17,8 +17,10 @@ end
 
 if isempty(Zs) == 0
     roots = Zs(:,1);
+    flag = 0;
 else
     roots = 0;
+    flag = 1;
     disp('no roots found')
 end
 

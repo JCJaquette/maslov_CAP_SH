@@ -8,8 +8,6 @@ if n == 1
 
     load('Count_Zeros/savedThings/varbs1.mat');
 
-    return
-
 elseif n == 2
 
     params.mu=0.05;
@@ -17,8 +15,6 @@ elseif n == 2
     params.L = 5.29;
 
     load('Count_Zeros/savedThings/varbs2.mat');
-
-    return
 
 elseif n == 3
 
@@ -28,11 +24,25 @@ elseif n == 3
 
     load('Count_Zeros/savedThings/varbs3.mat');
 
-    return
+else
+
+    error('Make sure n=1, 2, or 3')
 
 end
 
-    error('Make sure n=1, 2, or 3')
+
+    h1coeffs = [h_cheb(1,1);2*h_cheb(2:end,1)];
+    h2coeffs = [h_cheb(1,2);2*h_cheb(2:end,2)];
+    h4coeffs = [h_cheb(1,4);2*h_cheb(2:end,4)];
+    phiP1coeffs = [phiPrime_cheb(1,1);2*phiPrime_cheb(2:end,1)];
+    phiP2coeffs = [phiPrime_cheb(1,2);2*phiPrime_cheb(2:end,2)];
+    phiP3coeffs = [phiPrime_cheb(1,3);2*phiPrime_cheb(2:end,3)];
+
+    params.f_error = E_phi*(norm(h1coeffs - h4coeffs,1)) ...
+                    +E_h*(norm(phiP1coeffs - phiP2coeffs,1));
+
+    params.df_error = E_phi*(norm(h1coeffs - h2coeffs,1)) ...
+                    +E_h*(norm(phiP1coeffs - phiP3coeffs,1));
 
 end
 

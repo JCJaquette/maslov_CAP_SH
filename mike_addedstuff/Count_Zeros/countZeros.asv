@@ -1,10 +1,7 @@
 close all
 clear
 
-[params,h_cheb,phi_cheb,phiPrime_cheb] = getparamsCount(1);
-
-f_error = infsup(-params.f_error,params.f_error);
-df_error = infsup(-params.df_error,params.df_error);
+[params,h_cheb,phi_cheb,phiPrime_cheb] = getparamsCount(3);
 
 global_min = -1;
 global_max = 1; 
@@ -32,25 +29,20 @@ APrime_cheb = get_APrime_cheb(h_cheb,phiPrime_cheb,phi_cheb(:,1),params);
 f = @(x) chebSum(A_cheb,x);
 df = @(x) chebSum(APrime_cheb,x);
 
-[roots,flag] = FindZero1D(dom,f(dom));%put flag
+roots = FindZero1D(dom,f(dom));%put flag
 grid_breakup = [global_min;roots;global_max];
 rs = 0;
 unique0 = [rs,rs];
 
 for i = 1:length(roots)
 
-    rs = RadiiPoly1D(@(x) f(x) + f_error,@(x) df(x) + df_error, ...
-        intval(1)*roots(i),[grid_breakup(i), grid_breakup(i+2)]);
+    rs = RadiiPoly1D(f,df,intval(1)*roots(i),[grid_breakup(i), grid_breakup(i+2)]);
     unique0(i,:) = [roots(i) - rs.sup, roots(i) + rs.sup];
     plot(unique0(i,:),[0,0],'color','blue')
 
 end
 
-if flag == 0
-    zeroCount = length(unique0(:,1));
-else
-    zeroCount = 0;
-end
+zeroCount = length(unique0(:,1));
 unique0 = infsup(unique0(:,1),unique0(:,2));
 
 newDom = INTsetminus(domINT,unique0);

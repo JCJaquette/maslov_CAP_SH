@@ -1,58 +1,9 @@
 clear 
 close all
 
-load('verifiedpulse2.mat')
-[params,mfld_u] = getparamsInt(2);
-ord = params.cheb.order;
-rho = params.rho;
-
-Q = [1, 0, 0, 0;
-     0, 0, 1, 0;
-     0, 2, 0, 1;
-     0, 1, 0, 0]; %Q brings you from natural coords to skew symmetric coords
-
-x1 = (chebcoeff_to_function(new_y.a1))';
-x2 = (chebcoeff_to_function(new_y.a2))';
-x3 = (chebcoeff_to_function(new_y.a3))';
-x4 = (chebcoeff_to_function(new_y.a4))';
-
-pulse_natural = [x1;x2;x3;x4];
-pulse_skewSym = Q*pulse_natural;
-
-phi = pulse_natural(1,:);
-phi_cheb = new_y.a1;
-phi_cheb = [phi_cheb , zeros(1,ord-length(phi_cheb))];
-
-
-pulsePrime_natural = RHSofODE(pulse_natural,params.mu,params.nu);
-pulsePrime_skewSym = Q*pulsePrime_natural;
-
-
-for i = 1:4
-    pulsePrime_skewSym_cheb(i,:) = get_cheb_coeffs2(pulsePrime_skewSym(i,:),ord);
-end
-
-pulsePrime_skewSym_cheb = pulsePrime_skewSym_cheb';
-pulsePrime_skewSym_ICvec = pulsePrime_skewSym(:,1);
-
-h = [pulsePrime_skewSym_cheb(:,1);
-    pulsePrime_skewSym_cheb(:,2);
-    pulsePrime_skewSym_cheb(:,3);
-    pulsePrime_skewSym_cheb(:,4)]';
-
-norm(chebF(h,pulsePrime_skewSym_ICvec,phi_cheb,ord,params),1)
-
-% domn = linspace(-params.L,params.L,201);
-% hold on
-% plot(domn,phi)
-
-%%
-
-clear 
-close all
-
 load('verifiedpulse3.mat')
 [params,mfld_u] = getparamsInt(3);
+mfld_u.pulseIC_phi = [new_y.phi1,new_y.phi2];
 ord = params.cheb.order;
 rho = params.rho;
 
@@ -67,7 +18,7 @@ pulse_natural_cheb = pulse_natural_cheb(:,1:ord);
 phi_cheb = pulse_natural_cheb(1,:);
 pulse_skewSym_cheb = Q*pulse_natural_cheb;
 
-pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params.mu,params.nu);
+pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params);
 pulsePrime_skewSym_cheb = (Q*pulsePrime_natural_cheb)';
 
 
@@ -144,7 +95,7 @@ h(2*ord+1) = h(2*ord+1)*2;
 h(3*ord+1:3*ord+n) = chebcoeffs(h4)/2;
 h(3*ord+1) = h(3*ord+1)*2;
 
-% for j = 1:3
+% for j = 1:1
 % 
 %     h = h - (chebDF(phi_cheb,ord,params)\chebF(h,intICvec,phi_cheb,ord,params))';
 % 
@@ -168,8 +119,7 @@ A_N = Ad_N^-1;
 a_bar = intval(1)*h;
 
 
-Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);%Y0 for pulse 3 is 7.454173333836001e-06
-%Y0 = 7.454173333836001e-06;
+Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);
 Y0hat = computeY0hat(A_N,rho,params.L,params.del,params.nu,a_bar(1:600),phi_cheb);
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
 Z1 = computeZ1(A_N,ord,phi_cheb_int,params.del,params);
@@ -180,10 +130,10 @@ radii_poly = Y0 + Y0hat - (1-Z0-Z1-Z2hat)*rs;
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat))
 
-% pulse1 soln validated with good_r = 1.3423e-07
-% pulse2 soln validated with good_r = 2.4366e-07
+% pulse1 soln validated with good_r = 1.3642e-07
+% pulse2 soln validated with good_r = 1.8832e-07
 % pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function,
-% good_r = 7.8659e-06
+% good_r = 6.9099e-06
 
 
 %%
