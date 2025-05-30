@@ -5,7 +5,7 @@ params.mu = 0.05;
 params.nu = 1.6; 
 params.scale = 1/5;
 
-order = 63; 
+order = 32-1; 
 params.order = order; 
 params.mfld.order = order; 
 [eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 
@@ -15,8 +15,9 @@ params.eigenvectors.s = eigenvectors.s;
 params.eigenvalues.u = eigenvalues.u; 
 params.eigenvectors.u = eigenvectors.u; 
 
-st_coeffs = getStBundleCoefficients(params);
-
+% st_coeffs = getStBundleCoefficients(params);
+unst_coeffs = getUnstBundleCoefficients(params);
+return
 v_coeff_pm = reshape(st_coeffs(1,1,:,:), [order + 1, order + 1]); 
 v_coeff_dp = bundle_coeff_from_st_mfld_deriv(params, 1);
 

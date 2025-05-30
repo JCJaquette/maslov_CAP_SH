@@ -1,0 +1,184 @@
+function coeffs = getUnstBundleCoefficients(params)
+    order = params.mfld.order; 
+ %   eq = zeros(1, 4); 
+ %   Df0 = JacSH_toMerge(0, params); 
+
+    vectors.s = params.eigenvectors.s; 
+    values.s = params.eigenvalues.s;
+    vectors.u = params.eigenvectors.u; 
+    values.u = params.eigenvalues.u;
+
+   % v0 = vectors.s(:, 1)*params.scale; 
+    lam1 = values.s(1); 
+    lam2 = values.s(2); 
+
+    lam1u = values.u(1); 
+    lam2u = values.u(2); 
+
+    Omega = diag([values.s(1), values.s(2), values.u(1), values.u(2)]);
+
+    
+    mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
+    A = DFQbundle(params, mflds); 
+    Q0 = [vectors.s, vectors.u]; 
+    figure(10)
+    hold on
+    plot_manifold(mflds.coeff.s,order,'r');
+    hold off
+
+
+    %coeffs = zeros(4, order + 1, order + 1); 
+    %coeffs(:, 1, 1) = v0; 
+    
+    % original coordinates 
+    coeffs = zeros(4,4,order + 1, order + 1);
+    coeffs(:,1,1,1) = vectors.s(:,1)*params.scale; 
+    coeffs(:,2,1,1) = vectors.s(:,2)*params.scale;
+    coeffs(:,3,1,1) = vectors.u(:,1)*params.scale;
+    coeffs(:,4,1,1) = vectors.u(:,2)*params.scale;
+    
+    normalForm_coeff = zeros(4,4,order + 1, order + 1);
+    % normalForm_coeff(:,:,1,1)=Omega;
+    
+    % eigenbasis coordinates 
+    % eigenbasis_coeffs = zeros(4,2,order + 1, order + 1); 
+    % eigenbasis_coeffs(:,1,1,1) = Q0^(-1)*vectors.s(:,1)*params.scale; 
+    % eigenbasis_coeffs(:,2,1,1) = Q0^(-1)*vectors.s(:,2)*params.scale;
+% keyboard
+    for alpha = 1:order
+        for j = 0:alpha 
+            
+            i = alpha - j;
+            %s_ij = starhatMat(A,coeffs, i,j); 
+            disp(i)
+            disp(j)
+            
+            % equation 20
+            val = starhatMat(A,coeffs, i,j)-starhatMat(coeffs,normalForm_coeff, i,j);  % TODO Check that this is implemented properly
+            % 4 x 2 vector
+            s_ij = Q0^(-1)*val;
+            %mat = ((i*lam1 + j*lam2 + growth_rate)*eye(4) ...
+              %  - Df0)^(-1);
+            % disp('s_ij')
+            % disp(s_ij)
+
+            % trying to implement equation 24
+            mat1 = ((i*lam1 + j*lam2 + lam1)*eye(4) - Omega)^(-1);
+            mat2 = ((i*lam1 + j*lam2 + lam2)*eye(4) - Omega)^(-1);
+
+            
+
+            coeff1 = mat1*s_ij(:,1);
+            coeff2 = mat2*s_ij(:,2);
+
+            mat3_I = ((i*lam1 + j*lam2 + lam1u)*eye(4) - Omega);
+            mat4_I = ((i*lam1 + j*lam2 + lam2u)*eye(4) - Omega);
+
+            mat3 = inv(mat3_I);
+            mat4 = inv(mat4_I);
+
+            coeff3 = mat3*s_ij(:,3);
+            coeff4 = mat4*s_ij(:,4);
+            % known resonances
+            if alpha ==2 
+                % keyboard
+                if j==0
+                    normalForm_coeff(1,4,i+1,j+1) = s_ij(1,4);
+
+                    mat4_I(1,1)=1;
+                    coeff4 = inv(mat4_I)*s_ij(:,4);
+                    coeff4(1)=0;
+
+                elseif j==1 
+                    normalForm_coeff(1,3,i+1,j+1) = s_ij(1,3);
+
+                    mat3_I(1,1)=1;
+                    coeff3 = inv(mat3_I)*s_ij(:,3);
+                    coeff3(1)=0;
+
+                    normalForm_coeff(2,4,i+1,j+1) = s_ij(2,4);
+                    mat4_I(2,2)=1;
+                    coeff4 = inv(mat4_I)*s_ij(:,4);
+                    coeff4(2)=0;
+
+                elseif j==2
+                    normalForm_coeff(2,3,i+1,j+1) = s_ij(2,3);
+                    mat3_I(2,2)=1;
+                    coeff3 = inv(mat3_I)*s_ij(:,3);
+                    coeff3(2)=0;
+                end
+            end
+
+            
+
+            % eigenbasis_coeffs(:, :, i + 1, j + 1) = [coeff1, coeff2];
+            coeffs(:,:,i+1, j+1) = [Q0*coeff1, Q0*coeff2,Q0*coeff3, Q0*coeff4]; 
+
+           % keyboard;
+        end
+    end
+
+
+keyboard
+
+
+
+
+
+end
+%     order = params.mfld.order;
+% 
+%     %order = 3;
+%     equilibrium = zeros(1,4);
+%     [vectors, values]= getJacEigs_toMerge(equilibrium, params);
+% 
+%     v0 = [vectors.u, vectors.s];
+% 
+%     v0 = v0*params.scale;
+% 
+%     %mflds.coeff.u=calc_proj_coeff(values.u,vectors.u,params);
+%     mflds.coeff.s=calc_proj_coeff(values.s,vectors.s,params);
+% 
+%     %v0 = (0.0000001).*v0;
+%     Omega = diag([values.u, values.s]);
+% 
+%     lam1 = values.s(1);
+%     lam2 = values.s(2); 
+% 
+%     A = DFQbundle(params, mflds); 
+% 
+%     coeffs = zeros(4,4, order+1,order+1);
+%     coeffs(:,:,1,1) = v0;
+% 
+%     % break up the computation to avoid recalculating the (0,0)
+%     % coefficient. 
+% 
+%     i = 0;
+%     for j = 1:order-i
+%             s_ij = starhatMat(A,coeffs, i,j); 
+%             tildes_ij = v0^(-1)*s_ij;
+% 
+%             % solve for the coefficients column by column
+%             for k = 1:4 
+%                 tildesk_ij = tildes_ij(:,k); 
+%                 wk_ij = ((i*lam1+j*lam2+Omega(k,k))*eye(4) - Omega)^(-1)*tildesk_ij;
+%                 coeffs(:,k,i+1,j+1) = v0*wk_ij;                 
+%             end
+% 
+%     end
+% 
+%     for i = 1:order 
+%         for j = 0:order-i
+%             s_ij = starhatMat(A,coeffs, i,j); 
+%             tildes_ij = v0^(-1)*s_ij;
+% 
+%             % solve for the coefficients column by column
+%             for k = 1:4 
+%                 tildesk_ij = tildes_ij(:,k); 
+%                 wk_ij = ((i*lam1+j*lam2+Omega(k,k))*eye(4) - Omega)^(-1)*tildesk_ij;
+%                 coeffs(:,k,i+1,j+1) = v0*wk_ij;                 
+%             end
+% 
+%         end
+%     end 
+% end
