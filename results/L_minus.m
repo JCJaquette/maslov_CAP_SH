@@ -14,7 +14,7 @@ params.scale = 1/3;
 
 params.unstable.coeffs = calc_proj_coeff(values.u, params.scale*vectors.u,params);
 
-Lminus_cands = [1:1:50];
+Lminus_cands = [1:1:62];
 params = computeLminus(params, Lminus_cands) ;
 
 
