@@ -1,0 +1,14 @@
+function out = taylorSum2D(coeffs,x1,x2,order)
+% taylor coefficients and 2D point in, series at that point out
+
+    M = [];
+    for i = 1:order+1    
+        M = [M;0:order];       
+    end
+    N = M';
+
+    x1x2Mat = (x1.^M).*(x2.^N);
+    series = x1x2Mat.*coeffs
+
+end
+

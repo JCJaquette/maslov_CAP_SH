@@ -50,7 +50,7 @@ function [out] = chebDF(b,N,params)
 
     C = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
     C(1,1:N) = zeros(1,N);
-    % A is derivative of psi_3 wrt a_1 which is a bit more complicated due
+    % C is derivative of psi_3 wrt a_1 which is a bit more complicated due
     % to cProds
 
     zps = zeros(N,N);

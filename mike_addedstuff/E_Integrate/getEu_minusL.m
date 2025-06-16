@@ -1,10 +1,11 @@
 function [vec1,vec2] = getEu_minusL(mfld_coeffs,phi)
-%the derivatives wrt sigma1 and sigma2 are complex conjugates of each other
+%compute the manifold derivatives wrt sigma1 and sigma2
 
     d1mfld_coeffs = mfld_coeffs;
     d2mfld_coeffs = mfld_coeffs;
+    ord = length(mfld_coeffs(:,1,1));
 
-    for i = 1:26
+    for i = 1:ord
 
         d1mfld_coeffs(i,:,:) = (i-1)*d1mfld_coeffs(i,:,:);
         d2mfld_coeffs(:,i,:) = (i-1)*d2mfld_coeffs(:,i,:);
@@ -16,11 +17,6 @@ function [vec1,vec2] = getEu_minusL(mfld_coeffs,phi)
 
     vec1 = get_manifold_point(d1mfld_coeffs,phi(1),phi(2),24);
     vec2 = get_manifold_point(d2mfld_coeffs,phi(1),phi(2),24);
-
-    % a.mfld.order = 24;
-    % vec1 = mfld_one_point(phi(1),phi(2),d1mfld_coeffs,a);
-    % vec2 = mfld_one_point(phi(1),phi(2),d2mfld_coeffs,a);
-
 
 end
 

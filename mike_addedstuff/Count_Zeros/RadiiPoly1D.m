@@ -1,5 +1,4 @@
 function I = RadiiPoly1D(f,df,xbar,dom)
-% i is index corresponding to approx 0
 % T(x) = x - f(x)/A 
 % Bound |T(xbar)|, |DT(xbar)|
     

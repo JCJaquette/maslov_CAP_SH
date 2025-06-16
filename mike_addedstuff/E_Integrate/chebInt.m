@@ -1,8 +1,8 @@
 clear 
 close all
 
-load('verifiedpulse3.mat')
-[params,mfld_u] = getparamsInt(3);
+load('verifiedpulse2.mat')
+[params,mfld_u] = getparamsInt(2);
 mfld_u.pulseIC_phi = [new_y.phi1,new_y.phi2];
 ord = params.cheb.order;
 rho = params.rho;
@@ -53,19 +53,22 @@ intICvec = getICvec(pulsePrime_skewSym_ICvec,unstableVec_re_sym,unstableVec_im_s
 
 % plot_manifold(mfld_u.coeffs,25,'red');
 % hold on
-% k1 = [pulse_natural(1:2,1), pulse_natural(1:2,1)+unstableVec_re(1:2);
-%       pulse_natural(4,1), pulse_natural(4,1)+unstableVec_re(4)]';
-% k2 = [pulse_natural(1:2,1), pulse_natural(1:2,1)+unstableVec_im(1:2);
-%       pulse_natural(4,1), pulse_natural(4,1)+unstableVec_im(4)]';
-% pulseprimeicNAT = [pulse_natural(1:2,1), pulse_natural(1:2,1)-pulsePrime_natural(1:2,1);
-%       pulse_natural(4,1), pulse_natural(4,1)-pulsePrime_natural(4,1)]';
+% pulse_natural = chebcoeff_to_function(pulse_natural_cheb);
+% pulsePrime_natural = chebcoeff_to_function(pulsePrime_natural_cheb);
+% % k1 = [pulse_natural(1,1:2), pulse_natural(1,4);
+% %       pulse_natural(1,1:2)+unstableVec_re(1:2)', pulse_natural(1,4)+unstableVec_re(4)];
+% % k2 = [pulse_natural(1,1:2), pulse_natural(1,4);
+% %       pulse_natural(1,1:2)+unstableVec_im(1:2)', pulse_natural(1,4)+unstableVec_im(4)];
+% pulseprimeicNAT = [pulse_natural(1,1:2), pulse_natural(1,4);
+%       pulse_natural(1,1:2)+pulsePrime_natural(1,1:2)/50, pulse_natural(1,4)+pulsePrime_natural(1,4)/50];
 % intICvecNAT = Q\intICvec;
-% intIC = [pulse_natural(1:2,1), pulse_natural(1:2,1)-intICvecNAT(1:2,1);
-%       pulse_natural(4,1), pulse_natural(4,1)-intICvecNAT(4,1)]';
-% plot3(k1(:,1),k1(:,2),k1(:,3),'black')
-% plot3(k2(:,1),k2(:,2),k2(:,3),'black')
+% intIC = [pulse_natural(1,1:2), pulse_natural(1,4);
+%       pulse_natural(1,1:2)+intICvecNAT(1:2,1)', pulse_natural(1,4)+intICvecNAT(4,1)];
+% % plot3(k1(:,1),k1(:,2),k1(:,3),'black')
+% % plot3(k2(:,1),k2(:,2),k2(:,3),'black')
 % plot3(pulseprimeicNAT(:,1),pulseprimeicNAT(:,2),pulseprimeicNAT(:,3),'black')
 % plot3(intIC(:,1),intIC(:,2),intIC(:,3),'black')
+% plot3(pulse_natural(:,1),pulse_natural(:,2),pulse_natural(:,4),'color',[0.4940 0.1840 0.5560])
 
 Ch12ODE = chebop(-1,1);
 Ch12ODE.op = @(t,h1,h2,h3,h4) [diff(h1)-params.L*(h4);
@@ -110,6 +113,19 @@ h(3*ord+1) = h(3*ord+1)*2;
 
 % plot(log(abs(h((i-1)*ord+1:i*ord))))
 
+figure;
+
+subplot(4, 1, 1);
+plot(h1);
+subplot(4, 1, 2);
+plot(h2);
+subplot(4, 1, 3);
+plot(h3);
+subplot(4, 1, 4);
+plot(h4);
+
+sgtitle('Numerical Solution');
+
 1
 %% CAP
 
@@ -130,10 +146,7 @@ radii_poly = Y0 + Y0hat - (1-Z0-Z1-Z2hat)*rs;
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat))
 
-% pulse1 soln validated with good_r = 1.3642e-07
-% pulse2 soln validated with good_r = 1.8832e-07
-% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function,
-% good_r = 6.9099e-06
+% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function
 
 
 %%
@@ -143,3 +156,13 @@ detA = h1*chebfun(chebcoeff_to_function(pulsePrime_skewSym_cheb(:,4)'),'equi') .
     - h4*chebfun(chebcoeff_to_function(pulsePrime_skewSym_cheb(:,1)'),'equi');
 
 plot(detA)
+
+%%
+m = length(h)/4;
+h_cheb = [h(1:m); h(m+1:2*m); h(2*m+1:3*m); h(3*m+1:4*m)]';
+phiPrime_cheb = pulsePrime_skewSym_cheb;
+phi_cheb = pulse_skewSym_cheb';
+%E_h = good_r;
+E_h = 0;
+
+save('varbs3','phi_cheb','h_cheb','phiPrime_cheb','E_h')

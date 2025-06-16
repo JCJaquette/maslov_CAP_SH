@@ -1,0 +1,23 @@
+close all
+clear
+
+[params, phi, lambda, mani_coeffs] = getparamsBefore(1);
+
+global_min = exp(-new_L);
+global_max = 1;
+domINT = infsup(global_min,global_max);
+
+[dcoeffs1, dcoeffs2] = differentiate_mani(mani_coeffs);
+mani_order = length(mani_coeffs) - 1;
+
+sig1 = @(s) s^lambda(1) * phi(1);
+sig2 = @(s) s^lambda(2) * phi(2);
+
+detA_taylor = cauchyProd2D(dcoeffs1(:,:,1), dcoeffs2(:,:,4)) ...
+                - cauchyProd2D(dcoeffs1(:,:,4), dcoeffs2(:,:,1));
+detAPrime_taylor = cauchyProd2D(dcoeffs1(:,:,1), dcoeffs2(:,:,2)) ...
+                - cauchyProd2D(dcoeffs1(:,:,2), dcoeffs2(:,:,1));
+
+f = @(s) taylorSum2D(detA_taylor,sig1(s),sig2(s));
+df = @(s) taylorSum2D(detAPrime_taylor,sig1(s),sig2(s));
+

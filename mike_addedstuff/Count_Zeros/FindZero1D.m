@@ -10,7 +10,7 @@ for i = 1:length(f)-1 %does f change sign
 
     if f(i)*f(i+1)<0 || abs(f(i)) < 10^-8
         Zs = [Zs;[dom(i),i]];
-        plot(Zs(end,1),0,'.','Color',"green")
+        plot(Zs(end,1),0,'.','Color',"green",'MarkerSize',12)
     end
 
 end

@@ -21,8 +21,9 @@ if n == 1
     params.new = 1.05;
 
     load('mflds1.mat');
-
     load('mError1');
+    % mflds = get_mflds(params);
+    % mError1 = runManifoldValidation(params,mflds);
     mflds.stable.error = mError1;
     mflds.unstable.error = mError1;
 
@@ -31,12 +32,12 @@ if n == 1
 elseif n == 2
 
     params.rho = 1 - .01;
-    params.scale = 1.1e-1;
+    params.scale = 2.5e-1;
     params.mu=0.05;
     params.nu=1.6;
     params.lambda = 0;
     params.cheb.order=450;
-    params.mfld.order=25;
+    params.mfld.order=35;
     params.tol=4e-15;
     params.L = 0;
 
@@ -47,11 +48,10 @@ elseif n == 2
 
     params.new = 1.05;
 
-    mflds = get_mflds(params);
-    mError2 = runManifoldValidation(params,mflds);
-    %load('mflds2.mat');
-
-    %load('mError2');
+    % mflds = get_mflds(params);
+    % mError2 = runManifoldValidation(params,mflds);
+    load('mflds2.mat');
+    load('mError2');
     mflds.stable.error = mError2;
     mflds.unstable.error = mError2;
 
@@ -77,8 +77,9 @@ elseif n == 3
     params.new = 1.01;
 
     load('mflds3.mat');
-
     load('mError3');
+    % mflds = get_mflds(params);
+    % mError3 = runManifoldValidation(params,mflds);
     mflds.stable.error = mError3;
     mflds.unstable.error = mError3;
 

@@ -17,7 +17,7 @@ function [out] = Dphi_forZ1(b,N,params)
 
     diagM = [1,twos;
            zeros(N-1,1),lowright];
-    % diagM is derivative of psi_i wrt (a_i), appears as
+    % diagM is derivative of phi_i wrt (a_i), appears as
     % the diagonal blocks
  
     subLOL = zeros(N-1,N); 

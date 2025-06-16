@@ -1,22 +1,25 @@
 close all
 clear
 
-global_min = -1;
+[params, phi, lambda, mani_coeffs] = getparamsBefore(1);
+
+global_min = exp(-params.new_L);%working with s = exp(t)
 global_max = 1;
-domINT = infsup(global_min,global_max);
+%domINT = infsup(global_min,global_max);
 
-[params,h_cheb,phi_cheb,phiPrime_cheb] = getparamsCount(1);
+[dcoeffs1, dcoeffs2] = differentiate_mani(mani_coeffs);
+mani_order = length(mani_coeffs) - 1;
 
-f_error = infsup(-params.f_error,params.f_error);
-df_error = infsup(-params.df_error,params.df_error);
+sig1 = @(s) s^lambda(1) * phi(1);
+sig2 = @(s) s^lambda(2) * phi(2);
 
-A_cheb = chebstar2fft(h_cheb(:,1),phiPrime_cheb(:,4)) ...
-    - chebstar2fft(h_cheb(:,4),phiPrime_cheb(:,1));
-APrime_cheb = chebstar2fft(h_cheb(:,1),phiPrime_cheb(:,2)) ...
-    - chebstar2fft(h_cheb(:,2),phiPrime_cheb(:,1));
+detA_taylor = cauchyProd2D(dcoeffs1(:,:,1), dcoeffs2(:,:,4)) ...
+                - cauchyProd2D(dcoeffs1(:,:,4), dcoeffs2(:,:,1));
+detAPrime_taylor = cauchyProd2D(dcoeffs1(:,:,1), dcoeffs2(:,:,2)) ...
+                - cauchyProd2D(dcoeffs1(:,:,2), dcoeffs2(:,:,1));
 
-f = @(x) chebSum(A_cheb,x);
-df = @(x) chebSum(APrime_cheb,x);
+f = @(s) taylorSum2D(detA_taylor,sig1(s),sig2(s));
+df = @(s) taylorSum2D(detAPrime_taylor,sig1(s),sig2(s));
 
 z = linspace(global_min,global_max,500);
 plot(z,f(z),'Color','black')
@@ -70,8 +73,6 @@ while isempty(domINT) == 0
     end
 
 end
-
-
 
 if isempty(flag) == 0
     disp('Not validated, check flag')
