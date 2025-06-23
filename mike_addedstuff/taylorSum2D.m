@@ -3,7 +3,7 @@ function out = taylorSum2D(coeffs,x1,x2)
     
     order = length(coeffs(1,:))-1;
     M = [];
-    for i = 1:order+1    
+    for i = 0:order    
         M = [M;0:order];       
     end
     N = M';

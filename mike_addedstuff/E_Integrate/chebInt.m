@@ -1,8 +1,8 @@
 clear 
 close all
 
-load('verifiedpulse2.mat')
-[params,mfld_u] = getparamsInt(2);
+load('verifiedpulse3.mat')
+[params,mfld_u] = getparamsInt(3);
 mfld_u.pulseIC_phi = [new_y.phi1,new_y.phi2];
 ord = params.cheb.order;
 rho = params.rho;
@@ -113,18 +113,18 @@ h(3*ord+1) = h(3*ord+1)*2;
 
 % plot(log(abs(h((i-1)*ord+1:i*ord))))
 
-figure;
-
-subplot(4, 1, 1);
-plot(h1);
-subplot(4, 1, 2);
-plot(h2);
-subplot(4, 1, 3);
-plot(h3);
-subplot(4, 1, 4);
-plot(h4);
-
-sgtitle('Numerical Solution');
+% figure;
+% 
+% subplot(4, 1, 1);
+% plot(h1);
+% subplot(4, 1, 2);
+% plot(h2);
+% subplot(4, 1, 3);
+% plot(h3);
+% subplot(4, 1, 4);
+% plot(h4);
+% 
+% sgtitle('Numerical Solution');
 
 1
 %% CAP
@@ -162,7 +162,7 @@ m = length(h)/4;
 h_cheb = [h(1:m); h(m+1:2*m); h(2*m+1:3*m); h(3*m+1:4*m)]';
 phiPrime_cheb = pulsePrime_skewSym_cheb;
 phi_cheb = pulse_skewSym_cheb';
-%E_h = good_r;
-E_h = 0;
+E_h = good_r;
+E_phi = 0;
 
-save('varbs3','phi_cheb','h_cheb','phiPrime_cheb','E_h')
+save('varbs3','phi_cheb','h_cheb','phiPrime_cheb','E_h','E_phi')

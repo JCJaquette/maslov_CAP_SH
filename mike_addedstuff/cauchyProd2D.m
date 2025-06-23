@@ -7,8 +7,8 @@ function ab = cauchyProd2D(a,b)
     n = aL+bL;
     ab = zeros(m-1,n-1);
 
-    for i = 1:m
-        for j = 1:n
+    for i = 1:m-1
+        for j = 1:n-1
 
             ab(i,j) = cauchyProd2D_mn(a,b,i-1,j-1); 
 

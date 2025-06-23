@@ -2,7 +2,7 @@ clear
 close all
 %1 is mu=.05,nu=1.6, 0 branch, 2 is mu=.05,nu=1.6, π branch, 3 is mu=.2,nu=1.6
 
-    n = 2;
+    n = 1;
 
     [params,mflds,psoln] = getparamsVerify(n);
 
