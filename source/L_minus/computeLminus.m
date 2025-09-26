@@ -13,8 +13,9 @@ function params = computeLminus(params, Lminus_cands)
     r_tilde_abs = abs(cos(theta/2));
 
     % C.f. Prop 3.4
-    % upperbound_old = (7/(16*sqrt(r)))^(1/2)*(2*sqrt(2)*sqrt((1+2*sqrt(r))*(1/r^2 + 1)))^(-1);
-    upperbound = (1+r)*(1-r_tilde_abs)/( 40*r^3);
+    % upperbound_old_old = (7/(16*sqrt(r)))^(1/2)*(2*sqrt(2)*sqrt((1+2*sqrt(r))*(1/r^2 + 1)))^(-1);
+    % upperbound_old = (1+r)*(1-r_tilde_abs)/( 40*r^3);
+    upperbound = 1/( 8*sqrt(r^3));
 
     % We need tau/(1-tau) < upperbound
 

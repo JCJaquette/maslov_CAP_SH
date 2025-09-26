@@ -1,9 +1,11 @@
-function [coeffs, normalForm_coeff]= getAllBundleCoefficients(params)
+function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
 % TODO: Restructure this so that the manifold coefficients are already
 % computed. 
     order = params.mfld.order; 
  %   eq = zeros(1, 4); 
  %   Df0 = JacSH_toMerge(0, params); 
+
+ % Add Coeff to manifold data structure
 
     vectors.s = params.eigenvectors.s; 
     values.s = params.eigenvalues.s;
@@ -14,113 +16,101 @@ function [coeffs, normalForm_coeff]= getAllBundleCoefficients(params)
     lam1 = values.s(1); 
     lam2 = values.s(2); 
 
-    lam1u = values.u(1); 
-    lam2u = values.u(2); 
+    % lam2u = values.u(1); 
+    % lam1u = values.u(2); 
 
-    Omega = diag([values.s(1), values.s(2), values.u(1), values.u(2)]);
+    % e_val = [lam1 lam2 lam1u lam2u];
+
+    e_val = [lam1 lam2 fliplr(values.u)];%%% NOTE! See ordering of eigenvalues, (3.5)
 
     
     mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
-    A = DFQbundle(params, mflds); 
-    Q0 = [vectors.s, vectors.u]; 
+    G_hat = DFQbundle(params, mflds); % I think this is \hat G
+
+
+    Q0 = [vectors.s, fliplr(vectors.u)]; %%% NOTE! See ordering of eigenvalues, (3.5)
 
     % Rescale the eigenvectors as needed
-    Q0 = Q0*diag(1./Q0(2,:));
-
-    %coeffs = zeros(4, order + 1, order + 1); 
-    %coeffs(:, 1, 1) = v0; 
+    Q0 = Q0*diag(1./Q0(2,:)); %%%% Why this??
     
     % original coordinates 
-    coeffs = zeros(4,4,order + 1, order + 1);
+    coeffs = zeros(4,4,order + 1, order + 1); % W--series
     coeffs(:,:,1,1)=Q0;
 
-    % coeffs(:,1,1,1) = vectors.s(:,1)*params.scale; 
-    % coeffs(:,2,1,1) = vectors.s(:,2)*params.scale;
-    % coeffs(:,3,1,1) = vectors.u(:,1)*params.scale;
-    % coeffs(:,4,1,1) = vectors.u(:,2)*params.scale;
+    coeffs_tilde = coeffs; % W tilde --series
+    coeffs_tilde(:,:,1,1)=eye;
+
     
-    normalForm_coeff = zeros(4,4,order + 1, order + 1);
+    normalForm_coeff = zeros(4,4,order + 1, order + 1); % A
     % normalForm_coeff(:,:,1,1)=Omega;
+
     
-    % eigenbasis coordinates 
-    % eigenbasis_coeffs = zeros(4,2,order + 1, order + 1); 
-    % eigenbasis_coeffs(:,1,1,1) = Q0^(-1)*vectors.s(:,1)*params.scale; 
-    % eigenbasis_coeffs(:,2,1,1) = Q0^(-1)*vectors.s(:,2)*params.scale;
-% keyboard
     for alpha = 1:order
-        for j = 0:alpha 
+        for n = 0:alpha 
             
-            i = alpha - j;
+            
+            m = alpha - n;
+
+
             %s_ij = starhatMat(A,coeffs, i,j); 
-            disp(i)
-            disp(j)
+            disp(['(',num2str(m),',',num2str(n),')'])
+            % disp(j)
             
-            % equation 20
-            val = starhatMat(A,coeffs, i,j)-starhatMat(coeffs,normalForm_coeff, i,j);  % TODO Check that this is implemented properly
-            % 4 x 2 vector
-            s_ij = Q0^(-1)*val;
-            %mat = ((i*lam1 + j*lam2 + growth_rate)*eye(4) ...
-              %  - Df0)^(-1);
-            % disp('s_ij')
-            % disp(s_ij)
+            % equation 6.13
+            % Since the (m,n) component of W is zero, this is
+            % equivalent to 
+            %       G_\alpha . W_0 + G \hat * W
+            s_mn = starMat(G_hat,coeffs, m,n); 
+            % Add the normal form part
+            s_mn=s_mn-starhatMat(coeffs,normalForm_coeff, m,n);  
 
-            % trying to implement equation 24
-            mat1 = ((i*lam1 + j*lam2 + lam1)*eye(4) - Omega)^(-1);
-            mat2 = ((i*lam1 + j*lam2 + lam2)*eye(4) - Omega)^(-1);
+            % 4 x 4 vector
+            s_tilde_mn = Q0\s_mn; % S tilde
 
-
-            coeff1 = mat1*s_ij(:,1);
-            coeff2 = mat2*s_ij(:,2);
-
-            mat3_I = ((i*lam1 + j*lam2 + lam1u)*eye(4) - Omega);
-            mat4_I = ((i*lam1 + j*lam2 + lam2u)*eye(4) - Omega);
-
-            mat3 = inv(mat3_I);
-            mat4 = inv(mat4_I);
-
-            coeff3 = mat3*s_ij(:,3);
-            coeff4 = mat4*s_ij(:,4);
             % known resonances
             if alpha ==2 
                 % keyboard
-                if j==0
-                    normalForm_coeff(1,4,i+1,j+1) = s_ij(1,4);
-
-                    mat4_I(1,1)=1;
-                    coeff4 = inv(mat4_I)*s_ij(:,4);
-                    coeff4(1)=0;
-
-                elseif j==1 
-                    normalForm_coeff(1,3,i+1,j+1) = s_ij(1,3);
-
-                    mat3_I(1,1)=1;
-                    coeff3 = inv(mat3_I)*s_ij(:,3);
-                    coeff3(1)=0;
-
-                    normalForm_coeff(2,4,i+1,j+1) = s_ij(2,4);
-                    mat4_I(2,2)=1;
-                    coeff4 = inv(mat4_I)*s_ij(:,4);
-                    coeff4(2)=0;
-
-                elseif j==2
-                    normalForm_coeff(2,3,i+1,j+1) = s_ij(2,3);
-                    mat3_I(2,2)=1;
-                    coeff3 = inv(mat3_I)*s_ij(:,3);
-                    coeff3(2)=0;
+                if n==0 %(2,0)
+                    normalForm_coeff(1,3,m+1,n+1) = s_tilde_mn(1,3);
+                elseif n==1 %(1,1)
+                    normalForm_coeff(1,4,m+1,n+1) = s_tilde_mn(1,4);
+                    normalForm_coeff(2,3,m+1,n+1) = s_tilde_mn(2,3);
+                elseif n==2 %(0,2)
+                    normalForm_coeff(2,4,m+1,n+1) = s_tilde_mn(2,4);
                 end
             end
 
-            
+            coeff_new = K_op(e_val,m,n).*s_tilde_mn; 
 
             % eigenbasis_coeffs(:, :, i + 1, j + 1) = [coeff1, coeff2];
-            coeffs(:,:,i+1, j+1) = [Q0*coeff1, Q0*coeff2,Q0*coeff3, Q0*coeff4]; 
+            coeffs(:,:,m+1, n+1) = Q0*coeff_new; 
 
         end
     end
 
-
-
-
-
+    Za =  sum(abs(G_hat),'all')/order
+    Zc =  sum(abs(normalForm_coeff),'all')/order
 end
 
+
+function K_alpha = K_op(e_val,m,n)
+% K_alpha - but only multiplied against the coefficients, not the normal
+% form. 
+% Resonances are set to zero. 
+    % e_val -- a row vector
+    alpha = m+n;
+
+    denominator = m*e_val(1)+n*e_val(2)  +   e_val-transpose(e_val);
+    K_alpha = 1./denominator ;
+
+    if alpha ==2 
+        if n==0 %(2,0)
+            K_alpha(1,3)=0;
+        elseif n==1 %(1,1)
+            K_alpha(1,4)=0;
+            K_alpha(2,3)=0;
+        elseif n==2 %(0,2)
+            K_alpha(2,4)=0;
+        end
+    end
+end

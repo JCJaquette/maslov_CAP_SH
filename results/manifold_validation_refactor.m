@@ -2,10 +2,14 @@
 
 %-------------------------------------------------------------------------
 % first we calculate the size of the eigenvector/eigenvalue enclosures
+% !!! TODO: Make Rigorous; Maybe use formula for e-vec?
+% 
 point=[0,0,0,0];
 params=[0.05,1.6]; % in the order [mu,nu']
+
 Df0=JacSH(0,params(1),params(2));
-[V1,D1]=eigs(Df0);
+
+[V1,D1]=eigs(Df0); 
 [d, ind]=sort(real(diag(D1)));
 D=D1(ind,ind);
 V=V1(:,ind);
@@ -19,8 +23,9 @@ end
 error=max(error);
 
 %----------------------------------------------------------------------
-% Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the
+% Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the 
 % last component is on the order of machine precision.
+% TODO: Update Reference
 tau=1/7;
 Vscale=V*tau;
 
@@ -34,7 +39,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=20;
+order=15;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
@@ -46,7 +51,7 @@ stabcoeff=calc_proj_coeff(order,stabeigs,stabvec,params);
 
 
 k=6;
-mat=zeros(k^2,4);
+mat=zeros(k^2,4)*stabcoeff(1,1,1);
 K = zeros(k^2, 2);
 for i = 1:k 
     for j = 1:k
@@ -60,29 +65,30 @@ figure
 tiledlayout(2,2) 
 
 nexttile
-plot_coeff(uncoeff,order);
+plot_coeff(uncoeff.mid,order);
 title('Coefficient norms for unstable parameterization')
 
 nexttile
-plot_coeff(stabcoeff,order);
+plot_coeff(stabcoeff.mid,order);
 title('Coefficient norms for stable parameterization')
  
 nexttile
-plot_manifold(uncoeff,order);
+plot_manifold(uncoeff.mid,order);
 title('Unstable Manifold')
 
 nexttile
-plot_manifold(stabcoeff,order);
+plot_manifold(stabcoeff.mid,order);
 title('Stable Manifold')
 
 %--------------------------------------------------------------------------
 % Now we apply Lemma 10.4.1 to validate the parameterization we computed 
 
-
- unpoly=radiipoly(params,uncoeff,V,D,order);
+% TODO: Fix Intvals
+ unpoly=radiipoly(params,uncoeff.mid,V,D,order);
+ % return
  unstable_bound = min(unpoly(find(unpoly > 0)));
 
- stpoly=radiipoly(params,stabcoeff,V,D,order);
+ stpoly=radiipoly(params,stabcoeff.mid,V,D,order);
  stable_bound = min(stpoly(find(stpoly > 0)));
 %  
   disp('The error on the parameterization for the unstable manifold is: ')
@@ -310,7 +316,7 @@ end
 %         Each matrix (:,:,i) will be upper triangular (upper left)
 function coeff = calc_proj_coeff(order, eigenvalues, eigenvectors,params)
     % cast everything to an interval with appropriate radius
-    coeff=zeros(order+1,order+1,4);
+    coeff=zeros(order+1,order+1,4)*intval(0);
     e1=eigenvectors(:,1);
     e2=eigenvectors(:,2);
     lam1=eigenvalues(1);
