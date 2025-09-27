@@ -1,21 +1,12 @@
 clear
-
-tic 
-
 x = zeros(1, 4); 
 params.lambda = 0; 
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/7;
-params.isIntval = 1;
+params.isIntval = 0;
 
-if params.isIntval
-    zero=intval(0);
-else
-    zero=0;
-end
-
-order = 5-1; 
+order = 6-1; 
 params.order = order; 
 params.mfld.order = order; 
 [eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 
@@ -29,24 +20,23 @@ params.eigenvectors.u = eigenvectors.u;
 % Computes Manifold coeff, and bundle Coeff.
 [All_Bundle_coeffs, normalForm_coeff,mflds] = getAllBundleCoefficients(params);
 
-toc 
-tic
-
-
 % 1. Get Manifold Coefficients
 manifold_coeff = mflds.coeff.s;
-manifold_coeff_norm=zeros(order+1,1)*zero;
+manifold_coeff_norm=zeros(order+1,1);
 % 2. Get Bundle Coefficients
 
 disp('Computing Radii Poly Bounds')
 [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,mflds);
 
-toc
-return
+% return
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot
 
-
+if params.isIntval
+    zero=intval(0);
+else
+    zero=0;
+end
 
 % Only nonzero components of normalForm_coeff are in 
 % normalForm_coeff(i1,i2,i3,i4) for i1=1,2,  i2 =3,4, and i3+i4 =4.
@@ -55,7 +45,7 @@ return
 % Plots norm of coefficients
 res_bundle_norm = sqrt(sum(abs(All_Bundle_coeffs).^2,1));
 res_bundle_norm = permute ( res_bundle_norm, [3,4,2,1]);
-res_bundle_norm_single_list = zeros(order+1,4)*zero;
+res_bundle_norm_single_list = zeros(order+1,4);
 for alpha=1:order+1
     % For each order
     local_norm =zeros(alpha,4)*zero;
@@ -63,7 +53,7 @@ for alpha=1:order+1
     for j=1:alpha
         % for each combo of the order
         local_norm(j,:)=res_bundle_norm(j,alpha-j+1,:,1);
-        local_norm_manifold(j)=sqrt(sum(abs(manifold_coeff(j,alpha-j+1,:)).^2,'all'));
+        local_norm_manifold(j)=sqrt(sum(abs(manifold_coeff(j,alpha-j+1,:)).^2));
     end
     res_bundle_norm_single_list(alpha,:)=sum(local_norm,1);
     manifold_coeff_norm(alpha)=sum(local_norm_manifold,1);

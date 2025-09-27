@@ -7,6 +7,10 @@
 point=[0,0,0,0];
 params=[0.05,1.6]; % in the order [mu,nu']
 
+% Add This boolean for intervals
+params.isIntval = 0;
+
+
 Df0=JacSH(0,params(1),params(2));
 
 [V1,D1]=eigs(Df0); 

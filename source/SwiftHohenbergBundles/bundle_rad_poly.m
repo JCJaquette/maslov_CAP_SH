@@ -9,19 +9,25 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
     params_extend = params;
     params_extend.mfld.order=order_2 ;
 
-    
+    if params.isIntval
+        zero=intval(0);
+    else
+        zero=0;
+    end
 
     mflds_extend =mflds;
 
-    Q =  zeros(order_2 +1,order_2 +1,4);
+    Q =  zeros(order_2 +1,order_2 +1,4)*zero;
     Q(1:order +1,1:order +1,:)=mflds.coeff.s;
     mflds_extend.coeff.s=Q;
 
-    All_Bundle_coeffs_extend =  zeros(4,4,order_2 +1,order_2 +1);
+    All_Bundle_coeffs_extend =  zeros(4,4,order_2 +1,order_2 +1)*zero;
     All_Bundle_coeffs_extend(:,:,1:order +1,1:order +1) =All_Bundle_coeffs;
  
 
     G_hat_N = DFQbundle(params_extend, mflds_extend); % I think this is \hat G
+
+    quadratic_cauchy_product_2D(a,b)
     
 
     p1 = mflds.coeff.s(:,:,1);
@@ -63,7 +69,7 @@ A_norm = sum(abs(normalForm_coeff),'all');
 
     %%%  Y_0^a  %%% 
 
-    little_sum = 0; 
+    little_sum = zero; 
     for alpha = order+1:3*order 
         for i = 0:alpha 
             j = alpha - i;  
@@ -82,7 +88,7 @@ A_norm = sum(abs(normalForm_coeff),'all');
     %%%  Y_0^c  %%% 
 % This only needs things of order N+1 and N+2
     
-little_sum = 0; 
+little_sum = zero; 
     for alpha = order-1:order 
         for i = 0:alpha 
             j = alpha - i;  
@@ -118,6 +124,11 @@ little_sum = 0;
 
     Z = Za+Zb+Zc
 
-    r_min = Y_0 / (1-Z)
+    if Z < 1
+        r_min = Y_0 / (1-Z)
+    else
+        disp('Theorem failed! Z >= 1')
+        r_min=nan;
+    end
 
 end

@@ -5,11 +5,17 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
     e2=eigenvectors(:,2);
     lam1=eigenvalues(1);
     lam2=eigenvalues(2);
+
+    
     
     Df0=JacSH(0,params.mu,params.nu); 
     % the zeroth order coefficient is the equilibrium, corresponding to 0.
     coeff(2,1,:)=e1;
     coeff(1,2,:)=e2;
+
+    if params.isIntval
+        coeff=intval(coeff);
+    end
     
     % suborder=m+n and corresponds to the (m,n)th coefficient
    suborder=2;

@@ -5,12 +5,16 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
  %   eq = zeros(1, 4); 
  %   Df0 = JacSH_toMerge(0, params); 
 
+
  % Add Coeff to manifold data structure
 
     vectors.s = params.eigenvectors.s; 
     values.s = params.eigenvalues.s;
     vectors.u = params.eigenvectors.u; 
     values.u = params.eigenvalues.u;
+
+    
+
 
    % v0 = vectors.s(:, 1)*params.scale; 
     lam1 = values.s(1); 
@@ -23,7 +27,7 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
 
     e_val = [lam1 lam2 fliplr(values.u)];%%% NOTE! See ordering of eigenvalues, (3.5)
 
-    
+    disp('Computing Manifold')
     mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
     G_hat = DFQbundle(params, mflds); % I think this is \hat G
 
@@ -37,6 +41,8 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
     coeffs = zeros(4,4,order + 1, order + 1); % W--series
     coeffs(:,:,1,1)=Q0;
 
+    
+
     coeffs_tilde = coeffs; % W tilde --series
     coeffs_tilde(:,:,1,1)=eye;
 
@@ -44,8 +50,14 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
     normalForm_coeff = zeros(4,4,order + 1, order + 1); % A
     % normalForm_coeff(:,:,1,1)=Omega;
 
+    if params.isIntval
+        coeffs =intval(coeffs);
+        normalForm_coeff=intval(normalForm_coeff);
+    end
     
+    disp('Computing Bundles')
     for alpha = 1:order
+        alpha
         for n = 0:alpha 
             
             
