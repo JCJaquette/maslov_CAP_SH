@@ -39,7 +39,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=15;
+order=5;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
@@ -348,49 +348,5 @@ function coeff = calc_proj_coeff(order, eigenvalues, eigenvectors,params)
         suborder=suborder+1;
     end
 end
-
-
-% gives the (mn)th element of the star hat cauchy product
-function prod = starhat(a,b,m,n)
-    sum=0;
-    for i=0:m
-        for j=0:n
-            if (i == 0 &&  j == 0) || (i==m && j == n)
-                % do nothing 
-            else
-                sum=sum+a(m-i+1,n-j+1)*b(i+1,j+1);
-            end
-        end
-    end
-    prod=sum;
-end
-
-
-% gives the (mn)th element of the star hat cauchy product between three
-% elements
-function prod = tripstarhat(a,b,c,m,n)
-    sum=0;
-    for j=0:m
-        for k=0:n
-            for l=0:j
-                for q=0:k
-                    if j == 0 && k == 0
-                        % do nothing
-                    elseif  l ==m && q == n 
-                        % do nothing
-                    elseif j==m && k ==n && l==0 && q == 0
-                        % do nothing
-                    else
-                        sum=sum+a(m-j+1,n-k+1)*b(j-l+1,k-q+1)*c(l+1,q+1);
-                    end
-                end
-            end
-        end
-    end
-    prod=sum;
-end
-
- 
-
 
 

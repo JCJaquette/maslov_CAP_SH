@@ -15,9 +15,9 @@ function prod = starhat(a,b,m,n)
     for i=0:m
         for j=0:n
             if i == 0 &&  j == 0
-                sum=sum+0;
+                % sum=sum+0;
             elseif i == m && j == n
-                sum=sum+0;
+                % sum=sum+0;
             else
                 sum=sum+a(m-i+1,n-j+1)*b(i+1,j+1);
             end
