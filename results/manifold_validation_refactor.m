@@ -206,30 +206,6 @@ function val=radiipoly(params,coeff, Q,Lambda,order)
     p=[b, a, Z1-1, Y0];
     
     val=roots(p);
-    
-    % 
-    % 
-    % negative=false;
-    % i=0;
-    % while negative==false
-    % 
-    % 
-    %     val=intval(i*rad/1000);
-    %     if sup(poly(val))<0
-    %         val=sup(val);
-    %         negative=true;
-    %     end
-    %     i=i+1;
-    %     if i==1000
-    %         break 
-    %     end
-    % end
-    % if negative==true
-    %     fprintf('We found a negative value at r0=%d. \n',val)
-    % else
-    %     disp('No negative value was found.')
-    % end
-    poly=val;
 end
 
 

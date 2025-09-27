@@ -53,7 +53,7 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
 
 
             %s_ij = starhatMat(A,coeffs, i,j); 
-            disp(['(',num2str(m),',',num2str(n),')'])
+            % disp(['(',num2str(m),',',num2str(n),')'])
             % disp(j)
             
             % equation 6.13
@@ -88,8 +88,7 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
         end
     end
 
-    Za =  sum(abs(G_hat),'all')/order
-    Zc =  sum(abs(normalForm_coeff),'all')/order
+
 end
 
 
