@@ -24,7 +24,7 @@ manifold_coeff = mflds.coeff.s;
 manifold_coeff_norm=zeros(order+1,1);
 % 2. Get Bundle Coefficients
 
-
+return
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot
 
