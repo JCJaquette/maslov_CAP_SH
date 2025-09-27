@@ -39,16 +39,16 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=5;
+order=10;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
 uncoeff=calc_proj_coeff(order,uneigs,unvec,params);
+return
 
 % stable 
 disp('Calculating the coefficients for the stable manifold.')
 stabcoeff=calc_proj_coeff(order,stabeigs,stabvec,params);
-
 
 k=6;
 mat=zeros(k^2,4)*stabcoeff(1,1,1);
