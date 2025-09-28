@@ -27,8 +27,7 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
 
     G_hat_N = DFQbundle(params_extend, mflds_extend); % I think this is \hat G
 
-    quadratic_cauchy_product_2D(a,b)
-    
+     
 
     p1 = mflds.coeff.s(:,:,1);
 

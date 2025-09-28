@@ -1,4 +1,11 @@
 function plots=plot_manifold(coeff,order,color)
+% This function evaluates the function P on a grid of points and plots them
+% Inputs: coeff - corresponds to the coefficients computed for either the
+%                 stable or unstable manifold
+%         order - order of the parameterization 
+% Outputs: plots = 0
+%          also generates a 3D plot. In this case, we omit the third
+%          component (seemed to generate the best plot)
     p=30;
     
     % We plot them in polar coordinates 
@@ -24,5 +31,8 @@ function plots=plot_manifold(coeff,order,color)
         end
     end
     surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',0.5, 'EdgeColor','none');  
+    xlabel('x1')
+    ylabel('x2')
+    zlabel('x4')
     plots=0;
 end

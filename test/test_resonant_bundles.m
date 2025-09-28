@@ -15,7 +15,7 @@ else
     zero=0;
 end
 
-order = 5-1; 
+order = 31-1; 
 params.order = order; 
 params.mfld.order = order; 
 [eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 
@@ -29,7 +29,7 @@ params.eigenvectors.u = eigenvectors.u;
 % Computes Manifold coeff, and bundle Coeff.
 [All_Bundle_coeffs, normalForm_coeff,mflds] = getAllBundleCoefficients(params);
 
-toc 
+time1 = toc 
 tic
 
 
@@ -40,8 +40,12 @@ manifold_coeff_norm=zeros(order+1,1)*zero;
 
 disp('Computing Radii Poly Bounds')
 [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,mflds);
-
+time1 
 toc
+r_min
+
+[y,f]=audioread('JobDone.mp3');
+sound(y,1.05*f)
 return
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot

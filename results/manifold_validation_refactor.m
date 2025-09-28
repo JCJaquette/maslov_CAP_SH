@@ -1,17 +1,29 @@
-%clear all 
+clear all 
 
 %-------------------------------------------------------------------------
 % first we calculate the size of the eigenvector/eigenvalue enclosures
 % !!! TODO: Make Rigorous; Maybe use formula for e-vec?
 % 
 point=[0,0,0,0];
-params=[0.05,1.6]; % in the order [mu,nu']
+MuNu=[0.05,1.6]; % in the order [mu,nu']
+
+
+
+params.mu = 0.05; 
+params.nu = 1.6; 
+params.scale = 1/7;
+
+order = 15-1; 
+params.order = order; 
+params.mfld.order = order; 
+
+tau = params.scale ;
 
 % Add This boolean for intervals
-params.isIntval = 0;
+params.isIntval = 1;
 
 
-Df0=JacSH(0,params(1),params(2));
+Df0=JacSH(0,MuNu(1),MuNu(2));
 
 [V1,D1]=eigs(Df0); 
 [d, ind]=sort(real(diag(D1)));
@@ -22,7 +34,7 @@ rstar=1e-15;
 
 error=zeros(1,4);
 for i=1:4
-    error(i)=eig_enclosure(point,params,D(i,i),V(:,i),rstar);
+    error(i)=eig_enclosure(point,MuNu,D(i,i),V(:,i),rstar);
 end
 error=max(error);
 
@@ -30,7 +42,6 @@ error=max(error);
 % Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the 
 % last component is on the order of machine precision.
 % TODO: Update Reference
-tau=1/7;
 Vscale=V*tau;
 
 % Separate the eigenvalues and associated vectors into those with positive
@@ -43,16 +54,16 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=10;
+order=20;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
-uncoeff=calc_proj_coeff(order,uneigs,unvec,params);
-return
+uncoeff=calc_proj_coeff(uneigs,unvec,params);
+% return
 
 % stable 
 disp('Calculating the coefficients for the stable manifold.')
-stabcoeff=calc_proj_coeff(order,stabeigs,stabvec,params);
+stabcoeff=calc_proj_coeff(stabeigs,stabvec,params);
 
 k=6;
 mat=zeros(k^2,4)*stabcoeff(1,1,1);
@@ -69,30 +80,32 @@ figure
 tiledlayout(2,2) 
 
 nexttile
-plot_coeff(uncoeff.mid,order);
+plot_coeff(uncoeff,order);
 title('Coefficient norms for unstable parameterization')
 
 nexttile
-plot_coeff(stabcoeff.mid,order);
+plot_coeff(stabcoeff,order);
 title('Coefficient norms for stable parameterization')
  
 nexttile
-plot_manifold(uncoeff.mid,order);
+plot_manifold(uncoeff,order,'r');
 title('Unstable Manifold')
 
 nexttile
-plot_manifold(stabcoeff.mid,order);
+plot_manifold(stabcoeff,order,'b');
 title('Stable Manifold')
 
+
+return 
 %--------------------------------------------------------------------------
-% Now we apply Lemma 10.4.1 to validate the parameterization we computed 
+% Now we apply Lemma 4.4 to validate the parameterization we computed 
 
 % TODO: Fix Intvals
- unpoly=radiipoly(params,uncoeff.mid,V,D,order);
+ unpoly=radiipoly(MuNu,uncoeff,V,D,order);
  % return
  unstable_bound = min(unpoly(find(unpoly > 0)));
 
- stpoly=radiipoly(params,stabcoeff.mid,V,D,order);
+ stpoly=radiipoly(MuNu,stabcoeff,V,D,order);
  stable_bound = min(stpoly(find(stpoly > 0)));
 %  
   disp('The error on the parameterization for the unstable manifold is: ')
@@ -210,123 +223,6 @@ function val=radiipoly(params,coeff, Q,Lambda,order)
     p=[b, a, Z1-1, Y0];
     
     val=roots(p);
-end
-
-
-% This function evaluates the function P on a grid of points and plots them
-% Inputs: coeff - corresponds to the coefficients computed for either the
-%                 stable or unstable manifold
-%         order - order of the parameterization 
-% Outputs: plots = 0
-%          also generates a 3D plot. In this case, we omit the third
-%          component (seemed to generate the best plot)
-function plots=plot_manifold(coeff,order)
-    p=10;
-    theta=linspace(0,2*pi,p);
-    r=linspace(0,1,p);
-    plotpoints=zeros(p,p,4);
-    
-    for j=1:p
-        for k=1:p
-        ps1s2 = zeros(4,1);
-        s1=r(j)*cos(theta(k));
-        s2=r(j)*sin(theta(k));
-        for n=0:order
-            for m=0:n
-                %disp(n)
-                %disp(m)
-                point=reshape(coeff(n-m+1,m+1,:),[4,1]);
-                ps1s2=ps1s2+point*(s1+1i*s2)^(n-m)*(s1-1i*s2)^(m);
-                
-            end
-        end 
-        plotpoints(j,k,:)=real(ps1s2);
-        end
-    end
-    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), plotpoints(:,:,3));
-    xlabel('x1')
-    ylabel('x2')
-    zlabel('x4')
-    plots=0; 
-end 
-
-% this function plots the log of the norms of the coefficients against
-% their order. This is done to check for decay. 
-% Inputs: coeff - corresponds to the coefficients computed for either the
-%                 stable or unstable manifold
-%         order - order of the parameterization 
-% Outputs: plots = 0
-%          also generates a 2D plot
-function plots=plot_coeff(coeff,order)
-    plotpoints=[];
-    suborder=1;
-    while suborder<order+1
-        for i=0:suborder
-            for j = suborder-i
-                vec=zeros(1,4);
-                for k=1:4
-                    vec(k)=coeff(i+1,j+1,k);
-                end
-                normpoint=norm(vec);
-                point=[suborder;normpoint];
-                plotpoints=[plotpoints,point];
-            end
-        end
-        suborder=suborder+1;
-    end
-    
-  plot(plotpoints(1,:), log(plotpoints(2,:)),'o');
-  xlabel('Order of the coefficients')
-  ylabel('Log norm of the coefficients')
-  plots=0;
-end
-
-% This function recursively calculates the coefficients of the
-% parameterization for the invariant manifold 
-% Inputs: order - order of the desired parameterization 
-%         eigenvalues - either the stable or unstable pair of eigenvalues
-%         of Df(0)
-%         eigenvectors - corresponding eigenvectors
-%         params - 2x1 vector in the form [mu, nu']
-%         error - the error from the rigorous enclosure of the eigenpairs
-% Output  coeff - multidimensional array of size (order+1) x (order+1) x 4
-%         entry (i,j,k) corresponds to the coefficient k_{i-1,j-1} where in
-%         the write up, k is either a,b,c,d and we subtract 1 from each
-%         index to be consistent with the zero indexing in the text
-%         Each matrix (:,:,i) will be upper triangular (upper left)
-function coeff = calc_proj_coeff(order, eigenvalues, eigenvectors,params)
-    % cast everything to an interval with appropriate radius
-    coeff=zeros(order+1,order+1,4)*intval(0);
-    e1=eigenvectors(:,1);
-    e2=eigenvectors(:,2);
-    lam1=eigenvalues(1);
-    lam2=eigenvalues(2);
-    
-    Df0=JacSH(0,params(1),params(2));
-    
-    coeff(2,1,:)=e1;
-    coeff(1,2,:)=e2;
-    
-% suborder=m+n and corresponds to the (m,n)th coefficient
-    suborder=2;
-    while suborder < order + 1 
-        disp('Calculating terms of order:')
-        disp(suborder)
-        for j=suborder:-1:0
-            i=suborder-j;
-               
-            Aij=(Df0-(i*lam1+j*lam2)*eye(4))^(-1);
-            a=coeff(1:i+1,1:j+1,1);
-
-            staraaij=starhat(a,a,i,j);
-            staraaaij=tripstarhat(a,a,a,i,j);
-            B=[0;0;0;-params(2)*staraaij+staraaaij];
-            pij=Aij*B;
-            coeff(i+1,j+1,:)=pij;
-        end
-  
-        suborder=suborder+1;
-    end
 end
 
 

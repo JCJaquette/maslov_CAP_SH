@@ -1,3 +1,4 @@
+clear
 %diary Newton_chebyshev_BK
 
 % Set initial seed for Newton's method 
