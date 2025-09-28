@@ -1,4 +1,4 @@
-function params = computeLminus(params) 
+function params = computeLminus(params, Lminus_cands) 
     % Todo: Modify the code so that it doesn't need to take Lminus_cands.
 
 % Eq (3.7)
@@ -74,8 +74,6 @@ function params = computeLminus(params)
         disp(L_approx)
         params.Lminus = L_approx; 
         return
-    else
-        disp('Error: Could not find -L_{conj}!')
     end
 
 

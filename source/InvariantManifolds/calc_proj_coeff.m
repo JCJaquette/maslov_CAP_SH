@@ -33,8 +33,8 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
     % suborder=m+n and corresponds to the (m,n)th coefficient
    suborder=2;
    while suborder < order + 1 
-        disp('Calculating terms of order:')
-        disp(suborder)
+        % disp('Calculating terms of order:')
+        % disp(suborder)
         for j=suborder:-1:0
             i=suborder-j;
             Aij=(Df0-(i*lam1+j*lam2)*eye(4))^(-1);

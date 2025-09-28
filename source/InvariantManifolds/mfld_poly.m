@@ -1,4 +1,15 @@
 function val=mfld_poly(params,coeff, Q,Lambda)
+% This function validates the parameterization of the invariant manifold 
+% Inputs: params - 2x1 vector in the form [mu, nu']
+%         coeff - multidimensional array of size 3*order+1 x 3*order+1 x 4.
+%         This could correspond to the stable or unstable manifold
+%         Q - matrix of unscaled eigenvectors 
+%         Lambda - diagonal matrix of the eigenvalues 
+%         order - order of the approximation - N=m+n
+%         rad - the radius on which to search for a negative value
+% Output: poly - value at which the sup of the polynomial evaluated with
+%         interval arithmetric is negative
+
     order=params.mfld.order;
     % Calculate the coefficient K 
     maxKmn=((order+1)*abs(real(Lambda(1))) - abs(Lambda(1)))^(-1);

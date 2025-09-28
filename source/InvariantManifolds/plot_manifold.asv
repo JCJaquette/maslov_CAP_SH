@@ -30,7 +30,7 @@ function plots=plot_manifold(coeff,order,color)
         plotpoints(j,k,:)=real(ps1s2);
         end
     end
-    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',.75,'EdgeColor','none');  
+    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',.75, 'EdgeColor','none');  
     xlabel('x1')
     ylabel('x2')
     zlabel('x4')
