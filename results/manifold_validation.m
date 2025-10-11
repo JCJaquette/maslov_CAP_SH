@@ -12,9 +12,11 @@ MuNu=[0.05,1.6]; % in the order [mu,nu']
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/7;
+params.lambda = 0;
 
 order = 15-1;  % Manifold
-params.order = order; 
+
+params.order = order; % TODO Why do we have two orders?
 params.mfld.order = order; 
 
 tau = params.scale ;
@@ -55,15 +57,21 @@ stabvec=Vscale(:,3:4);
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
  
+%  TODO: Make get_mflds universal
+mflds=get_mflds(params);
 
 % unstable
-disp('Calculating the coefficients for the unstable manifold.')
-uncoeff=calc_proj_coeff(uneigs,unvec,params);
+% disp('Calculating the coefficients for the unstable manifold.')
+% uncoeff=calc_proj_coeff(uneigs,unvec,params);
 % return
 
 % stable 
-disp('Calculating the coefficients for the stable manifold.')
-stabcoeff=calc_proj_coeff(stabeigs,stabvec,params);
+% disp('Calculating the coefficients for the stable manifold.')
+% stabcoeff=calc_proj_coeff(stabeigs,stabvec,params);
+
+uncoeff   = mflds.unstable.coeffs;
+stabcoeff = mflds.stable.coeffs;
+
 
 k=6;
 mat=zeros(k^2,4)*stabcoeff(1,1,1);
@@ -112,3 +120,12 @@ title('Stable Manifold')
   disp(unstable_bound)
   disp('The error on the parameterization for the stable manifold is: ')
  disp(stable_bound)
+
+ % TODO: Store the error bound
+
+% Compute L_minus
+ Lminus = computeLminus(params,mflds) ;
+params.Lminus=Lminus;
+
+[vectors, values]= getJacEigs(0, params);
+sigma_0 = exp(-real(values.u(1)) * params.Lminus)

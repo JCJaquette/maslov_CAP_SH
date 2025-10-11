@@ -1,48 +1,43 @@
-function params = computeLminus(params) 
-    % Todo: Modify the code so that it doesn't need to take Lminus_cands.
+function L_approx_out = computeLminus(params,mflds) 
+    % Stores 
 
-% Eq (3.7)
-    % r = (1+params.mu^2)^(1/2);    
+% Eq (3.7) 
     r = (1+abs(params.mu))^(1/2);    
 
-    theta = atan2(sqrt(params.mu),-1);
-    if theta <pi/2 || theta >pi
-        disp('ERROR ERROR: Wrong branch of arctan')
-    end
-
-    r_tilde_abs = abs(cos(theta/2));
-
     % C.f. Prop 3.4
-    % upperbound_old_old = (7/(16*sqrt(r)))^(1/2)*(2*sqrt(2)*sqrt((1+2*sqrt(r))*(1/r^2 + 1)))^(-1);
-    % upperbound_old = (1+r)*(1-r_tilde_abs)/( 40*r^3);
     upperbound = 1/( 8*sqrt(r^3));
 
     % We need tau/(1-tau) < upperbound
 
+    % See (3.14)
+    % TODO : Why are these not stored???
     [~, values]= getBinfEigs(params);
     lam1 = values.u(1);
     lam2 = values.u(2); 
     
-    shiftB = B_infinity(params) - real(lam1).*diag(ones(4,1));
+    shiftB = B_infinity(params);
     [V,~] = eigs(shiftB); 
     
+    % (3.14)
     K = max(abs(V),[],'all')*max(abs(V^(-1)),[],'all');
     
-    theta = (lam1 + lam2);
+
 
     Abs_Re_mu = abs(real(lam1 ));
      
-    % need to address the tail terms 
+    % TODO need to address the tail terms 
     norms = zeros(params.mfld.order, params.mfld.order);
     for i = 1:params.mfld.order 
         for j = 1:params.mfld.order
-            norms(i,j) = vecnorm(params.unstable.coeffs(i,j,:));
+            norms(i,j) = vecnorm(mflds.unstable.coeffs(i,j,:)); % What is this??
         end
     end
     supQ = vecnorm(vecnorm(norms));
     
+    % (3.3)
     C = supQ*(2*params.nu + 6*supQ);
 
+    % (5.1)
     tau_const = K*C/Abs_Re_mu ;
 
     if tau_const < 1 
@@ -72,9 +67,11 @@ function params = computeLminus(params)
     if tau/(1-tau) < upperbound 
         disp('Found L_minus.')
         disp(L_approx)
+        L_approx_out = L_approx;
         params.Lminus = L_approx; 
         return
     else
+        L_approx_out = nan;
         disp('Error: Could not find -L_{conj}!')
     end
 

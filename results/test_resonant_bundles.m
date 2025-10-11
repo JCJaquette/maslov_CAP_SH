@@ -7,7 +7,7 @@ params.lambda = 0;
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/7;
-params.isIntval = 1;
+params.isIntval = 0;
 
 if params.isIntval
     zero=intval(0);
@@ -15,10 +15,12 @@ else
     zero=0;
 end
 
-order = 31-1; 
+order = 15-1; 
 params.order = order; 
 params.mfld.order = order; 
 [eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 
+
+% TODO: What is the difference between getJacEigs and getJacEigs_toMerge??
 
 params.eigenvalues.s = eigenvalues.s; 
 params.eigenvectors.s = eigenvectors.s; 
@@ -44,8 +46,10 @@ time1
 toc
 r_min
 
-[y,f]=audioread('JobDone.mp3');
-sound(y,1.05*f)
+try
+    [y,f]=audioread('JobDone.mp3');
+    sound(y,1.05*f)
+end
 return
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Plot
