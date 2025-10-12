@@ -1,5 +1,6 @@
 % x is a 4 dim vector
 function [vectors, values]= getJacEigs(x, params)
+%%%%%%%%%%%%%%% NOTE: This function is depricated
     % compute the jacobian for SH
     Df0=JacSH(x(1),params);
     [V1,D1]=eigs(Df0);

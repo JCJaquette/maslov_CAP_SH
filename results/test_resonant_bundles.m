@@ -15,28 +15,29 @@ else
     zero=0;
 end
 
-order = 15-1; 
+order = 20-1; 
 params.order = order; 
 params.mfld.order = order; 
-[eigenvectors, eigenvalues] = getJacEigs(0, params); 
+
+
 
 % TODO: What is the difference between getJacEigs and getJacEigs_toMerge??
+% params.eigenvalues = eigenvalues; 
+% params.eigenvectors = eigenvectors; 
 
-params.eigenvalues.s = eigenvalues.s; 
-params.eigenvectors.s = eigenvectors.s; 
-params.eigenvalues.u = eigenvalues.u; 
-params.eigenvectors.u = eigenvectors.u; 
+%  TODO: Make get_mflds universal
+mflds=get_mflds(params);
 
 
 % Computes Manifold coeff, and bundle Coeff.
-[All_Bundle_coeffs, normalForm_coeff,mflds] = getAllBundleCoefficients(params);
+[All_Bundle_coeffs, normalForm_coeff,mflds] = getAllBundleCoefficients(params,mflds);
 
 time1 = toc 
 tic
 
 
 % 1. Get Manifold Coefficients
-manifold_coeff = mflds.coeff.s;
+manifold_coeff = mflds.stable.coeffs;
 manifold_coeff_norm=zeros(order+1,1)*zero;
 % 2. Get Bundle Coefficients
 

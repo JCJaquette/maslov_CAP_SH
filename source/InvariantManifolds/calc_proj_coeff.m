@@ -13,7 +13,12 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
 %         index to be consistent with the zero indexing in the text
 %         Each matrix (:,:,i) will be upper triangular (upper left)
     order=params.mfld.order;
+
     coeff=zeros(order+1,order+1,4);
+    if params.isIntval
+        coeff = intval(coeff );
+    end
+
     e1=eigenvectors(:,1);
     e2=eigenvectors(:,2);
     lam1=eigenvalues(1);
@@ -25,10 +30,6 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
     % the zeroth order coefficient is the equilibrium, corresponding to 0.
     coeff(2,1,:)=e1;
     coeff(1,2,:)=e2;
-
-    if params.isIntval
-        coeff=intval(coeff);
-    end
     
     % suborder=m+n and corresponds to the (m,n)th coefficient
    suborder=2;

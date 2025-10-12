@@ -18,8 +18,8 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
     mflds_extend =mflds;
 
     Q =  zeros(order_2 +1,order_2 +1,4)*zero;
-    Q(1:order +1,1:order +1,:)=mflds.coeff.s;
-    mflds_extend.coeff.s=Q;
+    Q(1:order +1,1:order +1,:)=mflds.stable.coeffs;
+    mflds_extend.stable.coeffs=Q;
 
     All_Bundle_coeffs_extend =  zeros(4,4,order_2 +1,order_2 +1)*zero;
     All_Bundle_coeffs_extend(:,:,1:order +1,1:order +1) =All_Bundle_coeffs;
@@ -29,7 +29,7 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
 
      
 
-    p1 = mflds.coeff.s(:,:,1);
+    p1 = mflds.stable.coeffs(:,:,1);
 
 
     % W_0 
@@ -49,12 +49,7 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
     
     % K_N 
     % Eq (3.7)
-    rho = (1+abs(params.mu))^(1/2);    
-
-    theta = atan2(sqrt(params.mu),-1);
-    if theta <pi/2 || theta >pi
-        disp('ERROR ERROR: Wrong branch of arctan')
-    end
+    [rho, theta]= rTh_coord(params) ;
 
 
     K_N = 1 / ( order + sqrt(rho) * cos( theta/2) );

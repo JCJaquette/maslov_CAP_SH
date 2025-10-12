@@ -5,8 +5,6 @@ clear all
 % !!! TODO: Make Rigorous; Maybe use formula for e-vec?
 % 
 point=[0,0,0,0];
-MuNu=[0.05,1.6]; % in the order [mu,nu']
-
 
 
 params.mu = 0.05; 
@@ -14,44 +12,19 @@ params.nu = 1.6;
 params.scale = 1/7;
 params.lambda = 0;
 
-order = 15-1;  % Manifold
+order = 10-1;  % Manifold
 
 params.order = order; % TODO Why do we have two orders?
 params.mfld.order = order; 
 
-tau = params.scale ;
-
 % Add This boolean for intervals
 params.isIntval = 0;
 
-
-Df0=JacSH(0,params);
-
-[V1,D1]=eigs(Df0); 
-[d, ind]=sort(real(diag(D1)));
-D=D1(ind,ind);
-V=V1(:,ind);
-
-rstar=1e-15;
-
-error=zeros(1,4);
-for i=1:4
-    error(i)=eig_enclosure(point,params,D(i,i),V(:,i),rstar);
+if params.isIntval
+    params.mu = intval(params.mu);
+    params.nu = intval(params.nu);
 end
-error=max(error);
 
-%----------------------------------------------------------------------
-% Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the 
-% last component is on the order of machine precision.
-% TODO: Update Reference
-Vscale=V*tau;
-
-% Separate the eigenvalues and associated vectors into those with positive
-% and negative real part
-uneigs=[D(1,1),D(2,2)];
-unvec=Vscale(:,1:2);
-stabeigs=[D(3,3),D(4,4)];
-stabvec=Vscale(:,3:4);
 
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
@@ -60,14 +33,9 @@ stabvec=Vscale(:,3:4);
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
 
-% unstable
-% disp('Calculating the coefficients for the unstable manifold.')
-% uncoeff=calc_proj_coeff(uneigs,unvec,params);
-% return
+D = diag([mflds.values.s,mflds.values.u]);
+V = [mflds.vectors.s,mflds.vectors.u];
 
-% stable 
-% disp('Calculating the coefficients for the stable manifold.')
-% stabcoeff=calc_proj_coeff(stabeigs,stabvec,params);
 
 uncoeff   = mflds.unstable.coeffs;
 stabcoeff = mflds.stable.coeffs;
@@ -87,24 +55,32 @@ end
 figure
 tiledlayout(2,2) 
 
+% Plotting stuff
+uncoeff_plot = uncoeff;
+stabcoeff_plot = stabcoeff;
+if params.isIntval
+    uncoeff_plot =uncoeff_plot.mid;
+    stabcoeff_plot =stabcoeff_plot.mid;
+end
+
+
 nexttile
-plot_coeff(uncoeff,order);
+plot_coeff(uncoeff_plot,order);
 title('Coefficient norms for unstable parameterization')
 
 nexttile
-plot_coeff(stabcoeff,order);
+plot_coeff(stabcoeff_plot,order);
 title('Coefficient norms for stable parameterization')
 
 nexttile
-plot_manifold(uncoeff,order,'r');
+plot_manifold(uncoeff_plot,order,'r');
 title('Unstable Manifold')
 
 nexttile
-plot_manifold(stabcoeff,order,'b');
+plot_manifold(stabcoeff_plot,order,'b');
 title('Stable Manifold')
 
 
-  
 %--------------------------------------------------------------------------
 % Now we apply Lemma 4.4 to validate the parameterization we computed 
 
@@ -127,5 +103,5 @@ title('Stable Manifold')
  Lminus = computeLminus(params,mflds) ;
 params.Lminus=Lminus;
 
-[vectors, values]= getJacEigs(0, params);
-sigma_0 = exp(-real(values.u(1)) * params.Lminus)
+% [vectors, values]= getJacEigs(0, params);
+sigma_0 = exp(-real(mflds.values.u(1)) * params.Lminus)

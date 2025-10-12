@@ -3,7 +3,9 @@
 % manifold. 
 
 function coeffs = DFQbundle(params, mflds)
-    Q = mflds.coeff.s;
+
+    % Make for either stable / unstable ... eventually
+    Q = mflds.stable.coeffs;
    
     Q1 = Q(:,:,1);
     

@@ -1,17 +1,16 @@
-function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
+function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params,mflds)
 % TODO: Restructure this so that the manifold coefficients are already
 % computed. 
+% TODO: Allow for either stable or unstable manifold to be called
     order = params.mfld.order; 
  %   eq = zeros(1, 4); 
  %   Df0 = JacSH_toMerge(0, params); 
 
 
  % Add Coeff to manifold data structure
+values = mflds.values;
+vectors = mflds.vectors;
 
-    vectors.s = params.eigenvectors.s; 
-    values.s = params.eigenvalues.s;
-    vectors.u = params.eigenvectors.u; 
-    values.u = params.eigenvalues.u;
 
     
 
@@ -20,19 +19,16 @@ function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params)
     lam1 = values.s(1); 
     lam2 = values.s(2); 
 
-    % lam2u = values.u(1); 
-    % lam1u = values.u(2); 
-
-    % e_val = [lam1 lam2 lam1u lam2u];
-
-    e_val = [lam1 lam2 fliplr(values.u)];%%% NOTE! See ordering of eigenvalues, (3.5)
+    %%% NOTE! See ordering of eigenvalues, (3.5)
+    e_val = [values.s, values.u];
+    % e_val = [lam1 lam2 fliplr(values.u)];
 
     disp('Computing Manifold')
-    mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
+    % mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
     G_hat = DFQbundle(params, mflds); % I think this is \hat G
 
-
-    Q0 = [vectors.s, fliplr(vectors.u)]; %%% NOTE! See ordering of eigenvalues, (3.5)
+    %%% NOTE! See ordering of eigenvalues, (3.5)
+    Q0 = [vectors.s, vectors.u]; 
 
     % Rescale the eigenvectors as needed
     Q0 = Q0*diag(1./Q0(2,:)); %%%% Why this??

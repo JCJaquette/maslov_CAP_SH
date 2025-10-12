@@ -11,12 +11,16 @@ function L_approx_out = computeLminus(params,mflds)
 
     % See (3.14)
     % TODO : Why are these not stored???
-    [~, values]= getBinfEigs(params);
+    % values = mflds.values;
+
+    [vectors, values]= getBinfEigs(params);
     lam1 = values.u(1);
-    lam2 = values.u(2); 
+    % lam2 = values.u(2); 
+
+    V = [ vectors.u vectors.s];
     
-    shiftB = B_infinity(params);
-    [V,~] = eigs(shiftB); 
+    % shiftB = B_infinity(params);
+    % [V,~] = eigs(shiftB); 
     
     % (3.14)
     K = max(abs(V),[],'all')*max(abs(V^(-1)),[],'all');
