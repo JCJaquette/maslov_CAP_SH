@@ -2,6 +2,11 @@
 
 % This function constructs a radii poly for the eigenvalues and
 % eigenvectors for the linearization of the SH equation at an equilibria
+
+
+% % % % % % % % % % %  No longer used --- Using explicit formula of e-val
+
+
 function poly=eig_enclosure(point,params,eval,evect,rstar)
     if evect(1)==0
         error('The first component is zero, try a different component')
@@ -9,7 +14,6 @@ function poly=eig_enclosure(point,params,eval,evect,rstar)
 
     MuNu=[params.mu,params.nu]; % in the order [mu,nu']
 
-    % TODO Fix This!!!
     
     ipoint=intval(point);
     iparams=intval(MuNu);
