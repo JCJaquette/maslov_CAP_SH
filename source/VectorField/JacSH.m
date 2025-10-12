@@ -1,7 +1,7 @@
-function symDF = JacSH(x1,p1,p2)
+function symDF = JacSH(x1,params)
 
-%p1 = params.mu;
-%p2 = params.nu;
+p1 = params.mu;
+p2 = params.nu;
 %JACSH
 %    SYMDF = JACSH(P1,P2,X1)
 

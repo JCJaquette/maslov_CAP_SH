@@ -21,7 +21,7 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
 
     
     
-    Df0=JacSH(0,params.mu,params.nu); 
+    Df0=JacSH(0,params); 
     % the zeroth order coefficient is the equilibrium, corresponding to 0.
     coeff(2,1,:)=e1;
     coeff(1,2,:)=e2;

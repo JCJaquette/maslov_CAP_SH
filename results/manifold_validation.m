@@ -25,7 +25,7 @@ tau = params.scale ;
 params.isIntval = 0;
 
 
-Df0=JacSH(0,MuNu(1),MuNu(2));
+Df0=JacSH(0,params);
 
 [V1,D1]=eigs(Df0); 
 [d, ind]=sort(real(diag(D1)));
@@ -36,7 +36,7 @@ rstar=1e-15;
 
 error=zeros(1,4);
 for i=1:4
-    error(i)=eig_enclosure(point,MuNu,D(i,i),V(:,i),rstar);
+    error(i)=eig_enclosure(point,params,D(i,i),V(:,i),rstar);
 end
 error=max(error);
 

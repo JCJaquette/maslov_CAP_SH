@@ -6,14 +6,18 @@ function poly=eig_enclosure(point,params,eval,evect,rstar)
     if evect(1)==0
         error('The first component is zero, try a different component')
     end
+
+    MuNu=[params.mu,params.nu]; % in the order [mu,nu']
+
+    % TODO Fix This!!!
     
     ipoint=intval(point);
-    iparams=intval(params);
+    iparams=intval(MuNu);
     ieval=intval(eval);
     ievect=intval(evect);
     irstar=intval(rstar);
     
-    DF=JacSH(ipoint(1),iparams(1),iparams(2));
+    DF=JacSH(ipoint(1),params);
     M=DF-ieval*intval(eye(4));
     
     bigMat=[-ievect,M(:,2:4)];

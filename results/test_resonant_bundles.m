@@ -18,7 +18,7 @@ end
 order = 15-1; 
 params.order = order; 
 params.mfld.order = order; 
-[eigenvectors, eigenvalues] = getJacEigs_toMerge(0, params); 
+[eigenvectors, eigenvalues] = getJacEigs(0, params); 
 
 % TODO: What is the difference between getJacEigs and getJacEigs_toMerge??
 
