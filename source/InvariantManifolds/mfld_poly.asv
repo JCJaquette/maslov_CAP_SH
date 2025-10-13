@@ -105,7 +105,6 @@ function r_min=mfld_poly(params,coeff, Q,Lambda)
     %figure(3)
     %fplot(@(r) poly(r));
     
-    % get numerical roots
     if params.isIntval
         p=[b.sup, a.sup, Z1.sup-1, Y0.sup];
     else
@@ -117,17 +116,13 @@ function r_min=mfld_poly(params,coeff, Q,Lambda)
 
     r_min = min(cube_roots (find(cube_roots > 0)));
 
-    % Check that there is a positive root
     if isempty(r_min)
-        r_min = NaN;
+        r_min = NaN
     else
-        % inflate a bit
         r_min = r_min*1.00001;
-        % ensure the root is indeed negative
-        if ~(poly(r_min)<0)
-            r_min=NaN;
-        end
     end
+    
 
 
+    val = r_min;
 end

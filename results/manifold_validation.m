@@ -9,7 +9,7 @@ point=[0,0,0,0];
 
 params.mu = 0.05; 
 params.nu = 1.6; 
-params.scale = 1/7;
+params.scale = 1/70;
 params.lambda = 0;
 
 order = 10-1;  % Manifold
@@ -18,7 +18,7 @@ params.order = order; % TODO Why do we have two orders?
 params.mfld.order = order; 
 
 % Add This boolean for intervals
-params.isIntval = 0;
+params.isIntval = 1;
 
 if params.isIntval
     params.mu = intval(params.mu);
@@ -52,7 +52,7 @@ for i = 1:k
     end  
 end
 
-figure
+figure(1)
 tiledlayout(2,2) 
 
 % Plotting stuff
@@ -86,11 +86,10 @@ title('Stable Manifold')
 
 % TODO: Fix Intvals
  unpoly=mfld_poly(params,uncoeff,V,D);
- % return
- unstable_bound = min(unpoly(find(unpoly > 0)));
+unstable_bound =unpoly;
 
  stpoly=mfld_poly(params,stabcoeff,V,D);
- stable_bound = min(stpoly(find(stpoly > 0)));
+ stable_bound = stpoly;
 %  
   disp('The error on the parameterization for the unstable manifold is: ')
   disp(unstable_bound)
