@@ -26,9 +26,7 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
  
 
     G_hat_N = DFQbundle(params_extend, mflds_extend); % I think this is \hat G
-
-     
-
+    
     p1 = mflds.stable.coeffs(:,:,1);
 
 
@@ -40,10 +38,11 @@ function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,
     W_0_inv_norm = norm(W_0_inv );
 
     % P_infty
-    P_infty = 1e-14;
+    P_infty = + mflds.stable.r_min;
 
 
     % Epsilon_infty
+    % Lemma 6.7
 
     eps_infty = 2*params.nu* P_infty +3*(2*sum(abs(p1),'all')*P_infty +P_infty^2 );
     
@@ -82,7 +81,7 @@ A_norm = sum(abs(normalForm_coeff),'all');
     %%%  Y_0^c  %%% 
 % This only needs things of order N+1 and N+2
     
-little_sum = zero; 
+    little_sum = zero; 
     for alpha = order-1:order 
         for i = 0:alpha 
             j = alpha - i;  
@@ -108,8 +107,6 @@ little_sum = zero;
     Zb =  K_N*eps_infty*W_0_inv_norm*W_0_norm
 
     %%%  Z_0^c  %%% 
-
-    
     Zc =  A_norm*K_N
 
     %  Rad Poly 

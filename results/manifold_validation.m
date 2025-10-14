@@ -1,12 +1,5 @@
 clear all 
 
-%-------------------------------------------------------------------------
-% first we calculate the size of the eigenvector/eigenvalue enclosures
-% !!! TODO: Make Rigorous; Maybe use formula for e-vec?
-% 
-point=[0,0,0,0];
-
-
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/70;
@@ -30,6 +23,8 @@ end
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
  
+% TODO: Replace convolution with Taylor_Convolution.
+
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
 
@@ -40,17 +35,6 @@ V = [mflds.vectors.s,mflds.vectors.u];
 uncoeff   = mflds.unstable.coeffs;
 stabcoeff = mflds.stable.coeffs;
 
-
-k=6;
-mat=zeros(k^2,4)*stabcoeff(1,1,1);
-K = zeros(k^2, 2);
-for i = 1:k 
-    for j = 1:k
-        row=(i-1)*k + j;
-        mat(row,:)=stabcoeff(i,j,:);
-        K(row,:)=[i-1,j-1];
-    end  
-end
 
 figure(1)
 tiledlayout(2,2) 
@@ -86,15 +70,17 @@ title('Stable Manifold')
 
 % TODO: Fix Intvals
  unpoly=mfld_poly(params,uncoeff,V,D);
+ mflds.unstable.r_min = unpoly;
 unstable_bound =unpoly;
 
- stpoly=mfld_poly(params,stabcoeff,V,D);
- stable_bound = stpoly;
+ % stpoly=mfld_poly(params,stabcoeff,V,D);
+ % mflds.stable.r_min = stpoly;
+ % stable_bound = stpoly;
 %  
   disp('The error on the parameterization for the unstable manifold is: ')
   disp(unstable_bound)
-  disp('The error on the parameterization for the stable manifold is: ')
- disp(stable_bound)
+  % disp('The error on the parameterization for the stable manifold is: ')
+ % disp(stable_bound)
 
  % TODO: Store the error bound
 

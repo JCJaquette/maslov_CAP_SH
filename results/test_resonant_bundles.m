@@ -15,7 +15,7 @@ else
     zero=0;
 end
 
-order = 20-1; 
+order = 30-1; 
 params.order = order; 
 params.mfld.order = order; 
 
@@ -27,6 +27,13 @@ params.mfld.order = order;
 
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
+
+    D = diag([mflds.values.s,mflds.values.u]);
+    V = [mflds.vectors.s,mflds.vectors.u];
+
+    stpoly=mfld_poly(params, mflds.stable.coeffs ,V,D);
+ 
+    mflds.stable.r_min = stpoly;
 
 
 % Computes Manifold coeff, and bundle Coeff.

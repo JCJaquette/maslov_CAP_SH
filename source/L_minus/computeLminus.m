@@ -1,7 +1,7 @@
 function L_approx_out = computeLminus(params,mflds) 
     % Stores 
 
-% Eq (3.7) 
+    % Eq (3.7) 
     r = (1+abs(params.mu))^(1/2);    
 
     % C.f. Prop 3.4
@@ -28,18 +28,25 @@ function L_approx_out = computeLminus(params,mflds)
 
 
     Abs_Re_mu = abs(real(lam1 ));
+
+    
      
-    % TODO need to address the tail terms 
-    norms = zeros(params.mfld.order, params.mfld.order);
-    for i = 1:params.mfld.order 
-        for j = 1:params.mfld.order
-            norms(i,j) = vecnorm(mflds.unstable.coeffs(i,j,:)); % What is this??
-        end
+    
+    component_norms = zeros(1,4);
+    if params.isIntval
+        component_norms = intval(component_norms);
     end
-    supQ = vecnorm(vecnorm(norms));
+
+    for i = 1:4
+        component_norms(i)= sum(abs(mflds.unstable.coeffs(:,:,i)),'all');
+    end
+    % TODO need to decide on the norm here.
+    p = 1;
+    manifold_norm = norm(component_norms,p) + mflds.unstable.r_min;
+    
     
     % (3.3)
-    C = supQ*(2*params.nu + 6*supQ);
+    C = manifold_norm *(2*params.nu + 6*manifold_norm );
 
     % (5.1)
     tau_const = K*C/Abs_Re_mu ;
