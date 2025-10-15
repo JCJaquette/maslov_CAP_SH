@@ -1,6 +1,9 @@
-function [ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,mflds)
+function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
+    All_Bundle_coeffs = bndl.coeffs;
+    normalForm_coeff = bndl.normalForm;
+
     order = params.mfld.order; 
     G_hat = DFQbundle(params, mflds); % I think this is \hat G
 

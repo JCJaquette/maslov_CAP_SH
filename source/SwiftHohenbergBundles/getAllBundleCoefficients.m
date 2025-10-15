@@ -1,4 +1,4 @@
-function [coeffs, normalForm_coeff,mflds]= getAllBundleCoefficients(params,mflds)
+function [bndl]= getAllBundleCoefficients(params,mflds)
 % TODO: Restructure this so that the manifold coefficients are already
 % computed. 
 % TODO: Allow for either stable or unstable manifold to be called
@@ -98,6 +98,9 @@ vectors = mflds.vectors;
 
         end
     end
+
+    bndl.coeffs = coeffs;
+    bndl.normalForm = normalForm_coeff;
 
 
 end

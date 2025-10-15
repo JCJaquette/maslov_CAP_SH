@@ -30,7 +30,7 @@ BOOL_stable = 1;
 
 
 % Computes Manifold coeff, and bundle Coeff.
-[All_Bundle_coeffs, normalForm_coeff,mflds] = getAllBundleCoefficients(params,mflds);
+[bndl] = getAllBundleCoefficients(params,mflds);
 
 time1 = toc 
 tic
@@ -42,7 +42,7 @@ manifold_coeff_norm=zeros(order+1,1)*zero;
 % 2. Get Bundle Coefficients
 
 disp('Computing Radii Poly Bounds')
-[ r_min ] = bundle_rad_poly(params,All_Bundle_coeffs, normalForm_coeff,mflds);
+[ r_min ] = bundle_rad_poly(params,mflds,bndl);
 time1 
 toc
 r_min

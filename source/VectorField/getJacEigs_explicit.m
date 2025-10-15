@@ -3,7 +3,7 @@ function [vectors, values]= getJacEigs_explicit(params)
 
 % This is how we compute the eigenvectors, although we use a simplification
 % to minimize the error a bit
-        % % % Define change of coordinates 
+        % % % Define change of coordinates  symplectic = S * normal
         % % S= [1 0 0 0;
         % %     0 0 1 0;
         % %     0 2 0 1;
