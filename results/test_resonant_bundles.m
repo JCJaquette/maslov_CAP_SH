@@ -7,7 +7,7 @@ params.lambda = 0;
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/7;
-params.isIntval = 0;
+params.isIntval = 1;
 
 if params.isIntval
     zero=intval(0);
@@ -15,25 +15,18 @@ else
     zero=0;
 end
 
-order = 30-1; 
+order = 10-1; 
 params.order = order; 
 params.mfld.order = order; 
 
 
 
-% TODO: What is the difference between getJacEigs and getJacEigs_toMerge??
-% params.eigenvalues = eigenvalues; 
-% params.eigenvectors = eigenvectors; 
-
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
 
-    D = diag([mflds.values.s,mflds.values.u]);
-    V = [mflds.vectors.s,mflds.vectors.u];
-
-    stpoly=mfld_poly(params, mflds.stable.coeffs ,V,D);
+BOOL_stable = 1;
+[mflds,r_min_s]=mfld_poly(params, mflds,BOOL_stable );
  
-    mflds.stable.r_min = stpoly;
 
 
 % Computes Manifold coeff, and bundle Coeff.

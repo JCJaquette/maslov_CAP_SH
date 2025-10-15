@@ -34,14 +34,14 @@ function [vectors, values]= getJacEigs_explicit(params)
             1 ; 
             sqrt(r) *exp(1i*theta/2) ];
 
- % scale the eigenvectors if necessary
+ % scale the eigenvectors  
      if params.isIntval
         norm_vec = mid(norm(Vu1));
      else 
          norm_vec = norm(Vu1);
      end
     Vu1 = Vu1/norm_vec;
-    Vu1 =params.scale*Vu1;
+    % Vu1 =*Vu1;
 
     Vu2 = conj(Vu1);
     Vs1 = Vu1.*[1;-1;1;-1];

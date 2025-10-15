@@ -6,7 +6,6 @@ function coeff = calc_proj_coeff(eigenvalues, eigenvectors,params)
 %         of Df(0)
 %         eigenvectors - corresponding eigenvectors
 %         params - 2x1 vector in the form [mu, nu']
-%         error - the error from the rigorous enclosure of the eigenpairs
 % Output  coeff - multidimensional array of size (order+1) x (order+1) x 4
 %         entry (i,j,k) corresponds to the coefficient k_{i-1,j-1} where in
 %         the write up, k is either a,b,c,d and we subtract 1 from each

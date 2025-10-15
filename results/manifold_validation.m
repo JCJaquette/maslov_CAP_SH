@@ -2,7 +2,7 @@ clear all
 
 params.mu = 0.05; 
 params.nu = 1.6; 
-params.scale = 1/70;
+params.scale = 1/7;
 params.lambda = 0;
 
 order = 10-1;  % Manifold
@@ -23,25 +23,20 @@ end
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
  
-% TODO: Replace convolution with Taylor_Convolution.
+% TODO: Replace convolution with Taylor_Convolution. ??
 
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
 
-D = diag([mflds.values.s,mflds.values.u]);
-V = [mflds.vectors.s,mflds.vectors.u];
-
-
-uncoeff   = mflds.unstable.coeffs;
-stabcoeff = mflds.stable.coeffs;
+ 
 
 
 figure(1)
 tiledlayout(2,2) 
 
 % Plotting stuff
-uncoeff_plot = uncoeff;
-stabcoeff_plot = stabcoeff;
+uncoeff_plot = mflds.unstable.coeffs;
+stabcoeff_plot = mflds.stable.coeffs;
 if params.isIntval
     uncoeff_plot =uncoeff_plot.mid;
     stabcoeff_plot =stabcoeff_plot.mid;
@@ -68,19 +63,21 @@ title('Stable Manifold')
 %--------------------------------------------------------------------------
 % Now we apply Lemma 4.4 to validate the parameterization we computed 
 
-% TODO: Fix Intvals
- unpoly=mfld_poly(params,uncoeff,V,D);
- mflds.unstable.r_min = unpoly;
-unstable_bound =unpoly;
 
- % stpoly=mfld_poly(params,stabcoeff,V,D);
- % mflds.stable.r_min = stpoly;
- % stable_bound = stpoly;
-%  
+
+% TODO: Fix Intvals
+BOOL_stable = 0;
+ [mflds,r_min_u] =mfld_poly(params,mflds,BOOL_stable);
+ % mflds.unstable.r_min = unstable_bound;
+ 
+BOOL_stable =1;
+ [mflds,r_min_s]=mfld_poly(params,mflds,BOOL_stable );
+ % mflds.stable.r_min = stable_bound;
+ 
   disp('The error on the parameterization for the unstable manifold is: ')
-  disp(unstable_bound)
-  % disp('The error on the parameterization for the stable manifold is: ')
- % disp(stable_bound)
+  disp(r_min_u)
+  disp('The error on the parameterization for the stable manifold is: ')
+ disp(r_min_s)
 
  % TODO: Store the error bound
 

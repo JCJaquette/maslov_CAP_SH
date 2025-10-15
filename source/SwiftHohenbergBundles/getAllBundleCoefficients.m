@@ -35,6 +35,9 @@ vectors = mflds.vectors;
     
     % original coordinates 
     coeffs = zeros(4,4,order + 1, order + 1); % W--series
+    if params.isIntval
+        coeffs =intval(coeffs);
+    end
     coeffs(:,:,1,1)=Q0;
 
     
@@ -53,7 +56,7 @@ vectors = mflds.vectors;
     
     disp('Computing Bundles')
     for alpha = 1:order
-        alpha
+        % alpha
         for n = 0:alpha 
             
             
