@@ -6,7 +6,7 @@ x = zeros(1, 4);
 params.lambda = 0; 
 params.mu = 0.05; 
 params.nu = 1.6; 
-params.scale = 1/8;
+params.scale = 1/7;
 params.isIntval = 0;
 
 if params.isIntval
@@ -15,7 +15,7 @@ else
     zero=0;
 end
 
-order = 40-1; 
+order = 32-1; 
 params.order = order; 
 params.mfld.order = order; 
 
@@ -56,7 +56,7 @@ psi_0=3.669582882882883;
     psi1 = cos(psi_0);
     psi2 = sin(psi_0); 
 
-    sigma_0 = exp(1i*2)*.1;
+    sigma_0 = exp(1i*2);
 
     
     tmax= 50;

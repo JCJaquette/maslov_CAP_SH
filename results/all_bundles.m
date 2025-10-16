@@ -7,7 +7,7 @@ params.lambda = 0;
 params.mu = 0.05; 
 params.nu = 1.6; 
 params.scale = 1/7;
-params.isIntval = 1;
+params.isIntval = 0;
 
 if params.isIntval
     zero=intval(0);
@@ -15,7 +15,7 @@ else
     zero=0;
 end
 
-order = 10-1; 
+order = 35-1; 
 params.order = order; 
 params.mfld.order = order; 
 

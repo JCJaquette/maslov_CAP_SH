@@ -7,6 +7,9 @@ function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
     order = params.mfld.order; 
     G_hat = DFQbundle(params, mflds); % I think this is \hat G
 
+    values = mflds.values;
+    e_val = [values.s, values.u];
+
     order_2 = 3*(order+1)-1;
 
     params_extend = params;
@@ -37,8 +40,8 @@ function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
     W_0 = All_Bundle_coeffs(:,:,1,1);
     W_0_inv = inv(W_0);
 
-    W_0_norm = norm(W_0 );
-    W_0_inv_norm = norm(W_0_inv );
+    W_0_norm = norm(W_0 ,1);
+    W_0_inv_norm = norm(W_0_inv ,1);
 
     % P_infty
     P_infty = + mflds.stable.r_min;
@@ -54,7 +57,8 @@ function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
     [rho, theta]= rTh_coord(params) ;
 
 
-    K_N = 1 / ( order + sqrt(rho) * cos( theta/2) );
+    K_N = 1 / ( order * sqrt(rho) * cos( theta/2) );
+    K_Np2 = 1 / ( (order +2)* sqrt(rho) * cos( theta/2) );
 
 %%% More bounds 
 G_N_norm = sum(abs(G_hat_N),'all'); 
@@ -65,17 +69,27 @@ A_norm = sum(abs(normalForm_coeff),'all');
 
     %%%  Y_0^a  %%% 
 
-    little_sum = zero; 
+    % little_sum = zero; 
+    little_sum_2 = zero; 
     for alpha = order+1:3*order 
         for i = 0:alpha 
             j = alpha - i;  
-            summand = starMat(G_hat_N,All_Bundle_coeffs_extend,i,j);
-            little_sum =little_sum +sum(abs(summand),'all'); 
+            % summand = starMat(G_hat_N,All_Bundle_coeffs_extend,i,j);
+            summand_2 = K_op(e_val,i,j).* (W_0\ starMat(G_hat_N,All_Bundle_coeffs_extend,i,j));
+            % little_sum =little_sum +sum(abs(summand),'all'); 
+            little_sum_2 =little_sum_2 +norm(abs(summand_2),1); 
         end
     end
 
+
+
+
+
     % This needs to compute the convolution and throw away lower order terms
-    Ya_0 = K_N *W_0_inv_norm  *little_sum
+    % Ya_0 = K_N *W_0_inv_norm  *little_sum
+    Ya_0 = little_sum_2
+
+
 
     %%%  Y_0^b  %%% 
 
@@ -94,23 +108,47 @@ A_norm = sum(abs(normalForm_coeff),'all');
     
     Yc_0= K_N * A_norm *little_sum
 
+G_hat_N_norm=zeros(order_2 +1,order_2 +1);
+    for i = 1:order_2 +1
+        for j= 1:order_2 +1
+            G_hat_N_norm(i,j) = norm(G_hat_N(:,:,i,j),1);
+        end
+    end
+
+    surf(G_hat_N_norm)
 
     %%%  Z bound  %%% 
 
     %%%  Z_0^a  %%% 
-    first_component = sum(abs(G_hat_N(:,:,1,1)),'all');
 
-    Za =  (G_N_norm-first_component )*K_N*W_0_inv_norm*W_0_norm
-% Note: W_0_inv_norm*W_0_norm ~ 9, so multiply this out, and 
-% subtract off the first coeffieinet 
-% This'll get us nearly 2 orders of magnitude
+    % first_component = sum(abs(G_hat_N(:,:,1,1)),'all');
+
+    little_sum = zero; 
+    for alpha = 1:order_2 
+        % K_N_alpha = 1 / (( order+alpha) * sqrt(rho) * cos( theta/2) ) ;
+        for i = 0:alpha 
+            j = alpha - i;  
+            % summand = starMat(G_hat_N,All_Bundle_coeffs_extend,i,j);
+            summand =  (W_0\ G_hat_N(:,:,i+1,j+1)*W_0 );
+            % little_sum =little_sum +sum(abs(summand),'all'); 
+            little_sum =little_sum +norm(abs(summand),1); 
+            % little_sum_2 =little_sum_2 +norm(abs(summand),1)*K_N_alpha ; 
+        end
+    end
+
+ 
+
+    % % % % Za =  (G_N_norm-first_component )*K_N*W_0_inv_norm*W_0_norm
+    Za =  little_sum*K_N
+    % Za =  little_sum_2 
+
 
     %%%  Z_0^b  %%% 
 
     Zb =  K_N*eps_infty*W_0_inv_norm*W_0_norm
 
     %%%  Z_0^c  %%% 
-    Zc =  A_norm*K_N
+    Zc =  A_norm*K_Np2
 
     %  Rad Poly 
 
