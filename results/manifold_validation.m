@@ -1,17 +1,17 @@
 clear all 
 
-params.mu = 0.05; 
+params.mu = 0.2; 
 params.nu = 1.6; 
-params.scale = 1/7;
+params.scale = 1/2;
 params.lambda = 0;
 
-order = 10-1;  % Manifold
+order = 30;  % Manifold
 
 params.order = order; % TODO Why do we have two orders?
 params.mfld.order = order; 
 
 % Add This boolean for intervals
-params.isIntval = 1;
+params.isIntval = 0;
 
 if params.isIntval
     params.mu = intval(params.mu);
@@ -48,7 +48,8 @@ plot_coeff(uncoeff_plot,order);
 title('Coefficient norms for unstable parameterization')
 
 nexttile
-plot_coeff(stabcoeff_plot,order);
+% plot_coeff(stabcoeff_plot,order);
+plot_coeff_sum(mflds.stable.coeffs,params,'o')
 title('Coefficient norms for stable parameterization')
 
 nexttile
@@ -59,7 +60,11 @@ nexttile
 plot_manifold(stabcoeff_plot,order,'b');
 title('Stable Manifold')
 
-
+figure(20)
+plot_manifold(uncoeff_plot,order,'r');
+hold on
+plot_manifold(stabcoeff_plot,order,'b');
+hold off
 %--------------------------------------------------------------------------
 % Now we apply Lemma 4.4 to validate the parameterization we computed 
 

@@ -108,14 +108,14 @@ A_norm = sum(abs(normalForm_coeff),'all');
     
     Yc_0= K_N * A_norm *little_sum
 
-G_hat_N_norm=zeros(order_2 +1,order_2 +1);
-    for i = 1:order_2 +1
-        for j= 1:order_2 +1
-            G_hat_N_norm(i,j) = norm(G_hat_N(:,:,i,j),1);
-        end
-    end
-
-    surf(G_hat_N_norm)
+% G_hat_N_norm=zeros(order_2 +1,order_2 +1);
+%     for i = 1:order_2 +1
+%         for j= 1:order_2 +1
+%             G_hat_N_norm(i,j) = norm(G_hat_N(:,:,i,j),1);
+%         end
+%     end
+% 
+%     surf(G_hat_N_norm)
 
     %%%  Z bound  %%% 
 
@@ -136,6 +136,7 @@ G_hat_N_norm=zeros(order_2 +1,order_2 +1);
         end
     end
 
+    K_N
  
 
     % % % % Za =  (G_N_norm-first_component )*K_N*W_0_inv_norm*W_0_norm

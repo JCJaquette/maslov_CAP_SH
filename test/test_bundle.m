@@ -4,9 +4,9 @@ tic
 
 x = zeros(1, 4); 
 params.lambda = 0; 
-params.mu = 0.05; 
+params.mu = 0.2; 
 params.nu = 1.6; 
-params.scale = 1/7;
+params.scale = 1/2;
 params.isIntval = 0;
 
 if params.isIntval
@@ -15,7 +15,7 @@ else
     zero=0;
 end
 
-order = 32-1; 
+order = 40-1; 
 params.order = order; 
 params.mfld.order = order; 
 
@@ -34,6 +34,10 @@ BOOL_stable = 1;
 % Computes Manifold coeff, and bundle Coeff.
 [bndl] = getAllBundleCoefficients(params,mflds);
 
+disp('Computing Radii Poly Bounds')
+[ r_min ] = bundle_rad_poly(params,mflds,bndl);
+time_bndl_poly = toc
+r_min
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Compare 
@@ -59,7 +63,7 @@ psi_0=3.669582882882883;
     sigma_0 = exp(1i*2);
 
     
-    tmax= 50;
+    tmax= 40;
     tspan = [0,tmax];
 
    

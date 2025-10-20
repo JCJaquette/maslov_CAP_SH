@@ -15,16 +15,10 @@ vectors = mflds.vectors;
     
 
 
-   % v0 = vectors.s(:, 1)*params.scale; 
-    lam1 = values.s(1); 
-    lam2 = values.s(2); 
-
     %%% NOTE! See ordering of eigenvalues, (3.5)
     e_val = [values.s, values.u];
-    % e_val = [lam1 lam2 fliplr(values.u)];
 
     disp('Computing Manifold')
-    % mflds.coeff.s = calc_proj_coeff(values.s, vectors.s, params); 
     G_hat = DFQbundle(params, mflds); % I think this is \hat G
 
     %%% NOTE! See ordering of eigenvalues, (3.5)
