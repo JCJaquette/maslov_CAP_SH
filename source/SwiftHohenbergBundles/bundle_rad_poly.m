@@ -64,6 +64,7 @@ function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
 G_N_norm = sum(abs(G_hat_N),'all'); 
 W_N_norm = sum(abs(All_Bundle_coeffs),'all'); 
 A_norm = sum(abs(normalForm_coeff),'all'); 
+A_norm = max(max(max(max(abs(normalForm_coeff)))));
 
     %%%  Y bound  %%% 
 
@@ -102,7 +103,7 @@ A_norm = sum(abs(normalForm_coeff),'all');
     for alpha = order-1:order 
         for i = 0:alpha 
             j = alpha - i;  
-            little_sum =little_sum +sum(abs(All_Bundle_coeffs(:,:,i+1,j+1)),'all');
+            little_sum =little_sum +norm(abs(All_Bundle_coeffs(:,:,i+1,j+1)),1);
         end
     end
     

@@ -1,4 +1,8 @@
-% Takes ~11 min to run with intlab
+% @ N=32, with intlab 
+% Takes ~13 min to get manifold 
+% 6 min per manifold validation
+% 20 sec to get bundles 
+% 10 min to validate bundle
  
 %% Initialize Parameters
 clear
@@ -29,8 +33,10 @@ tic
 %  TODO: Make get_mflds universal
 mflds=get_mflds(params);
 time_get_mflds = toc 
+
 tic
 BOOL_stable = 1;
+disp('Computing Radii Poly Bounds')
 [mflds,r_min_s]=mfld_poly(params, mflds,BOOL_stable );
 r_min_s
  time_mfld_poly = toc
@@ -98,3 +104,79 @@ end
 
  
 return
+
+% all_bundles
+% time_get_mflds =
+%      7.731630329000001e+02
+% Computing Radii Poly Bounds
+% Calculating Y0.
+%   1.0e-016 *
+%    0.7755481335____
+% Calculating Z1.
+%    0.3296918836028_
+% Calculating Z2.
+%     @(r)K_N*(6*linsum+2*params.nu+3*r)
+%    0.7208189855424_
+%    0.30130822692909
+% r_min_s =
+%      1.157014020859463e-16
+% time_mfld_poly =
+%      3.508071083000001e+02
+% Calculating Y0.
+%   1.0e-016 *
+%    0.7755481335____
+% Calculating Z1.
+%    0.3296918836028_
+% Calculating Z2.
+%     @(r)K_N*(6*linsum+2*params.nu+3*r)
+%    0.7208189855424_
+%    0.30130822692909
+% Found L_minus.
+%   34.680107189078__
+% intval sigma_0 = 
+%   1.0e-003 *
+%    0.5125868115903_
+% Computing Manifold
+% Computing Bundles
+% time_get_bndl =
+%   13.549899100000002
+% Computing Radii Poly Bounds
+% intval Ya_0 = 
+%   1.0e-008 *
+%    1.______________
+% intval Yb_0 = 
+%   1.0e-013 *
+%    0.18240796______
+% intval Yc_0 = 
+%   1.0e-008 *
+%    1.______________
+% intval K_N = 
+%    0.14305010031898
+% intval Za = 
+%    0.761361386189__
+% intval Zb = 
+%   1.0e-014 *
+%    0.12478305441991
+% intval Zc = 
+%    0.1216362038152_
+% intval Y_0 = 
+%   1.0e-008 *
+% [   0.00000182407958,   0.51792892341696] 
+% intval Z = 
+%    0.882997590004__
+% intval r_min = 
+%   1.0e-007 *
+% [   0.00000155901026,   0.44266517539042] 
+% time_bndl_poly =
+%      5.762073050000001e+02
+% intval r_min = 
+%   1.0e-007 *
+% [   0.00000155901026,   0.44266517539042] 
+% Unable to perform assignment because value of type 'intval' is not convertible to 'double'.
+% Error in plot_bndl (line 38)
+%             plotpoints(j,k,:)=real(pt_local);
+% Error in all_bundles (line 72)
+%     plots=plot_bndl(params,mflds,bndl,'b');
+% Caused by:
+%     Error using double
+%     Conversion to double from intval is not possible. 

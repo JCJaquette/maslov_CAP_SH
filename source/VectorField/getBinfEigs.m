@@ -40,7 +40,11 @@ function [vectors, values] = getBinfEigs(params)
             exp(-1i*theta/2)/sqrt(r) ];
 
 % scale the eigenvectors if necessary
-    Vu1 = Vu1/mid(sqrt( 1+1/r^2+5/r+r+4*cos(theta) ) );
+    if params.isIntval
+        Vu1 = Vu1/mid(sqrt( 1+1/r^2+5/r+r+4*cos(theta) ) );
+    else
+        Vu1 = Vu1/(sqrt( 1+1/r^2+5/r+r+4*cos(theta) ) );
+    end
 
     Vu2 = conj(Vu1);
     Vs1 = Vu1.*[1;1;-1;-1];

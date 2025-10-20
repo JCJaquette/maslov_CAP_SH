@@ -11,6 +11,8 @@ function plots=plot_bndl(params,mflds,bndl,color)
     All_Bundle_coeffs = bndl.coeffs;
     coeff = mflds.stable.coeffs;
     order = params.mfld.order; 
+
+    % TODO: Add intlab compatibility
     
     % We plot them in polar coordinates 
     
