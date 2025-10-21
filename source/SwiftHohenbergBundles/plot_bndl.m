@@ -10,6 +10,10 @@ function plots=plot_bndl(params,mflds,bndl,color)
 
     All_Bundle_coeffs = bndl.coeffs;
     coeff = mflds.stable.coeffs;
+    if params.isIntval
+        coeff=coeff.mid;
+        All_Bundle_coeffs=All_Bundle_coeffs.mid;
+    end
     order = params.mfld.order; 
 
     % TODO: Add intlab compatibility
@@ -27,6 +31,9 @@ function plots=plot_bndl(params,mflds,bndl,color)
 
     
     E = [ real(mflds.vectors.s(:,1)) imag(mflds.vectors.s(:,1)) real(mflds.vectors.u(:,1)) imag(mflds.vectors.u(:,1))];
+    if params.isIntval
+        E=E.mid;
+    end
     % E=eye(4);
     bndle_no=3;
     for j=1:p_r
@@ -34,7 +41,7 @@ function plots=plot_bndl(params,mflds,bndl,color)
             % pt_local = zeros(4,1);
             s1=r(j)*cos(theta(k));
             s2=r(j)*sin(theta(k));
-            pt_local = E\mfld_one_point(s1,s2,mflds.stable.coeffs, params);
+            pt_local = E\mfld_one_point(s1,s2,coeff, params);
             % bndl_local = bndl_one_point(s1, s2, bndl, params);
              
             plotpoints(j,k,:)=real(pt_local);
@@ -65,8 +72,12 @@ function plots=plot_bndl(params,mflds,bndl,color)
             pt_local = zeros(4,1);
             s1=r2(j)*cos(theta2(k));
             s2=r2(j)*sin(theta2(k));
-            pt_local = E\mfld_one_point(s1,s2,mflds.stable.coeffs, params);
+            pt_local = E\mfld_one_point(s1,s2,coeff, params);
             bndl_local = bndl_one_point(s1, s2, bndl, params);
+
+            if params.isIntval
+                bndl_local =bndl_local .mid;
+            end
              
             plotpoints2(j,k,:)=real(pt_local);
             plotbndl(j,k,:)=E\real(bndl_local(:,bndle_no));

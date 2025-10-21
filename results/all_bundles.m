@@ -11,7 +11,7 @@ params.lambda = 0;
 params.mu = 0.2; 
 params.nu = 1.6; 
 params.scale = 1/2;
-params.isIntval =0;
+params.isIntval =1;
 
 BOOL_plot = 1;
 BOOL_save = 0;
@@ -23,7 +23,7 @@ else
     zero=0;
 end
 
-order = 32; 
+order = 30; 
 params.order = order; 
 params.mfld.order = order; 
 
