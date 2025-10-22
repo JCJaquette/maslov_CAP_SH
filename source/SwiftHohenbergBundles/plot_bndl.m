@@ -98,7 +98,7 @@ function plots=plot_bndl(params,mflds,bndl,color)
     hold on 
     % surf(X,Y,Z, 'FaceColor',color, 'FaceAlpha',.75,'EdgeColor','none');  
     surf(X,Y,Z, 'FaceColor',color, 'EdgeColor','none');  
-    zlim([-.5,.125])
+    % zlim([-.5,.125])
     camlight
     hold off 
     xlabel('$e^s_{Re}$','Interpreter','latex')

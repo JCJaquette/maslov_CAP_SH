@@ -2,12 +2,12 @@
 % swift-hohenberg equation and plugs in the coefficients for the unstable
 % manifold. 
 
-function coeffs = DFQbundle(params, mflds)
+function coeffs = DGPbundle(params, mflds)
 
     % Make for either stable / unstable ... eventually
-    Q = mflds.stable.coeffs;
+    P = mflds.stable.coeffs;
    
-    Q1 = Q(:,:,1);
+    p1 = P(:,:,1);
     
     order = params.mfld.order;
     coeffs = zeros(4,4,order+1,order+1);
@@ -17,16 +17,13 @@ function coeffs = DFQbundle(params, mflds)
     end
     
     coeffs(:,:,1,1) = [0,1,0,0; 0,0,1,0; 0,0,0,1; -params.mu - 1, 0, -2, 0];
-    % 
-    % coeffs_alt = coeffs;
-    % coeffs_new = 0*coeffs_alt;
+
     for alpha = 1:order 
         for i = 0:alpha 
             j = alpha - i;  
-            coeffs41 = 2*params.nu*Q1(i+1,j+1) - 3*starVec(Q1,Q1,i,j);
+            coeffs41 = 2*params.nu*p1(i+1,j+1) - 3*starVec(p1,p1,i,j);
             coeffs(:,:,i+1,j+1) = [0,0,0,0;0,0,0,0;0,0,0,0;coeffs41, 0, 0, 0];
         end
     end
-    % coeffs_alt(4,1,:,:) =coeffs_alt(4,1,:,:)+2*params.nu*Q1- 3*quadratic_cauchy_product_2D(Q1,Q1)
     
 end

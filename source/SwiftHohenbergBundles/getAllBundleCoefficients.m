@@ -19,7 +19,7 @@ vectors = mflds.vectors;
     e_val = [values.s, values.u];
 
     % disp('Computing Manifold')
-    G_hat = DFQbundle(params, mflds); % I think this is \hat G
+    G_hat = DGPbundle(params, mflds); % I think this is \hat G
 
     %%% NOTE! See ordering of eigenvalues, (3.5)
     Q0 = [vectors.s, vectors.u]; 
