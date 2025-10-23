@@ -1,4 +1,4 @@
-function [mflds,r_min] =mfld_poly(params,mflds,BOOL_stable)
+function [mflds,r_min, data_mfld_poly ] =mfld_poly(params,mflds,BOOL_stable)
 % This function validates the parameterization of the invariant manifold 
 % Inputs: params - structure
 %         mflds  - structure 
@@ -25,6 +25,7 @@ function [mflds,r_min] =mfld_poly(params,mflds,BOOL_stable)
     Q_inv_last = abs(Q_inv(:,4));
 
     K_N = norm(Q,1)*max(Q_inv_last)/maxKmn
+    data_mfld_poly.K_N =K_N ;
     
     % extract the coefficients a_{mn}
     a=coeff(1:order+1,1:order+1,1);    
@@ -79,7 +80,7 @@ function [mflds,r_min] =mfld_poly(params,mflds,BOOL_stable)
     
     Y0 = K_N*(params.nu*quadsum+cubesum);
     disp(Y0)
-    
+    data_mfld_poly.Y0 =Y0 ;
     
     %%%%%%
     % Z1 %
@@ -91,31 +92,36 @@ function [mflds,r_min] =mfld_poly(params,mflds,BOOL_stable)
 
     Z1= K_N*(2*params.nu*linsum + 3*lowerquadsum);
     disp(Z1);
+    data_mfld_poly.Z1=Z1;
 
     
     %%%%%%
     % Z2 %
     %%%%%%
     disp('Calculating Z2.')
+    Z2_0=K_N*(6*linsum + 2*params.nu);
+    Z2_1=K_N*3;
     
     Z2=@(r)K_N*(6*linsum+2*params.nu+3*r);
     disp(Z2)
     
-    b=K_N*3;
-    a=K_N*(6*linsum + 2*params.nu);
   
-    disp(a)
-    disp(b)
+    disp(Z2_0)
+    disp(Z2_1)
+
+    data_mfld_poly.Z2_0 = Z2_0;
+    data_mfld_poly.Z2_1 = Z2_1;
 
     % this section of code builds an interval on which the sup of the polynomial is negative 
     poly=@(r)(Z1+Z2(r)*r)*r+Y0-r;
     
+    data_mfld_poly.poly = poly;
     
     % get numerical roots
     if params.isIntval
-        p=[b.sup, a.sup, Z1.sup-1, Y0.sup];
+        p=[Z2_1.sup, Z2_0.sup, Z1.sup-1, Y0.sup];
     else
-        p=[b, a, Z1-1, Y0];
+        p=[Z2_1, Z2_0, Z1-1, Y0];
     end
     
     cube_roots =roots(p);
@@ -145,5 +151,6 @@ function [mflds,r_min] =mfld_poly(params,mflds,BOOL_stable)
         mflds.unstable.r_min = r_min;
     end
 
+    data_mfld_poly.r_min = r_min;
 
 end

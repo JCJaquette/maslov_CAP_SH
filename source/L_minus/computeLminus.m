@@ -51,6 +51,7 @@ function L_approx_out = computeLminus(params,mflds)
     % (5.1)
     tau_const = K*C/Abs_Re_mu ;
 
+    % TODO: Fix This
     if tau_const < 1 
         if tau_const/(1-tau_const) < upperbound 
             Lminus_local=0;
@@ -59,6 +60,8 @@ function L_approx_out = computeLminus(params,mflds)
             params.Lminus = Lminus_local; 
             return
         end
+    else
+        L_approx = nan;
     end
 
 

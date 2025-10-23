@@ -1,10 +1,11 @@
-function [ r_min ] = bundle_rad_poly(params,mflds,bndl)
+function [ r_min, data_bndl_poly] = bundle_rad_poly(params,mflds,bndl)
 % This function validates the parameterization of the bundles of the invariant manifold 
 % Inputs: params - structure
 %         mflds  - structure 
 %         BOOL_stable - whether to compute the stable manifold (1) or unstable (0). 
 % Output: 
 %         r_min - value for which p(r_min) < 0 ; or NaN 
+%         bndl_poly - contains all the data from the rad poly calculation 
 % 
 
     % Intlab compatible
@@ -102,11 +103,13 @@ W_N_norm = sum(abs(All_Bundle_coeffs),'all');
         Ya_0_vec(j)=sum(vault(j,:,:),'all');
     end
     Ya_0 = max(Ya_0_vec);
-try
-    Ya_0_vec.sup
-    Ya_0_vec.inf
-    Ya_0_vec.rad
-end
+    try
+        Ya_0_vec.sup
+        Ya_0_vec.inf
+        Ya_0_vec.rad
+    end
+
+    data_bndl_poly.Ya_0_vec=Ya_0_vec;
 
  
 
@@ -123,6 +126,7 @@ end
     
 
     Yb_0 = max(Yb_0_vec);
+    data_bndl_poly.Yb_0_vec=Yb_0_vec;
 
     %%%%%%%%%%%%%%%
     %%%  Y_0^c  %%%
@@ -157,6 +161,7 @@ normalForm_coeff;
 
     end
     Yc_0_vec = sum(little_sum );
+    data_bndl_poly.Yc_0_vec=Yc_0_vec;
     
     Yc_0 = max(Yc_0_vec )
 
@@ -196,6 +201,7 @@ normalForm_coeff;
             Za_vec (j) = Za_vec(j) * K_N_u;
         end
     end
+    data_bndl_poly.Za_vec =Za_vec ;
     Za = max(Za_vec )
 
     %%%%%%%%%%%%%%%
@@ -209,6 +215,7 @@ normalForm_coeff;
     Zb_vec(3:4)=K_N_u*Zb_vec(3:4);
 
     Zb = max(Zb_vec );
+    data_bndl_poly.Zb_vec =Zb_vec ;
 
     %%%%%%%%%%%%%%%
     %%%  Z_0^c  %%% 
@@ -224,6 +231,8 @@ normalForm_coeff;
     end
     Zc_vec = sum(Norm_form_sum) * K_Np2_u;
     Zc =max(Zc_vec)
+
+    data_bndl_poly.Zc_vec =Zc_vec ;
  
     % Combine everything into the radii polynomial
 
@@ -235,6 +244,9 @@ normalForm_coeff;
 
     Z = Za+Zb+Zc
 
+    data_bndl_poly.Y_0=Y_0;
+    data_bndl_poly.Z=Z;
+
     if Z < 1
         r_min = Y_0 / (1-Z)
         if params.isIntval
@@ -245,4 +257,7 @@ normalForm_coeff;
         r_min=nan;
     end
 
+    data_bndl_poly.r_min = r_min;
+    data_bndl_poly.K_N_u=K_N_u;
+    data_bndl_poly.K_N_s=K_N_s;
 end
