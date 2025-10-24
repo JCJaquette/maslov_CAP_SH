@@ -10,7 +10,7 @@ x.psi=3.669582882882883;
 params.L = 3.922100000013819;
 params.rho = 1 - .01;
 params.scale = 3e-1;
-
+params.isIntval = 0;
 
 x.a1=1:1:m;
 x.a2=m+1:1:2*m;

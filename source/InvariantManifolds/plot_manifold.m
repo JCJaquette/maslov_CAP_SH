@@ -1,5 +1,12 @@
 function plots=plot_manifold(coeff,order,color)
-    p=30;
+% This function evaluates the function P on a grid of points and plots them
+% Inputs: coeff - corresponds to the coefficients computed for either the
+%                 stable or unstable manifold
+%         order - order of the parameterization 
+% Outputs: plots = 0
+%          also generates a 3D plot. In this case, we omit the third
+%          component (seemed to generate the best plot)
+    p=50;
     
     % We plot them in polar coordinates 
     r=linspace(0,1,p);
@@ -12,17 +19,21 @@ function plots=plot_manifold(coeff,order,color)
             ps1s2 = zeros(4,1);
             s1=r(j)*cos(theta(k));
             s2=r(j)*sin(theta(k));
-        for n=0:order
-            for m=0:n
-                point=reshape(coeff(n-m+1,m+1,:),[4,1]);
-                
-                ps1s2=ps1s2+point.*(s1+1i*s2)^(n-m).*(s1-1i*s2)^m;
-            end
-           
-        end 
-        plotpoints(j,k,:)=real(ps1s2);
+            for n=0:order
+                for m=0:n
+                    point=reshape(coeff(n-m+1,m+1,:),[4,1]);
+                    
+                    ps1s2=ps1s2+point.*(s1+1i*s2)^(n-m).*(s1-1i*s2)^m;
+                end
+               
+            end 
+            plotpoints(j,k,:)=real(ps1s2);
         end
     end
-    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',0.5, 'EdgeColor','none');  
+    % surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',.75,'EdgeColor','none');  
+surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color,'EdgeColor','none');  
+    xlabel('x1')
+    ylabel('x2')
+    zlabel('x4')
     plots=0;
 end

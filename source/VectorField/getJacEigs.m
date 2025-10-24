@@ -1,7 +1,8 @@
 % x is a 4 dim vector
 function [vectors, values]= getJacEigs(x, params)
+%%%%%%%%%%%%%%% NOTE: This function is depricated
     % compute the jacobian for SH
-    Df0=JacSH(x(1),params.mu,params.nu);
+    Df0=JacSH(x(1),params);
     [V1,D1]=eigs(Df0);
     % sort the eigenvalues and eigenvectors by increasing real part
     [d, ind]=sort(diag(real(D1)));

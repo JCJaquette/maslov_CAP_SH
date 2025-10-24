@@ -1,5 +1,5 @@
 # Swift-Hohenberg-stability
-This code is written by Hannah Pieper and accompanies the dissertation "Spectral Stability via the Maslov Index and Computer Assisted Proofs" by Hannah Pieper. 
+This code is written by Hannah Pieper, Jonathan Jaquette and Mike Storm and aims to develop a computer-assisted proof of stability of pulses to the Swift-Hohenberg equation using Maslov index based methods.
 
 ## Subdirectories 
 [exploratory work](exploratory<>work): Contains scripts for exploratory work that is not included in the dissertation.
@@ -17,8 +17,6 @@ This code requires Matlab, the [Optimization Toolbox Add-On](https://www.mathwor
 
 
 ## Copyright and License 
-
-Copyright (C) 2024 H Pieper.
 
 This program is free software: you can redistribute it and/or modify it
 under the terms of the GNU General Public License as published by

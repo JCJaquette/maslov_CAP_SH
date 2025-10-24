@@ -1,3 +1,8 @@
 function matrix = B_infinity(params)
-    matrix = [0,0,0,1;0,0,1,-2;params.lambda-1-params.mu,0,0,0;0,1,0,0];
+% Asymptotic matrix in symplectic coordinates
+% cf Eq (3.2)
+    matrix = [0,0,0,1; ...
+              0,0,1,-2; ...
+            params.lambda-1-params.mu,  0,0,0;...
+              0,1,0,0];
 end
