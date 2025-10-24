@@ -11,16 +11,22 @@ clear
 params.mu = 0.2; 
 params.nu = 1.6;
 % Computational Parameters
-params.scale = 1/2;
-order = 35; 
+params.scale = 1/200;
+order = 2; 
 % Interval Arithmetic
 params.isIntval =1;
+if params.isIntval 
+    params.mu = intval('0.2'); 
+    params.nu = intval('1.6');
+end
+
+
 
 % Computation 
 BOOL_plot = 1;
-BOOL_save_image = 1;
+BOOL_save_image = 0;
 BOOL_save_data =0;
-BOOL_Lminus = 1;
+BOOL_Lminus = 0;
 
 % Potential parameter for finding 
 params.lambda = 0; 
@@ -64,7 +70,7 @@ end
     params.Lminus=Lminus;
     sigma_0 = exp(-real(mflds.values.u(1)) * params.Lminus)
  end
-
+% return
 
 %% Get Bundles
 tic
@@ -112,7 +118,7 @@ if BOOL_plot
         plot_coeff_sum((intval(bundle_unstab.rad) ) ,params,'x');
     end
 
-    legend('stable manifold','stable bundle','unstable bundle','error manifold','error u bundle','error s bundle')
+    legend('stable manifold','stable bundle','unstable bundle','error manifold','error s bundle','error u bundle')
     xlabel('$n$','Interpreter','latex')
     xlim([0,order])
     ylim([-25,2])
@@ -123,7 +129,7 @@ if BOOL_plot
     end
 end
 if BOOL_save_data 
-    save('nu_1p6_mu_0p2')
+    save('nu_1p6_mu_0p2_V2')
 end
  
 return

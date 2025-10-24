@@ -6,6 +6,7 @@ function L_approx_out = computeLminus(params,mflds)
 
     % C.f. Prop 3.4
     upperbound = 1/( 8*sqrt(r^3));
+    
 
     % We need tau/(1-tau) < upperbound
 
@@ -23,7 +24,9 @@ function L_approx_out = computeLminus(params,mflds)
     % [V,~] = eigs(shiftB); 
     
     % (3.14)
-    K = max(abs(V),[],'all')*max(abs(V^(-1)),[],'all');
+    % K = max(abs(V),[],'all')*max(abs(V^(-1)),[],'all');
+    K = norm(V,1)*norm(inv(V),1);
+    
     
 
 
@@ -52,7 +55,7 @@ function L_approx_out = computeLminus(params,mflds)
     tau_const = K*C/Abs_Re_mu ;
 
     % TODO: Fix This
-    if tau_const < 1 
+    if tau_const < 1  % Contraction 
         if tau_const/(1-tau_const) < upperbound 
             Lminus_local=0;
             disp('Found L_minus.')
@@ -64,15 +67,14 @@ function L_approx_out = computeLminus(params,mflds)
         L_approx = nan;
     end
 
-
-
+    
     % tau < tau_const * e^{ - |Re \mu | L_- }
 
     % We need tau / (1-tau) < upperbound
     if upperbound< 1
         % we want tau < upperbound/(1+upperbound)
-
-        L_approx = log(  upperbound/(1+upperbound) / tau_const)/(-Abs_Re_mu);
+        goal_tau = min([upperbound/(1+upperbound),.99999]);
+        L_approx = log( goal_tau  / tau_const)/(-Abs_Re_mu);
         L_approx = L_approx*1.0001;
     end
 

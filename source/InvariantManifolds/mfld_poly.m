@@ -127,10 +127,11 @@ function [mflds,r_min, data_mfld_poly ] =mfld_poly(params,mflds,BOOL_stable)
     cube_roots =roots(p);
 
 
-    r_min = min(cube_roots (find(cube_roots > 0)));
+    r_min = min(cube_roots (find(cube_roots >= 0)));
     if r_min == 0
         r_min = 10*Y0;
     end
+    
 
     % Check that there is a positive root
     if isempty(r_min)
@@ -138,6 +139,11 @@ function [mflds,r_min, data_mfld_poly ] =mfld_poly(params,mflds,BOOL_stable)
     else
         % inflate a bit
         r_min = r_min*1.00001;
+
+        if params.isIntval
+            r_min  = intval(r_min);
+        end
+
         % ensure the root is indeed negative
         if ~(poly(r_min)<0)
             r_min=NaN;
