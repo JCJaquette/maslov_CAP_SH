@@ -21,7 +21,7 @@ error=max(error);
 %----------------------------------------------------------------------
 % Now we scale the eigenvectors in accordance with Theorem 10.5.1 so the
 % last component is on the order of machine precision.
-tau=3e-1;
+tau=1/7;
 Vscale=V*tau;
 
 % Separate the eigenvalues and associated vectors into those with positive
@@ -34,7 +34,7 @@ stabvec=Vscale(:,3:4);
 % -----------------------------------------------------------------------
 % Now we calculate the coefficients of the parameterization for the stable
 % and unstable manifold up to a desired order. 
-order=25;
+order=16;
 
 % unstable
 disp('Calculating the coefficients for the unstable manifold.')
@@ -74,7 +74,7 @@ title('Unstable Manifold')
 nexttile
 plot_manifold(stabcoeff,order);
 title('Stable Manifold')
-return
+
 %--------------------------------------------------------------------------
 % Now we apply Lemma 10.4.1 to validate the parameterization we computed 
 

@@ -24,6 +24,6 @@ function [plotpoints,s1s2s]=plot_manifold(coeff,order,color)
         plotpoints(j,k,:)=real(ps1s2);
         end
     end
-    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',0.5, 'EdgeColor','none');  
+    surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,3), 'FaceColor',color, 'FaceAlpha',0.5, 'EdgeColor','none');  
 
 end

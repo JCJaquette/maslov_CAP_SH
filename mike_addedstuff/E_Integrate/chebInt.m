@@ -104,7 +104,7 @@ h(3*ord+1) = h(3*ord+1)*2;
 % 
 % end
 % 
-% disp('norm of F(h) at end of Newton:')
+% disp('norm of F(h) after Newton:')
 % disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
 
 % i = 1; plot(h1)

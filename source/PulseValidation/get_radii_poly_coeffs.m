@@ -88,7 +88,8 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     % We choose ru_star and rs_star to be small enough.
     
     
-    %%% THIS SECTION NEEDS ATTENTION -- this is ensuring that we say in te domain of definition in the unstable manifold
+    %%% THIS SECTION NEEDS ATTENTION -- this is ensuring that we stay in the 
+    %%% domain of definition in the unstable manifold
     %%% WHY CAN WE USE phi1 and phi2 instead of phi1 - iphi2 and phi1 +
     %%% iphi2???
     

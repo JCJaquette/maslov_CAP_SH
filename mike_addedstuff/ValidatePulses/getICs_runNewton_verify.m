@@ -96,4 +96,3 @@ close all
     
     verify_homoclinic_orbit(params,mflds,new_y,params.new);
 
-
