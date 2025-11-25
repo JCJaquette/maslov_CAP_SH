@@ -1,0 +1,8 @@
+clear
+
+all_bundles %This gets the bundles and manifolds,
+
+getICs_runNewton_validate %This gets the pulse
+
+chebInt %This gets U_{\varphi'} and U_1
+
