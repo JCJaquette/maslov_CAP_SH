@@ -6,7 +6,7 @@ if n == 1
     params.nu=1.6;
     params.L = 3.37;
 
-    load('Count_Zeros/savedThings/varbs1.mat');
+    load('test/test_CountZeros/varbs1.mat');
 
 elseif n == 2
 
@@ -14,7 +14,7 @@ elseif n == 2
     params.nu=1.6;
     params.L = 5.29;
 
-    load('Count_Zeros/savedThings/varbs2.mat');
+    load('test/test_CountZeros/varbs2.mat');
 
 elseif n == 3
 
@@ -22,7 +22,7 @@ elseif n == 3
     params.nu=1.6;
     params.L = 11.69;
 
-    load('Count_Zeros/savedThings/varbs3.mat');
+    load('test/test_CountZeros/varbs3.mat');
 
 else
 

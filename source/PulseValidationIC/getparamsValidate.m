@@ -1,5 +1,8 @@
 function [params,mflds,psoln] = getparamsValidate(n)
-
+% Sets a bunch of parameters-
+% load("psolnn.mat") gets the initial approximation of the pulse
+% load('mfldsn.mat') gets the manifolds from all_bundles
+% load('mErrorn') gets the error of the manifolds
 
 if n == 1
 
@@ -21,10 +24,9 @@ if n == 1
     params.new = 1.05;
 
     % load('mflds1.mat');
-    % load('mError1');
+    % load('mError1.mat');
     mError1 = 7.5158e-26;
-    % mflds = get_mflds(params);
-    % mError1 = runManifoldValidation(params,mflds);
+
     mflds.stable.error = mError1;
     mflds.unstable.error = mError1;
 
@@ -49,10 +51,8 @@ elseif n == 2
 
     params.new = 1.05;
 
-    % mflds = get_mflds(params);
-    % mError2 = runManifoldValidation(params,mflds);
     load('mflds2.mat');
-    load('mError2');
+    load('mError2.mat');
     mflds.stable.error = mError2;
     mflds.unstable.error = mError2;
 
@@ -72,13 +72,13 @@ elseif n == 3
 
     params.bd_scale = .1;
     
-    load("psoln3.mat");
+    load("test/test_ValidatePulses/psoln3.mat");
     psoln = psoln3;
 
     params.new = 1.01;
 
-    load('mflds3.mat');
-    load('mError3');
+    load('test/test_ValidatePulses/mflds3.mat');
+    load('test/test_ValidatePulses/mError3.mat');
     mflds.stable.error = mError3;
     mflds.unstable.error = mError3;
 

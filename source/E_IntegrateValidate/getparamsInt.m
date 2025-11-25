@@ -1,4 +1,4 @@
-function [params,manifold_u] = getparamsInt(n)
+function [new_y,params,manifold_u] = getparamsInt(n)
 %params for E_Integrate
 
 if n == 1
@@ -12,7 +12,8 @@ if n == 1
     maxphi = 0.996067953847602; mani_error = 3.2e-11; 
     ICerror = 2*pi/log(1/maxphi) * mani_error;
     params.rho = max(2.4e-8,ICerror);
-    load('ValidatePulses/saved_things/mflds1.mat')
+    load('test/test_ValidatePulses/mflds1.mat')
+    load('test/test_IntegrateValidate/validatedpulse1.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
 
     return
@@ -29,7 +30,8 @@ elseif n == 2
     ICerror = 2*pi/log(1/maxphi) * mani_error;  
     params.rho = max(3.5e-9,ICerror);
 
-    load('ValidatePulses/saved_things/mflds2.mat')
+    load('test/test_ValidatePulses/mflds2.mat')
+    load('test/test_IntegrateValidate/validatedpulse2.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
 
     return
@@ -46,7 +48,8 @@ elseif n == 3
     ICerror = 2*pi/log(1/maxphi) * mani_error;
     params.rho = max(3.5e-13,ICerror);
 
-    load('ValidatePulses/saved_things/mflds3.mat')
+    load('test/test_ValidatePulses/mflds3.mat')
+    load('test/test_IntegrateValidate/validatedpulse3.mat')
     manifold_u.coeffs = mflds.unstable.coeffs;
 
     return

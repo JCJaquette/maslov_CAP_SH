@@ -3,7 +3,7 @@ function [vec1,vec2] = getEu_minusL(mfld_coeffs,phi)
 
     d1mfld_coeffs = mfld_coeffs;
     d2mfld_coeffs = mfld_coeffs;
-    ord = length(mfld_coeffs(:,1,1));
+    ord = length(mfld_coeffs(:,1,1))-1;
 
     for i = 1:ord
 
@@ -13,10 +13,12 @@ function [vec1,vec2] = getEu_minusL(mfld_coeffs,phi)
     end
 
     d1mfld_coeffs = d1mfld_coeffs(2:end,:,:);
+    d1mfld_coeffs(end+1,:,:) = zeros(1,ord+1,4);
     d2mfld_coeffs = d2mfld_coeffs(:,2:end,:);
+    d2mfld_coeffs(:,end+1,:) = zeros(ord+1,1,4);
 
-    vec1 = get_manifold_point(d1mfld_coeffs,phi(1),phi(2),24);
-    vec2 = get_manifold_point(d2mfld_coeffs,phi(1),phi(2),24);
+    vec1 = get_manifold_point(d1mfld_coeffs,phi(1),phi(2),ord);
+    vec2 = get_manifold_point(d2mfld_coeffs,phi(1),phi(2),ord);
 
 end
 

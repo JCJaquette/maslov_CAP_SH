@@ -3,9 +3,7 @@
 close all
 %1 is mu=.05,nu=1.6, 0 branch, 2 is mu=.05,nu=1.6, π branch, 3 is mu=.2,nu=1.6
 
-    n = 3;
-
-    [params,mflds,psoln] = getparamsValidate(n);
+    [params,mflds,psoln] = getparamsValidate(3);
 
     hold on
     [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order);

@@ -3,7 +3,7 @@
 close all
 clear
 
-[params, phi, mani_coeffs] = getparamsBefore(2);
+[params, phi, mani_coeffs] = getparamsBefore(3);
 
 global_min = -params.new_L;
 global_max = 0;

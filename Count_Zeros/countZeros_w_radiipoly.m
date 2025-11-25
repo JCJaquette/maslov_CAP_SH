@@ -21,7 +21,7 @@ domINT = infsup(global_min,global_max);
 % df = @(x) chebSum(a,x);
 % f = @(x) chebSum(A,x);
 
-[params,h_cheb,phi_cheb,phiPrime_cheb] = getparamsCount(1);
+[params,h_cheb,phi_cheb,phiPrime_cheb] = getparamsCount(3);
 
 f_error = infsup(-params.f_error,params.f_error);
 df_error = infsup(-params.df_error,params.df_error);

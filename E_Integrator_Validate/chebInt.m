@@ -1,8 +1,7 @@
 %clear 
 close all
 
-load('verifiedpulse3.mat')
-[params,mfld_u] = getparamsInt(3);
+[new_y,params,mfld_u] = getparamsInt(3);%look at this
 mfld_u.pulseIC_phi = [new_y.phi1,new_y.phi2];
 ord = params.cheb.order;
 rho = params.rho;
@@ -137,16 +136,19 @@ a_bar = intval(1)*h;
 
 Y0 = computeY0(A_N,a_bar,phi_cheb_int,params,ord,intICvec,params.del);
 Y0hat = computeY0hat(A_N,rho,params.L,params.del,params.nu,a_bar(1:600),phi_cheb);
+fprintf('Y bounds computed, Y0 = %d, Y0hat = %d\n', mid(Y0), mid(Y0hat));
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
 Z1 = computeZ1(A_N,ord,phi_cheb_int,params.del,params);
 Z2hat = computeZ2hat(A_N,params.L,params.del,params.nu,rho);
+fprintf('Z bounds computed, Z0 = %d, Z1 = %d, Z2hat = %d\n', mid(Z0), mid(Z1), mid(Z2hat));
 
 rs = 0:10^-12:10^-6;
 radii_poly = Y0 + Y0hat - (1-Z0-Z1-Z2hat)*rs;
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat))
 
-% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0 function
+% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0
+% function (takes a while)
 
 
 %%
