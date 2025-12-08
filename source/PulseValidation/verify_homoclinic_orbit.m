@@ -3,8 +3,9 @@
 % coefficients lying in the Banach space. This variable nu was denoted by
 % delta in my dissertation.  
 
-function verif = verify_homoclinic_orbit(params, mflds, x, nu)
+function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     
+    r = 0;
     disp('First we check that the matrix Am is injective.')
     
     mflds.stable.error = 1e-12;
