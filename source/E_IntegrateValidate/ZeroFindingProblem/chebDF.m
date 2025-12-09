@@ -26,9 +26,9 @@ function [out] = chebDF(b,N,params)
     
     for i = 1:N-1
 
-        subLOL(i,i) = -params.L;
+        subLOL(i,i) = -params.Lbvp;
         if i ~= N-1
-            subLOL(i,i+2) = params.L;
+            subLOL(i,i+2) = params.Lbvp;
         end
 
     end
@@ -48,7 +48,7 @@ function [out] = chebDF(b,N,params)
     Dcmns = shftbkwd*Dc;
     Dcpls = shftfwd*Dc;
 
-    C = -params.L*(Dcmns - Dcpls) - (1+params.mu)*LOL;
+    C = -params.Lbvp*(Dcmns - Dcpls) - (1+params.mu)*LOL;
     C(1,1:N) = zeros(1,N);
     % C is derivative of psi_3 wrt a_1 which is a bit more complicated due
     % to cProds

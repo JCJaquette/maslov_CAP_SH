@@ -1,7 +1,7 @@
 function [y,Lbvp] = get_newton_seed(params,mflds)
 
-    %psoln = BK_nf_4dim(params,149.7, 0);
-    load('test/test_ValidatePulses/psoln3.mat')
+    psoln = BK_nf_4dim(params,149.7, 0);
+    %load('test/test_ValidatePulses/psoln3.mat')
     psoln = psoln3;
 
     [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order);

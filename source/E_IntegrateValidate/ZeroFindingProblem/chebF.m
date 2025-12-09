@@ -34,16 +34,16 @@ function [Fout] = chebF(h,hu,b,N,params)
     for k = 1:N-1
 
         if k+2 <= N
-            Fa1(k) = 2*k*h1(k+1) - params.L * (c(1,k) - c(1,k+2));
-            Fa2(k) = 2*k*h2(k+1) - params.L * (c(2,k) - c(2,k+2));
-            Fa3(k) = 2*k*h3(k+1) - params.L * (c(3,k) - c(3,k+2));
-            Fa4(k) = 2*k*h4(k+1) - params.L * (c(4,k) - c(4,k+2));
+            Fa1(k) = 2*k*h1(k+1) - params.Lbvp * (c(1,k) - c(1,k+2));
+            Fa2(k) = 2*k*h2(k+1) - params.Lbvp * (c(2,k) - c(2,k+2));
+            Fa3(k) = 2*k*h3(k+1) - params.Lbvp * (c(3,k) - c(3,k+2));
+            Fa4(k) = 2*k*h4(k+1) - params.Lbvp * (c(4,k) - c(4,k+2));
         end
         if k+1 == N
-            Fa1(k) = 2*k*h1(k+1) - params.L * c(1,k);
-            Fa2(k) = 2*k*h2(k+1) - params.L * c(2,k);
-            Fa3(k) = 2*k*h3(k+1) - params.L * c(3,k);
-            Fa4(k) = 2*k*h4(k+1) - params.L * c(4,k);    
+            Fa1(k) = 2*k*h1(k+1) - params.Lbvp * c(1,k);
+            Fa2(k) = 2*k*h2(k+1) - params.Lbvp * c(2,k);
+            Fa3(k) = 2*k*h3(k+1) - params.Lbvp * c(3,k);
+            Fa4(k) = 2*k*h4(k+1) - params.Lbvp * c(4,k);    
         end
 
     end
