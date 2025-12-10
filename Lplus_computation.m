@@ -1,4 +1,5 @@
 clear %update to github
+%varbs for this is sec1
 
 %ODE Parameters
 params.mu = 0.2; 
@@ -39,10 +40,11 @@ bndl_BOOL.stable = 1;
 [mflds,mflds_r,bndl,bndl_r,Lminus] = all_bundles(params,bndl_BOOL); 
 
 [mflds,intradii] = struct_intvaltodouble(mflds);
-params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:));
-params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
+% params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:));
+% params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
 
 %%
+%sec2
 
 % Parameters for the pulse validation
 params.rho = .99;
