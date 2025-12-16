@@ -1,11 +1,9 @@
 function [y,Lbvp] = get_newton_seed(params,mflds)
 
-    psoln = BK_nf_4dim(params,149.7, 0);
-    %load('test/test_ValidatePulses/psoln3.mat')
-    %psoln = psoln3;
+    psoln = getPulse(params);
 
-    [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order);
-    s_pts = get_mani_points(mflds.stable.coeffs,params.mfld.order);
+    [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order,1);
+    s_pts = get_mani_points(mflds.stable.coeffs,params.mfld.order,1);
     thetas = linspace(0,2*pi,60);
     boundary_distance = avgnorms(u_pts);
     boundary_distance = boundary_distance*params.bd_scale;
@@ -53,10 +51,8 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     k_half_ind_left = n-k+1;
     k_half_ind_right = k;
 
-    lefttime = psoln(n-k+1,1);
-    righttime = psoln(n+k+1,1);
 
-    Lsoln = psoln(n-k+1:n+k+1,2:end);
+    Lsoln = psoln(n-k+1:n+k,2:end);
 
     left_endpt_u = closest_pts_on_u(k_half_ind_left,:);    
     right_endpt_s = closest_pts_on_s(k_half_ind_right,:);
@@ -70,9 +66,11 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
 
     hold on
+    plot_manifold(mflds.stable.coeffs,params.mfld.order,'blue',1)
+    plot_manifold(mflds.unstable.coeffs,params.mfld.order,'red',1)
     plot3(Lsoln(:,1),Lsoln(:,2),Lsoln(:,4),'black','LineWidth',1)  
-    plot3(right_endpt_s(1),right_endpt_s(2),right_endpt_s(4),'. black','MarkerSize',16);
-    plot3(left_endpt_u(1),left_endpt_u(2),left_endpt_u(4),'. black','MarkerSize',16);    
+    plot3(right_endpt_s(1),right_endpt_s(2),right_endpt_s(4),'. blue','MarkerSize',16);
+    plot3(left_endpt_u(1),left_endpt_u(2),left_endpt_u(4),'. red','MarkerSize',16);    
     plot3(Lsoln(1,1),Lsoln(1,2),Lsoln(1,4),'. black','MarkerSize',16)
     plot3(Lsoln(end,1),Lsoln(end,2),Lsoln(end,4),'. black','MarkerSize',16)
 

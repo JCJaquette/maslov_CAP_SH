@@ -8,7 +8,7 @@ params.nu = 1.6;
 % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
 
 % Computational Parameters
-params.scale = .3;
+params.scale = .2;
 params.order = 15; 
 params.mfld.order = params.order;
 
@@ -37,7 +37,7 @@ bndl_BOOL.Lminus = 1;
 bndl_BOOL.stable = 1;
 
 % Get the bundles and manifolds
-[mflds,mflds_r,bndl,bndl_r,Lminus] = all_bundles(params,bndl_BOOL); 
+[mflds,mflds_r,bndl,bndl_r,Lminus] = get_all_bundles(params,bndl_BOOL); 
 
 [mflds,intradii] = struct_intvaltodouble(mflds);
 % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:));
@@ -48,7 +48,7 @@ bndl_BOOL.stable = 1;
 
 % Parameters for the pulse validation
 params.rho = .99;
-params.cheb.order=2^10;
+params.cheb.order=2^9;
 params.tol=4e-14;
 params.Lbvp = 0;
 params.bd_scale = .1;
@@ -57,14 +57,14 @@ params.xi = 0;
 
 params = struct_intvaltodouble(params);
 
-% We have three pulses:
+% We have three pulses(xi is the branch):
 % mu=.05,nu=1.6, xi=0 
 % mu=.05,nu=1.6, xi=π
 % mu=.2,nu=1.6, xi=0
 
 % Get seed for Newton
 [seed,params.Lbvp] = get_newton_seed(params,mflds);
-
+ 
 
 % Refine with Newton
 y = refine_cheb_orbit(seed,mflds,params);
@@ -78,10 +78,11 @@ y = refine_cheb_orbit(seed,mflds,params);
 % plot3(yo1 ,yo2 ,yo4 ,'LineWidth',1)
 
 hold on
+x = linspace(-1,1,200);
 seedFN = chebSum(seed.a1',-1:.01:1);
-plot(seedFN)
+plot(x,seedFN)
 newtFN = chebSum(y.a1',-1:.01:1);
-plot(newtFN)
+plot(x,newtFN)
 
 % Validate
 verify_homoclinic_orbit(params,mflds,y,params.new);
@@ -100,6 +101,8 @@ manifold_u.coeffs = mflds.unstable.coeffs;
 
 
 [U_vp, U_1] = chebInt(params,mflds,y); %This gets U_{\varphi'} and U_1
+
+EuminusCAP(params,y,U_1)
 
 
 %%

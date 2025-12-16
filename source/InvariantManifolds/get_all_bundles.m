@@ -1,4 +1,4 @@
-function [mflds,r_min_s,bndl,r_min,Lminus] = all_bundles(params,BOOL)
+function [mflds,r_min_s,bndl,r_min,Lminus] = get_all_bundles(params,BOOL)
 %% Get Manifolds
 
 tic
