@@ -2,20 +2,20 @@ clear %update to github
 %varbs for this is sec1
 
 %ODE Parameters
-params.mu = 0.05; 
+params.mu = 0.; 
 params.nu = 1.6;
 
 % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
 
 % Computational Parameters
-params.scale = .09;
+params.scale = .2;
 params.order = 15; 
 params.mfld.order = params.order;
 
 % Interval Arithmetic
 params.isIntval =1;
 if params.isIntval 
-    params.mu = intval(params.mu); 
+    params.mu = intval('0.2'); 
     params.nu = intval('1.6');
 end
 
@@ -51,7 +51,7 @@ params.rho = .99;
 params.cheb.order=2^9;
 params.tol=4e-14;
 params.Lbvp = 0;
-params.bd_scale = .2;
+params.bd_scale = .1;
 params.new = 1.01;
 params.xi = 0;
 
@@ -77,7 +77,6 @@ y = refine_cheb_orbit(seed,mflds,params);
 % plot_manifold(mflds.stable.coeffs, params.mfld.order, 'blue')
 % plot3(yo1 ,yo2 ,yo4 ,'LineWidth',1)
 
-figure
 hold on
 x = linspace(-1,1,201);
 seedFN = chebSum(seed.a1',-1:.01:1);

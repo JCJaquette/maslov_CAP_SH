@@ -12,10 +12,10 @@ S.vfParams.mu = params.mu;
 S.vfParams.lambda = 0; 
 
 % fourier approximation parameters
-S.fourier.M = 1000; 
+S.fourier.M = 1500; 
 S.fourier.tol = 1e-14; 
 S.fourier.order = 500; 
-S.time = 150; 
+S.time = 100; 
 
 disp('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 disp(['We consider the pulse for parameter values nu=', ...
