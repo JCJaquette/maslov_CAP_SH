@@ -1,4 +1,4 @@
-function [mflds,bndl,Lminus] = get_all_bundles(params,BOOL)
+function [mflds,bndl] = get_all_bundles(params,BOOL)
 %% Get Manifolds
 
 tic
@@ -24,8 +24,8 @@ end
     [mflds,r_min_u,data_mfld_poly_u]=mfld_poly(params, mflds,BOOL.stable );
 
     Lminus = computeLminus(params,mflds) ;
-    params.Lminus=Lminus;
-    sigma_0 = exp(-real(mflds.values.u(1)) * params.Lminus)
+    mflds.Lminus=Lminus;
+    % sigma_0 = exp(-real(mflds.values.u(1)) * mflds.Lminus)
  end
 % return
 
@@ -86,8 +86,17 @@ if BOOL.plot
         exportgraphics(obj,'Coeff_size.png',Resolution=500)
     end
 end
+
+% Export data 
+if params.isIntval
+    str_mu = num2str(mid(params.mu))
+else
+    str_mu = num2str(params.mu)
+end
+str_data = [ 'data_bndl_nu_1p6_mu_0p' str_mu(3:end) ];
+
 if BOOL.save_data 
-    save('nu_1p6_mu_0p2_V2')
+    save(str_data,"mflds","bndl","params")
 end
  
 

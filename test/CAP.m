@@ -1,56 +1,88 @@
 clear %update to github
 %varbs for this is sec1
 
-%ODE Parameters
-params.mu = 0.05; 
-params.nu = 1.6;
+%To load the variables I was working with there are p1sec1 and p3sec1, 
+% which gives the variables that would come from just running the first 
+% section of the code with pulse1 and pulse3 respectively.
 
-% For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
+Case_number = 1; 
+% Case 1 : params.mu = 0.05; 
+% Case 2 : params.mu = 0.05; 
+% Case 3 : params.mu = 0.20; 
 
-% Computational Parameters
-params.scale = .09;
-params.order = 15; 
-params.mfld.order = params.order;
+BOOL_load_bndl =0 ;
 
-% Interval Arithmetic
-params.isIntval =1;
-if params.isIntval 
-    params.mu = intval(params.mu); 
-    params.nu = intval('1.6');
+if BOOL_load_bndl 
+    if Case_number == 1 || Case_number == 2 
+        data_str = "data_bndl_nu_1p6_mu_0p05";
+    else
+        data_str = "data_bndl_nu_1p6_mu_0p2";
+    end
+    load(data_str)
+else
+    % Computational Parameters
+    params.scale = .09;
+    params.order = 15; 
+    params.mfld.order = params.order;
+    params.isIntval =0;
+    
+    % Computation 
+    bndl_BOOL.plot = 0;
+    bndl_BOOL.save_image = 0;
+    bndl_BOOL.save_data = 1;
+    bndl_BOOL.Lminus = 1; 
+    bndl_BOOL.stable = 1;
+
+    
+    %ODE Parameters
+    if Case_number == 1 || Case_number == 2 
+        params.mu = 0.05; 
+    else
+        params.mu = 0.2; 
+    end
+    params.mu = 0.2; 
+    params.nu = 1.6;
+    
+    % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
+    
+    
+    % Interval Arithmetic    
+    if params.isIntval 
+        params.mu = intval(params.mu);  % This line doesn't faithfull cast as interval enclosure of '.2'
+        params.nu = intval('1.6');
+    end
+    
+    % Potential parameter for finding 
+    params.lambda = 0; 
+    
+    % % Setting several things in memory
+    % if params.isIntval
+    %     zero=intval(0);
+    % else
+    %     zero=0;
+    % end
+    
+
+    
+    % Get the bundles and manifolds
+    [mflds,bndl] = get_all_bundles(params,bndl_BOOL); 
+    
+    % NOTE: Removed "mflds_r" from get_all_bundles output. This data is stored
+    % in "mflds.stable.r_min" or "mflds.unstable.r_min" 
+    % Also removed "bndl_r"; this is now stored in the bndl object
+    % Also removed "Lminus"; this is now stored in the mflds object
+    
+    % TODO: This should not be recast as a double at the top level. 
+    % If you need to recast it as a double, do it inside the necessary function. 
+    [mflds,intradii] = struct_intvaltodouble(mflds);
+    
+    
+    % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:)); this
+    % isn't final, maybe not exactly right?
+    % params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
 end
 
-% Potential parameter for finding 
-params.lambda = 0; 
-
-% % Setting several things in memory
-% if params.isIntval
-%     zero=intval(0);
-% else
-%     zero=0;
-% end
-
-% Computation 
-bndl_BOOL.plot = 0;
-bndl_BOOL.save_image = 0;
-bndl_BOOL.save_data = 0;
-bndl_BOOL.Lminus = 1; 
-bndl_BOOL.stable = 1;
-
-% Get the bundles and manifolds
-[mflds,bndl,Lminus] = get_all_bundles(params,bndl_BOOL); 
-
-% NOTE: Removed "mflds_r" from get_all_bundles output. This data is stored
-% in "mflds.stable.r_min" or "mflds.unstable.r_min"
-% Also removed "bndl_r"; this is stored in the bndl object
-
-
-% TODO: This should not be recast as a double at the top level. 
-% If you need to recast it as a double, do it inside the necessary function. 
-[mflds,intradii] = struct_intvaltodouble(mflds); 
-
-% params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:));
-% params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
-
+return
 %%
 % sec2
 
