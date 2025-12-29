@@ -7,10 +7,6 @@ CASE_number = 3;
 
 BOOL_load_bndl =1 ;
 
-% Debugging Ideas:
-%  @@ Adjust the getting of the pulse, so that it uses fsolve first like Hannah did
-%  @@ If not, then test to see if the boundary conditions, and L_bvp are different
-
 % Load bundles or recompute
 if BOOL_load_bndl 
     if CASE_number == 1 || CASE_number == 2 
@@ -143,7 +139,6 @@ plot(x,seedFN)
 newtFN = chebSum(y.a1',-1:.01:1);
 plot(x,newtFN)
 hold off
-grid on
 legend('New seed','Chebyshev Converged')
 title('New seed, and convergant')
 
@@ -184,7 +179,6 @@ plot(x,seeedFN)
 newtFN1 = chebSum(y1.a1',-1:.01:1);
 plot(x,newtFN1)
 hold off
-grid on 
 legend('Old seed','Chebyshev Converged')
 title('Old seed and convergant')
 
@@ -194,20 +188,16 @@ figure
 title('Two Seeds')
 hold on
 
-plot(x,seedFN)
 plot(x,seeedFN)
+plot(x,newtFN1)
+
 legend('new','old')
-grid on 
 hold off
 
 figure 
 title('Two Convergants')
-
-hold on
-plot(x,newtFN)
-plot(x,newtFN1)
 legend('new','old')
-grid on 
+hold on
 hold off
 
 %%
@@ -222,6 +212,7 @@ hold off
 
 
 figure
+% load('psoln1.mat')
 plot(soln(:,1),soln(:,5))
 title('Initial, full solution')
 % hold on
