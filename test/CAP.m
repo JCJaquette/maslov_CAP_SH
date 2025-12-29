@@ -37,9 +37,17 @@ bndl_BOOL.Lminus = 1;
 bndl_BOOL.stable = 1;
 
 % Get the bundles and manifolds
-[mflds,mflds_r,bndl,bndl_r,Lminus] = get_all_bundles(params,bndl_BOOL); 
+[mflds,bndl,Lminus] = get_all_bundles(params,bndl_BOOL); 
 
-[mflds,intradii] = struct_intvaltodouble(mflds);
+% NOTE: Removed "mflds_r" from get_all_bundles output. This data is stored
+% in "mflds.stable.r_min" or "mflds.unstable.r_min"
+% Also removed "bndl_r"; this is stored in the bndl object
+
+
+% TODO: This should not be recast as a double at the top level. 
+% If you need to recast it as a double, do it inside the necessary function. 
+[mflds,intradii] = struct_intvaltodouble(mflds); 
+
 % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:));
 % params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
 
@@ -55,6 +63,8 @@ params.bd_scale = .2;
 params.new = 1.01;
 params.xi = 0;
 
+% TODO: This should not be recast as a double at the top level. 
+% If you need to recast it as a double, do it inside the necessary function. 
 params = struct_intvaltodouble(params);
 
 % We have three pulses(xi is the branch):

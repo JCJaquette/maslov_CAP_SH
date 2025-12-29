@@ -1,6 +1,10 @@
 clear %update to github
 %varbs for this is sec1
 
+%To load the variables I was working with there are p1sec1 and p3sec1, 
+% which gives the variables that would come from just running the first 
+% section of the code with pulse1 and pulse3 respectively.
+
 %ODE Parameters
 params.mu = 0.05; 
 params.nu = 1.6;
@@ -13,7 +17,7 @@ params.order = 15;
 params.mfld.order = params.order;
 
 % Interval Arithmetic
-params.isIntval =1;
+params.isIntval =0;
 if params.isIntval 
     params.mu = intval(params.mu); 
     params.nu = intval('1.6');
@@ -37,12 +41,22 @@ bndl_BOOL.Lminus = 1;
 bndl_BOOL.stable = 1;
 
 % Get the bundles and manifolds
-[mflds,mflds_r,bndl,bndl_r,Lminus] = get_all_bundles(params,bndl_BOOL); 
+[mflds,bndl,Lminus] = get_all_bundles(params,bndl_BOOL); 
 
+% NOTE: Removed "mflds_r" from get_all_bundles output. This data is stored
+% in "mflds.stable.r_min" or "mflds.unstable.r_min" 
+% Also removed "bndl_r"; this is stored in the bndl object
+
+% TODO: This should not be recast as a double at the top level. 
+% If you need to recast it as a double, do it inside the necessary function. 
 [mflds,intradii] = struct_intvaltodouble(mflds);
+
+
 % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:)); this
 % isn't final, maybe not exactly right?
 % params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
+
+return
 
 %%
 % sec2
@@ -56,6 +70,8 @@ params.bd_scale = .2;
 params.new = 1.01;
 params.xi = 0;
 
+% TODO: This should not be recast as a double at the top level. 
+% If you need to recast it as a double, do it inside the necessary function. 
 params = struct_intvaltodouble(params);
 
 % We have three pulses(xi is the branch):
@@ -96,6 +112,8 @@ plot(x,newtFN)
 %not exactly the same as in the old files since mflds could be different
 %things don't seem to work as well here, maybe go back to old files on github?
 
+% TODO: This should not be recast as a double at the top level. 
+% If you need to recast it as a double, do it inside the necessary function. 
 params = struct_intvaltodouble(params);
 load('psoln1.mat')
 soln = psoln1;

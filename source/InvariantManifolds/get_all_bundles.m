@@ -1,4 +1,4 @@
-function [mflds,r_min_s,bndl,r_min,Lminus] = get_all_bundles(params,BOOL)
+function [mflds,bndl,Lminus] = get_all_bundles(params,BOOL)
 %% Get Manifolds
 
 tic
@@ -40,6 +40,8 @@ tic
 disp('Computing Radii Poly Bounds')
 [ r_min, data_bndl_poly] = bundle_rad_poly(params,mflds,bndl);
 time_bndl_poly = toc
+
+bndl.r_min = r_min;
 
 
 %% Plot
