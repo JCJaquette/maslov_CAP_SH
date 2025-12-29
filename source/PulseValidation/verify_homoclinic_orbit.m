@@ -8,8 +8,12 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     r = 0;
     disp('First we check that the matrix Am is injective.')
     
-    mflds.stable.error = 1e-12;
-    mflds.unstable.error = 1e-12;
+    % TODO: Mike, please work out what the appropriate bound is here.
+    %       Make sure to take note of the norm of r_min used in Paper2
+
+    mflds.stable.error = mflds.stable.r_min; 
+    mflds.unstable.error = mflds.unstable.r_min; 
+    
     
     injective = check_A_injective(x,params,mflds);
     

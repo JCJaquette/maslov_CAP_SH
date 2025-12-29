@@ -43,24 +43,20 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     end
 
     L_mns = psoln(k_u,1);
-    L_pls = psoln(n+k_s,1); % Also needs to account for the middle point
-
-    % Define k as the offset from the middle point
-    if abs(L_pls) >= abs(L_mns)
+    L_pls = psoln(n+1+k_s,1);
+    if abs(L_pls) > abs(L_mns)
         Lbvp = abs(L_pls);
-        k = k_s-1;
+        k = k_s;
     else
         Lbvp = abs(L_mns);
-        k = (n-k_u)+1;
+        k = n-k_u+1;
     end
 
     k_half_ind_left = n-k+1;
-    k_half_ind_right = k+1;
+    k_half_ind_right = k;
 
-    % time_left = psoln(n+1-k)
-    % time_right = psoln(n+1+k)
 
-    Lsoln = psoln(n+1-k:n+1+k,2:end);
+    Lsoln = psoln(n-k+1:n+k,2:end);
 
     left_endpt_u = closest_pts_on_u(k_half_ind_left,:);    
     right_endpt_s = closest_pts_on_s(k_half_ind_right,:);

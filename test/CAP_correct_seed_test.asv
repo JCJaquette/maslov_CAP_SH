@@ -38,8 +38,8 @@ BOOL_validate_pulse = 0;
 %  @@ Another thing that one could do is add some quantifiable tests, 
 %       so that it is easy to just run this script and see how well we're doing 
 %  @@@@@ Mike, also, please add more comments to the files! What I'd recommend doing, at least, 
-%       is while you are debugging something, add comments to the thing you're debugging. 
-%       This helps with double checking that what you did in the code is correct 
+%       is while you are debugging something, add comments to the thing you're debugging.  while you are
+%       debugging
 
  
 

@@ -10,6 +10,8 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     F = FHomoclinic(x, mflds, params);
     F = [F{1}; F{2}; F{3}; F{4}'; F{5}'; F{6}'; F{7}'];
     
+
+    
     delta_s = mflds.stable.error;
     delta_u = mflds.unstable.error;
 
