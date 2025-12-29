@@ -31,12 +31,16 @@ disp(' ')
 disp('Performing Newtons method to obtain a Fourier approximation of the pulse solution.')
 disp(' ')
 
-% perform Newton's method
+% Get seed solution from the Burke Knobloch normal form
 S = BKNormalForm4d_halfline(S);
-
+% perform Newton's method
 
 fulltime = [-flip(S.normalForm.time); S.normalForm.time(2:end)];
-psoln = [fulltime,Newton_halfline(S)];
+S= Newton_halfline(S);
+
+full_sol = getDFunctionFromFourierCoeffs(S,S.fourier.full_coeff_from_half_newton, "full");
+
+psoln = [fulltime,S.full_uout ];
 psoln = get4Dpsoln(psoln(:,1),psoln(:,2));
 
 

@@ -9,7 +9,11 @@ BOOL_load_bndl =1 ;
 
 % Debugging Ideas:
 %  @@ Adjust the getting of the pulse, so that it uses fsolve first like Hannah did
-%  @@ If not, then test to see if the boundary conditions, and L_bvp are different
+%  #### It seems that this matches up. .... So continue with the debugging!
+%  
+%  @@ Add some quantifiable tests that output how close we are to being
+%  successful!
+%  @@ Next, test to see if the boundary conditions, and L_bvp are different
 
 % Load bundles or recompute
 if BOOL_load_bndl 

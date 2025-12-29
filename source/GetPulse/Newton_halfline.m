@@ -3,7 +3,7 @@
 %   S = S.Newton_halfline()
 %   S = Newton)_halfline(S) 
 % 
-function full_uout = Newton_halfline(S) 
+function S = Newton_halfline(S) 
     % Option to display output and use Jacobian
     options=optimset('Display','iter','Jacobian','on','MaxIter',10000);     
     
@@ -12,6 +12,17 @@ function full_uout = Newton_halfline(S)
 
     u = S.normalForm.sol(:,1); 
     [uout,fval] = fsolve(@(u) fourierODE_halfline(S,u),u,options);  
+    coeffs = getFullFourierCoeffs(S,uout, S.normalForm.time);
+    S.fourier.half_coeffs = coeffs; 
+
+
     full_uout = [flip(uout); uout(2:end)];
+
+    S.full_uout = full_uout;
+
+    % save full coefficients via reflection 
+    full_uout = [flip(uout); uout];
+    full_time = [-flip(S.normalForm.time); S.normalForm.time];
+    S.fourier.full_coeff_from_half_newton = getFullFourierCoeffs(S,full_uout, full_time);
     
 end

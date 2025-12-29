@@ -64,6 +64,8 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     y.phi1 = phi1;
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
+    
+    % Plotting
 
     hold on
     plot_manifold(mflds.stable.coeffs,params.mfld.order,'blue',1)
