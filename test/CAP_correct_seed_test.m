@@ -1,6 +1,6 @@
 clear 
 figure 
-CASE_number = 3; 
+CASE_number = 1; 
 % Case 1 : params.mu = 0.05; 
 % Case 2 : params.mu = 0.05; 
 % Case 3 : params.mu = 0.20; 
@@ -80,20 +80,12 @@ else
     
     % Interval Arithmetic    
     if params.isIntval 
-        params.mu = intval(params.mu);  % This line doesn't faithfull cast as interval enclosure of '.2'
+        params.mu = intval(num2str(params.mu));
         params.nu = intval('1.6');
     end
     
     % Potential parameter for finding 
     params.lambda = 0; 
-    
-    % % Setting several things in memory
-    % if params.isIntval
-    %     zero=intval(0);
-    % else
-    %     zero=0;
-    % end
-    
 
     
     % Get the bundles and manifolds

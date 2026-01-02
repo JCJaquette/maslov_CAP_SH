@@ -48,21 +48,13 @@ else
     
     % Interval Arithmetic    
     if params.isIntval 
-        params.mu = intval(params.mu);  % This line doesn't faithfull cast as interval enclosure of '.2'
+        params.mu = intval(num2str(params.mu));  % This line doesn't faithfull cast as interval enclosure of '.2'
         params.nu = intval('1.6');
     end
     
     % Potential parameter for finding 
     params.lambda = 0; 
     
-    % % Setting several things in memory
-    % if params.isIntval
-    %     zero=intval(0);
-    % else
-    %     zero=0;
-    % end
-    
-
     
     % Get the bundles and manifolds
     [mflds,bndl] = get_all_bundles(params,bndl_BOOL); 
@@ -72,9 +64,6 @@ else
     % Also removed "bndl_r"; this is now stored in the bndl object
     % Also removed "Lminus"; this is now stored in the mflds object
     
-    % TODO: This should not be recast as a double at the top level. 
-    % If you need to recast it as a double, do it inside the necessary function. 
-    [mflds,intradii] = struct_intvaltodouble(mflds);
     
     
     % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:)); this
@@ -95,9 +84,6 @@ params.bd_scale = .2;
 params.new = 1.01;
 params.xi = 0;
 
-% TODO: This should not be recast as a double at the top level. 
-% If you need to recast it as a double, do it inside the necessary function. 
-params = struct_intvaltodouble(params);
 
 % We have three pulses(xi is the branch):
 % mu=.05,nu=1.6, xi=0 

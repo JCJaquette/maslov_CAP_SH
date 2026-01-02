@@ -1,5 +1,8 @@
 function [y,Lbvp] = get_newton_seed(params,mflds)
 
+    [mflds,mfldradii] = struct_intvaltodouble(mflds);
+    params = struct_intvaltodouble(params);
+
     psoln = getPulse(params);
 
     [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order,1);
