@@ -8,7 +8,7 @@ clear %update to github
 Case_number = 1; 
 % Case 1 : params.mu = 0.05; 
 % Case 2 : params.mu = 0.05; 
-% Case 3 : params.mu = 0.20; 
+% Case 3 : params.mu = 0.20;  
 
 BOOL_load_bndl =0 ;
 
@@ -21,8 +21,8 @@ if BOOL_load_bndl
     load(data_str)
 else
     % Computational Parameters
-    params.scale = .09;
-    params.order = 15; 
+    params.scale = .12;
+    params.order = 20; 
     params.mfld.order = params.order;
     params.isIntval =0;
     
@@ -40,7 +40,6 @@ else
     else
         params.mu = 0.2; 
     end
-    params.mu = 0.2; 
     params.nu = 1.6;
     
     % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
@@ -48,7 +47,7 @@ else
     
     % Interval Arithmetic    
     if params.isIntval 
-        params.mu = intval(num2str(params.mu));  % This line doesn't faithfull cast as interval enclosure of '.2'
+        params.mu = intval(num2str(params.mu));  
         params.nu = intval('1.6');
     end
     
@@ -121,7 +120,7 @@ verify_homoclinic_orbit(params,mflds,y,params.new);
 
 params.cheb.order = 600;
 params.del = 1.01;
-% get this stuff manually vv
+% TODO: get this stuff manually vv
 maxphi = 0.996067953847602; mani_error = 3.2e-11; 
 ICerror = 2*pi/log(1/maxphi) * mani_error;
 params.rho = max(2.4e-8,ICerror);

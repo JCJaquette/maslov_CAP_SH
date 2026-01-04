@@ -64,6 +64,16 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
         I=[-1 1];
     elseif I(1)<0
         disp('Stop! The smallest root is negative.')
+        disp('These are the roots of each polynomial:')
+        format long
+        R1
+        R2
+        R3
+        R4
+        R5
+        R6
+        R7
+        format short
         I=[-1 1];
     elseif I(2)<I(1)
         disp('Stop! The interval between the roots is not well defined!')
