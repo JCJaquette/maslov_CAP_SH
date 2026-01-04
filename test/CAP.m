@@ -106,11 +106,14 @@ y = refine_cheb_orbit(seed,mflds,params);
 
 figure
 hold on
-x = linspace(-1,1,201);
+x = linspace(-params.Lbvp,params.Lbvp,201);
 seedFN = chebSum(seed.a1',-1:.01:1);
 plot(x,seedFN)
 newtFN = chebSum(y.a1',-1:.01:1);
 plot(x,newtFN)
+legend('into newton','out of newton')
+xlabel('t')
+ylabel('$\varphi$(t)',Interpreter='latex')
 
 % Validate
 verify_homoclinic_orbit(params,mflds,y,params.new);
