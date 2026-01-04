@@ -95,4 +95,12 @@ close all
 
     
     verify_homoclinic_orbit(params,mflds,new_y,params.new);
-
+    
+    hold on
+    x1 = linspace(-3.37,3.37,length(Lsoln));
+    plot(x1,Lsoln(:,1))
+    x2 = linspace(-3.37,3.37,201);
+    plot(x2,yo1)
+    legend('into newton','out of newton')
+    xlabel('t')
+    ylabel('$\varphi$(t)',Interpreter='latex')
