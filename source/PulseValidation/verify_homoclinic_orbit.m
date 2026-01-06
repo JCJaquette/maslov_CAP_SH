@@ -11,8 +11,8 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     % TODO: Mike, please work out what the appropriate bound is here.
     %       Make sure to take note of the norm of r_min used in Paper2
 
-    mflds.stable.error = mflds.stable.r_min; 
-    mflds.unstable.error = mflds.unstable.r_min; 
+    mflds.stable.error = mflds.stable.r_min;% + mflds.radius; 
+    mflds.unstable.error = mflds.unstable.r_min;% + mflds.radius; 
     
     
     injective = check_A_injective(x,params,mflds);

@@ -1,9 +1,19 @@
 function [y,Lbvp] = get_newton_seed(params,mflds)
 
+if ~params.loadpsoln
+    
     [mflds,mfldradii] = struct_intvaltodouble(mflds);
+    mflds.max_coeff_radius = max(max(mfldradii.stable.coeffs),max(mfldradii.unstable.coeffs));
     params = struct_intvaltodouble(params);
 
     psoln = getPulse(params);
+
+else
+
+    toload = ['psoln',num2str(params.loadpsoln)];
+    load(toload);
+    
+end
 
     [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order,1);
     s_pts = get_mani_points(mflds.stable.coeffs,params.mfld.order,1);
