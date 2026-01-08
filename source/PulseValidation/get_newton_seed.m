@@ -3,7 +3,6 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
 if ~params.loadpsoln
     
     [mflds,mfldradii] = struct_intvaltodouble(mflds);
-    mflds.max_coeff_radius = max(max(mfldradii.stable.coeffs),max(mfldradii.unstable.coeffs));
     params = struct_intvaltodouble(params);
 
     psoln = getPulse(params);

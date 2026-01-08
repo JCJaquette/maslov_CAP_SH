@@ -1,5 +1,11 @@
 function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
 
+    if params.isIntval
+        zero = intval('0');
+    else
+        zero = 0;
+    end
+
     m = params.cheb.order;
     N = params.mfld.order;
     
@@ -11,11 +17,11 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     F = [F{1}; F{2}; F{3}; F{4}'; F{5}'; F{6}'; F{7}'];
     
 
-    
-    delta_s = mflds.stable.error;
-    delta_u = mflds.unstable.error;
+    % See eqn 7.4 of paper 3
+    epsilon_s = mflds.stable.error; %Do these things match up with what we want?
+    epsilon_u = mflds.unstable.error;
 
-    F(1:7) = F(1:7)+[delta_s*ones(3,1);delta_u*ones(4,1)];
+    F(1:7) = F(1:7)+[epsilon_s*ones(3,1);epsilon_u*ones(4,1)];
     
     DF = DF_homoclinic(x, params, mflds);
     Am = DF^(-1);
@@ -28,7 +34,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     vF_6=abs(Am(3+2*m+1:3+3*m,:)*F);
     vF_7=abs(Am(3+3*m+1:3+4*m,:)*F);
 
-    Y=zeros(7,1);
+    Y=zero*zeros(7,1);
     
     nu_power=nu.^(0:m-1);
 
@@ -55,7 +61,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
 
     % We compute the norms of the sub operators of the operator B
     B=eye(4*m+3)-Am*DF;
-    B_norms=zeros(7,7);
+    B_norms=zero*zeros(7,7);
     B_norms(1:3,1:3)=abs(B(1:3,1:3));
     
     for j=4:7
@@ -75,7 +81,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     B_norms(4:7,4:7)=max(K_B(4:7,4:7),0);
 
     % We compute the bound Z0
-    Z0=zeros(7,1);
+    Z0=zero*zeros(7,1);
     Z0(1:7)=sum(B_norms(1:7,1:7),2);
 
     disp('The bound Z0 (linear in r) is ')
@@ -172,7 +178,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     p2 = mflds.stable.coeffs(:,:,2);
     p4 = mflds.stable.coeffs(:,:,4);
     
-    SUM_S = zeros(4,5);
+    SUM_S = zero*zeros(4,5);
     
     SUM_S(1,1)=sum(sum(powers_s11.*abs(p1)));
     SUM_S(2,1)=sum(sum(powers_s11.*abs(p2)));
@@ -210,7 +216,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     q3 = mflds.unstable.coeffs(:,:,3);
     q4 = mflds.unstable.coeffs(:,:,4);
     
-    SUM_U = zeros(4,4);
+    SUM_U = zero*zeros(4,4);
     
     SUM_U(1,1)=sum(sum(powers_u11.*abs(q1)));
     SUM_U(2,1)=sum(sum(powers_u11.*abs(q2)));
@@ -238,7 +244,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
 
     disp('Computing z_inf.')
 
-    z_inf=zeros(7,1);
+    z_inf=zero*zeros(7,1);
 
     z_inf(4)=(params.Lbvp/(2*m))*(nu+1/nu);
     z_inf(5)=(params.Lbvp/(2*m))*(nu+1/nu);
@@ -263,11 +269,12 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     
     % We compute the last part of the bound Z
     disp('Computing the last part of Z.')
+    
+    % See eqn 7.11 in paper 3
+    cte_s=(4*pi/(log(1/params.rho)))*epsilon_s*params.rho+2/(nu^m);
+    cte_u=(4*pi/(log(1/(1-ru_star))))*epsilon_u+2/(nu^m);
 
-    cte_s=(4*pi/(log(1/params.rho)))*delta_s*params.rho+2/(nu^m);
-    cte_u=(4*pi/(log(1/(1-ru_star))))*delta_u+2/(nu^m);
-
-    Z=zeros(7,3);
+    Z=zero*zeros(7,3);
     
      Z(1:3,1)=cte_s*sum(norms.A(1:3,1:3),2)+cte_u*sum(norms.A(1:3,4:7),2)+...
         +params.Lbvp*abs(Am(1:3, 3+3*m+1:3+4*m))*(2*params.nu*a1vI(1:m)'+...

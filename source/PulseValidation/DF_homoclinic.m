@@ -1,6 +1,10 @@
 function DF = DF_homoclinic(x, params, mflds)
     m = params.cheb.order;
-    DF = zeros(4*m + 3, 4*m + 3);   
+    if params.isIntval
+        DF = intval(1)*zeros(4*m + 3, 4*m + 3);
+    else
+        DF = zeros(4*m + 3, 4*m + 3); 
+    end
     
     %%% Quantities in the derivatives of manifold parameterizations 
     
@@ -79,9 +83,15 @@ function DF = DF_homoclinic(x, params, mflds)
     % UPPER RIGHT 3x4m MATRIX %
     %%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    DF(1,3+1:3+m) = [1, 2*ones(1,m-1)];
-    DF(2,3+m+1:3+2*m) = [1, 2*ones(1,m-1)];
-    DF(3,3+3*m+1:3+4*m) = [1, 2*ones(1,m-1)];
+    if params.isIntval
+        DF(1,3+1:3+m) = intval(1)*[1, 2*ones(1,m-1)];
+        DF(2,3+m+1:3+2*m) = DF(1,3+1:3+m);
+        DF(3,3+3*m+1:3+4*m) = DF(1,3+1:3+m);
+    else
+        DF(1,3+1:3+m) = [1, 2*ones(1,m-1)];
+        DF(2,3+m+1:3+2*m) = [1, 2*ones(1,m-1)];
+        DF(3,3+3*m+1:3+4*m) = [1, 2*ones(1,m-1)];
+    end
     
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % LOWER RIGHT 4mx4m MATRIX %
@@ -94,7 +104,11 @@ function DF = DF_homoclinic(x, params, mflds)
     %%%%
     
     % d(f4)_0 da1
-    DF(3+1,3+1:3+m) = [1, 2*pm_ones]; 
+    if params.isIntval
+        DF(3+1,3+1:3+m) = intval(1)*[1, 2*pm_ones]; 
+    else  
+        DF(3+1,3+1:3+m) = [1, 2*pm_ones]; 
+    end
     
     % d(f4)_k d(a1)_k, k \geq 1 (column vector)
     for i = 2:m

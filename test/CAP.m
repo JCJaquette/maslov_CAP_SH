@@ -21,9 +21,6 @@ if BOOL_load_bndl
     load(data_str)
 else
     % Computational Parameters
-    params.scale = .3;
-    params.order = 20; 
-    params.mfld.order = params.order;
     params.isIntval = 1;
     
     % Computation 
@@ -37,10 +34,16 @@ else
     %ODE Parameters
     if Case_number == 1 || Case_number == 2 
         params.mu = 0.05; 
+        params.scale = .3;
+        params.order = 20;
     else
         params.mu = 0.2; 
+        params.scale = .3;
+        params.order = 26;  
+        params.cheb.order=2^10;
     end
     params.nu = 1.6;
+    params.mfld.order = params.order;
     
     % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
     
@@ -62,12 +65,7 @@ else
     % in "mflds.stable.r_min" or "mflds.unstable.r_min" 
     % Also removed "bndl_r"; this is now stored in the bndl object
     % Also removed "Lminus"; this is now stored in the mflds object
-    
-    
-    
-    % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:)); this
-    % isn't final, maybe not exactly right?
-    % params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
+
 end
 
 return
@@ -101,10 +99,9 @@ end
 % Get seed for Newton
 [seed,params.Lbvp] = get_newton_seed(params,mflds);
  
-mflds_d = struct_intvaltodouble(mflds);
-params_d = struct_intvaltodouble(params)
+
 % Refine with Newton
-y = refine_cheb_orbit(seed,mflds_d,params_d);
+y = refine_cheb_orbit(seed,mflds,params);
 
 % yo1 = chebcoeff_to_function(new_y.a1);
 % yo2 = chebcoeff_to_function(new_y.a2);
@@ -126,7 +123,7 @@ xlabel('t')
 ylabel('$\varphi$(t)',Interpreter='latex')
 
 % Validate
-verify_homoclinic_orbit(params_d,mflds_d,y,params.new);
+verify_homoclinic_orbit(params,mflds,y,params.new);
 
 
 %%

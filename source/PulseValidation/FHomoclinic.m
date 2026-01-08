@@ -2,6 +2,12 @@
 % store ai as row vectors
 function fun = FHomoclinic(x, mflds, params)
 
+if params.isIntval
+    zero = intval('0');
+else
+    zero = 0;
+end
+
     psi1 = params.rho*cos(x.psi);
     psi2 = params.rho*sin(x.psi);
     
@@ -34,7 +40,7 @@ function fun = FHomoclinic(x, mflds, params)
     end
     
     
-    f4to6=zeros(3,m);
+    f4to6=zero*zeros(3,m);
   
     f4to6(1,1) = x.a1(1) + 2*sum(pm_ones.*x.a1(2:end)) - Q(1);
     f4to6(2,1) = x.a2(1) + 2*sum(pm_ones.*x.a2(2:end)) - Q(2);
@@ -54,10 +60,11 @@ function fun = FHomoclinic(x, mflds, params)
     % f_7  %
     %%%%%%%%
     
-    f7=zeros(1,m);
+    f7=zero*zeros(1,m);
     f7(1) = x.a4(1) + 2*sum(pm_ones.*x.a4(2:end)) - Q(4);
     
-    c4=zeros(1,m+1);
+    c4=zero*zeros(1,m+1);
+
     a1a1=chebstar2(x.a1,x.a1,m+1);
     a1a1a1=chebstar3(x.a1,x.a1,x.a1,m+1);
     

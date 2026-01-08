@@ -1,13 +1,13 @@
 clear 
 figure 
-CASE_number = 1; 
+CASE_number = 3; 
 % Case 1 : params.mu = 0.05; 
 % Case 2 : params.mu = 0.05; 
 % Case 3 : params.mu = 0.20; 
 
 BOOL_load_bndl =0;
 
-BOOL_validate_pulse = 0; 
+BOOL_validate_pulse = 1; 
 
 % Debugging Log:
 %  @@ Adjust the getting of the pulse, so that it uses fsolve first like Hannah did
@@ -53,27 +53,28 @@ if BOOL_load_bndl
     load(data_str)
 else
     % Computational Parameters
-    params.scale = .09;
-    params.order = 35; 
-    params.mfld.order = params.order;
-    params.isIntval =0;
+    params.isIntval =1;
     
     % Computation 
     bndl_BOOL.plot = 0;
     bndl_BOOL.save_image = 0;
-    bndl_BOOL.save_data = 1;
+    bndl_BOOL.save_data = 0;
     bndl_BOOL.Lminus = 1; 
     bndl_BOOL.stable = 1;
 
     
     %ODE Parameters
     if CASE_number == 1 || CASE_number == 2 
-        params.mu = 0.05; 
+        params.mu = 0.1; 
+        params.scale = .3;
+        params.order = 40;
     else
         params.mu = 0.2; 
+        params.scale = .3;
+        params.order = 26;         
     end
-    params.mu = 0.2; 
     params.nu = 1.6;
+    params.mfld.order = params.order;
     
     % For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
     
@@ -98,13 +99,7 @@ else
     
     % TODO: This should not be recast as a double at the top level. 
     % If you need to recast it as a double, do it inside the necessary function. 
-    [mflds,intradii] = struct_intvaltodouble(mflds);
-    
-    
-    
-    % params.stable.error = mflds_r + max(intradii.stable.coeffs(1,2,:)); this
-    % isn't final, maybe not exactly right?
-    % params.unstable.error = mflds_r + max(intradii.unstable.coeffs(1,2,:));
+    % [mflds,intradii] = struct_intvaltodouble(mflds);
 
     % NOTE: This ↑↑↑ error calculation should be done where it is used, not here
     % Also, if you are not immediately sure, then this is something
@@ -117,12 +112,12 @@ end
 % sec2
 
 % Parameters for the pulse validation
-params.rho = .99;
-params.cheb.order=2^9;
+params.rho = .99;%This is delta_s in paper 3
+params.cheb.order=2^10;
 params.tol=4e-14;
 params.Lbvp = 0;
-params.bd_scale = .2;
-params.new = 1.01;
+params.bd_scale = .2;%This sets how close the pulse gets to the manifold when we cut it off
+params.new = 1.01;%new=delta in the paper, nu in the code for pulse existence CAP
 % We have three pulses(xi is the branch):
 if CASE_number == 2 
     params.xi = pi;
@@ -134,11 +129,17 @@ end
 % mu=.2,nu=1.6, xi=0
 
 
-params = struct_intvaltodouble(params);
+
 % TODO: This ↑↑↑ should not be recast as a double at the top level!!!! 
 % If you need to recast it as a double, do it inside the necessary function. 
 
+BOOL_load_oldpsoln = 0;
 
+if BOOL_load_oldpsoln
+    params.loadpsoln = Case_number;
+else
+    params.loadpsoln = 0;
+end
 
 % Get seed for Newton
 [seed,params.Lbvp] = get_newton_seed(params,mflds);

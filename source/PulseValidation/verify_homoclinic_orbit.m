@@ -11,8 +11,9 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     % TODO: Mike, please work out what the appropriate bound is here.
     %       Make sure to take note of the norm of r_min used in Paper2
 
-    mflds.stable.error = mflds.stable.r_min;% + mflds.radius; 
-    mflds.unstable.error = mflds.unstable.r_min;% + mflds.radius; 
+    % r_min is defined as in eqn 4.8 in paper 2
+    mflds.stable.error = mflds.stable.r_min;
+    mflds.unstable.error = mflds.unstable.r_min;
     
     
     injective = check_A_injective(x,params,mflds);
@@ -20,7 +21,11 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     disp('Now we compute the coefficients for the radii polynomial.')
     [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params);
 
-
+    if params.isIntval
+        Z = sup(Z);
+        Z0 = sup(Z0);
+        Y = sup(Y);
+    end
 
     p1=[Z(1,3) Z(1,2) Z0(1)+Z(1,1)-1 Y(1)];
     p2=[Z(2,3) Z(2,2) Z0(2)+Z(2,1)-1 Y(2)];
