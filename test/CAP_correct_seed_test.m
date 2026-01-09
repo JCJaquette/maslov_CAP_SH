@@ -1,6 +1,6 @@
 clear 
 figure 
-CASE_number = 3; 
+CASE_number = 1; 
 % Case 1 : params.mu = 0.05; 
 % Case 2 : params.mu = 0.05; 
 % Case 3 : params.mu = 0.20; 
@@ -96,10 +96,6 @@ end
 % mu=.2,nu=1.6, xi=0
 
 
-
-% TODO: This ↑↑↑ should not be recast as a double at the top level!!!! 
-% If you need to recast it as a double, do it inside the necessary function. 
-
 BOOL_load_oldpsoln = 0;
 
 if BOOL_load_oldpsoln
@@ -115,13 +111,7 @@ end
 % Refine with Newton
 y = refine_cheb_orbit(seed,mflds,params);
 
-% yo1 = chebcoeff_to_function(new_y.a1);
-% yo2 = chebcoeff_to_function(new_y.a2);
-% yo3 = chebcoeff_to_function(new_y.a3);
-% yo4 = chebcoeff_to_function(new_y.a4);
-% plot_manifold(mflds.unstable.coeffs, params.mfld.order, 'red')
-% plot_manifold(mflds.stable.coeffs, params.mfld.order, 'blue')
-% plot3(yo1 ,yo2 ,yo4 ,'LineWidth',1)
+
 
 %%
 
