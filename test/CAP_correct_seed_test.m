@@ -1,6 +1,6 @@
 clear 
 figure 
-CASE_number = 1; 
+CASE_number = 3; 
 % Case 1 : params.mu = 0.05; 
 % Case 2 : params.mu = 0.05; 
 % Case 3 : params.mu = 0.20; 
