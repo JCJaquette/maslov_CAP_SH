@@ -9,34 +9,22 @@ BOOL_load_bndl =0;
 
 BOOL_validate_pulse = 1; 
 
-% Debugging Log:
-%  @@ Adjust the getting of the pulse, so that it uses fsolve first like Hannah did
-%  #### It seems that this matches up. .... So continue with the debugging!
-%  #### The functions I added here could probably be cleaned out to
-%       simplify the program
-% 
-%  @@ There was an indexing bug in get_newton_seed. 
-%  #### As a result, now the Seed and the thing Chebyshev converges to look
-%       very similar. 
+    % Computational Parameters
+    params.isIntval =1;
+    
+    % Computation 
+    bndl_BOOL.plot = 0;
+    bndl_BOOL.save_image = 0;
+    bndl_BOOL.save_data = 1;
+    bndl_BOOL.Lminus = 1; 
+    bndl_BOOL.stable = 1;
+
+    % It is still somewhat strange how the Chebyshev seed and Converge are
+    % so different. There is still probably something weird with how
+    % computational parameters are being chosen.
+    % 
+    % 
 %
-%  @@ Nevertheless, things are still not validating, 
-%       This is even without using interval arithmetic
-%  @@   One major culprit here seems to be the Z1 bound, but this seems
-%  more like a symptom, and not the root of the problem. 
-% 
-%  @@ I think that adjusting various computational parameters could fix the
-%  problem 
-% 
-%  #### For example, changing the scaling of the manifold parameterization
-%       should help us out, and we can compensarately increase the order of the
-%       Taylor approximation. 
-%  #### However, when I do this, the Seed and the thing Chebyshev converges to
-%       DO NOT look that similar. 
-%  #### I suspect there are more problems with things being hard-coded, 
-%       which need to be refactored as to better allow for changing
-%       computational parameters.
-%  @@ Another thing that one could do is add some quantifiable tests, 
-%       so that it is easy to just run this script and see how well we're doing 
 %  @@@@@ Mike, also, please add more comments to the files! What I'd recommend doing, at least, 
 %       is while you are debugging something, add comments to the thing you're debugging. 
 %       This helps with double checking that what you did in the code is correct 
@@ -46,22 +34,13 @@ BOOL_validate_pulse = 1;
 % Load bundles or recompute
 if BOOL_load_bndl 
     if CASE_number == 1 || CASE_number == 2 
-        data_str = "data_bndl_nu_1p6_mu_0p05";
+        % data_str = "data_bndl_nu_1p6_mu_0p05";
+        data_str = "data_bndl_nu_1p6_mu_0p1";
     else
         data_str = "data_bndl_nu_1p6_mu_0p2";
     end
     load(data_str)
 else
-    % Computational Parameters
-    params.isIntval =1;
-    
-    % Computation 
-    bndl_BOOL.plot = 0;
-    bndl_BOOL.save_image = 0;
-    bndl_BOOL.save_data = 0;
-    bndl_BOOL.Lminus = 1; 
-    bndl_BOOL.stable = 1;
-
     
     %ODE Parameters
     if CASE_number == 1 || CASE_number == 2 
@@ -92,21 +71,9 @@ else
     % Get the bundles and manifolds
     [mflds,bndl] = get_all_bundles(params,bndl_BOOL); 
     
-    % NOTE: Removed "mflds_r" from get_all_bundles output. This data is stored
-    % in "mflds.stable.r_min" or "mflds.unstable.r_min" 
-    % Also removed "bndl_r"; this is now stored in the bndl object
-    % Also removed "Lminus"; this is now stored in the mflds object
-    
-    % TODO: This should not be recast as a double at the top level. 
-    % If you need to recast it as a double, do it inside the necessary function. 
-    % [mflds,intradii] = struct_intvaltodouble(mflds);
-
-    % NOTE: This ↑↑↑ error calculation should be done where it is used, not here
-    % Also, if you are not immediately sure, then this is something
-    % nontrivial, that merits working out on paper / latex
 end
 
-
+return
 
 %%
 % sec2

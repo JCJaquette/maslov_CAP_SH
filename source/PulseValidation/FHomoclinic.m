@@ -65,8 +65,9 @@ end
     
     c4=zero*zeros(1,m+1);
 
-    a1a1=chebstar2(x.a1,x.a1,m+1);
-    a1a1a1=chebstar3(x.a1,x.a1,x.a1,m+1);
+    a1a1  =chebstar2(x.a1,x.a1,m+1);
+    a1a1a1=chebstar2(a1a1,x.a1,m+1);
+    % a1a1a1=chebstar3(x.a1,x.a1,x.a1,m+1);
     
     for i=1:m+1
         c4(i) = -2*x.a3(i) - (1+params.mu)*x.a1(i) + params.nu*a1a1(i) ...

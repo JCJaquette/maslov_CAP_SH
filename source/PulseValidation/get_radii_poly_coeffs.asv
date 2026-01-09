@@ -264,7 +264,11 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     x.a1 = [x.a1, zeros(1,2*m)];
 
     [a1vI]=chebstar2(abs(x.a1),vI, 3*m);
-    [a1vIvI]=chebstar2(abs(a1vI),vI, 3*m); 
+    [a1vIvI]=chebstar3(abs(x.a1),vI, 3*m); 
+
+    [a1vI_3]=chebstar2(abs(x.a1),vI, 3*m);
+    [a1vIvI_2]=chebstar2(abs(a1vI_3),vI, 3*m);
+
     
     % We compute the last part of the bound Z
     disp('Computing the last part of Z.')

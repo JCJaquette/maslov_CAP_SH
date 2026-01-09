@@ -16,7 +16,10 @@ end
 
     [u_pts,u_phi1phi2s] = get_mani_points(mflds.unstable.coeffs,params.mfld.order,1);
     s_pts = get_mani_points(mflds.stable.coeffs,params.mfld.order,1);
-    thetas = linspace(0,2*pi,60);
+
+    manifold_dimensions = size(s_pts);
+
+    thetas = linspace(0,2*pi,manifold_dimensions(1));
     boundary_distance = avgnorms(u_pts);
     boundary_distance = boundary_distance*params.bd_scale;
 

@@ -45,6 +45,8 @@ function satisfied = check_last_BC(rad, nu, x, params, mflds)
         +int_delta_s*((itheta(1)^(N+1)/(1-itheta(1)-1i*itheta(2)))*sum(((itheta(1)-1i*itheta(2))/(itheta(1)+1i*itheta(2))).^(0:N))+...
         +(1/(1-itheta(1)-1i*itheta(2)))*((itheta(1)-1i*itheta(2))^(N+1)/(1-itheta(1) + 1i*itheta(2))));
 
+    int_p3 = real(int_p3);
+
     % We verify that U2(1) and P2(theta) are both the same sign
     if (sup(rad_w3)<0 && sup(int_p3)<0) || (inf(rad_w3)>0 && inf(int_p3)>0)
         disp('Good to go! The boundary condition P3 = w3(1) is satisfied.')

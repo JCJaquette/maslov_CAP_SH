@@ -1,5 +1,5 @@
 function [points,s1s2s]=get_mani_points(coeff,order,scale)
-    p=60;
+    p=80;
 
     r=linspace(0,scale,p);
     theta=linspace(0,2*pi, p);
