@@ -124,8 +124,8 @@ end
 
 disp('Computing Eu-')
 
-params.cheb.order = 2^10;%fix hthis
-params.del = 1.01;%fix this
+params.cheb.order = 2^9;%fix hthis
+params.del = 1.005;%fix this
 % TODO: get this stuff manually vv
 maxphi = max(abs(pulse4D.phi1),abs(pulse4D.phi2)); 
 mani_error = 3.2e-11; %fix this

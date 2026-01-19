@@ -3,7 +3,8 @@ function [outmat] = DcPProd(a,b)
 
     N = length(a);
 
-    c = chebstar2(a,b,N);
+    c = chebstar2fft(a,b);
+    c = c(1:N);
 
     outmat = DcProd(c);
 

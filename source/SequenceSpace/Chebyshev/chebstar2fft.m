@@ -18,9 +18,16 @@ function [ab] = chebstar2fft(a,b)
     a = [a(1:chebLa),zeros(1,n - length(a)),a(chebLa+1:end)];
     b = [b(1:chebLb),zeros(1,n - length(b)),b(chebLb+1:end)];
 
-    ab = fft(ifft(a).*ifft(b));
-    ab = ab(1:n/2)*n;%ifft(a) scales the coeffs by 1/n
-    ab = real(ab);
+
+    if isintval(a) || isintval(b)
+        ab = verifyfft(verifyfft(a,-1).*verifyfft(b,-1),1);
+        ab = ab(1:n/2)*n;%ifft(a) scales the coeffs by 1/n
+        ab = real(ab);
+    else
+        ab = fft(ifft(a).*ifft(b));
+        ab = ab(1:n/2)*n;%ifft(a) scales the coeffs by 1/n
+        ab = real(ab);
+    end
 
     if check == 1
         ab = ab';

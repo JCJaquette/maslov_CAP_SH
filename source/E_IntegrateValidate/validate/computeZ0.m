@@ -5,7 +5,7 @@ function Z0 = computeZ0(A,Ad,N,del)
 
     for i = 1:4
         for j = 1:4
-            Zijs(i,j) = matrixDelta1norm_intval(B((i-1)*N+1 : i*N,(j-1)*N+1 : j*N),del);
+            Zijs(i,j) = matrixDelta1norm(B((i-1)*N+1 : i*N,(j-1)*N+1 : j*N),del);
         end
     end
 

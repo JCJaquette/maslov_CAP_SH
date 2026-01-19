@@ -3,13 +3,19 @@ function [Fout] = chebF(h,hu,b,N,params)
 % zero of this gives h coeffs
 % b is soln cheb coeffs, hu is h(-1), N is order of series
 
+if params.isIntval
+    zero = intval(0);
+else
+    zero = 0;
+end
+
     h1 = [h(1:N)];
     h2 = [h(N+1:2*N)];
     h3 = [h(2*N+1:3*N)];
     h4 = [h(3*N+1:4*N)];
 
 
-    Fai0 = zeros(4,1);
+    Fai0 = zero*zeros(4,1);
     alt = ones(1,N-1);
     for k = 1:N-1
 
@@ -26,7 +32,7 @@ function [Fout] = chebF(h,hu,b,N,params)
 
     c = make_c(h1,h2,h3,h4,b,params,N);    
 
-    Fa1 = zeros(N-1,1);
+    Fa1 = zero*zeros(N-1,1);
     Fa2 = Fa1;
     Fa3 = Fa1;
     Fa4 = Fa1;

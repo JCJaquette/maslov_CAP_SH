@@ -1,11 +1,17 @@
 function [outmat] = DcProd(a)
 % gives jacobian of a*h wrt h
 
+if isintval(a)
+    zero = intval(0);
+else
+    zero = 0;
+end
+
     N = length(a);
 
     mat1 = toeplitz(a);
 
-    mat2 = zeros(N);
+    mat2 = zero*zeros(N);
 
     for i = 2:N
 

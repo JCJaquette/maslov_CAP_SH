@@ -1,8 +1,8 @@
 function [y,Lbvp] = get_newton_seed(params,mflds)
 
     
-    [mflds,mfldradii] = struct_intvaltodouble(mflds);
-    params = struct_intvaltodouble(params);
+    mflds = struct_intvaltodouble(mflds);
+    params = struct_intvaltodouble(params);     
 
     psoln = getPulse(params);
 

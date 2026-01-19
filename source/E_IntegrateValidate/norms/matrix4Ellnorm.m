@@ -1,7 +1,11 @@
 function out = matrix4Ellnorm(M,N,del)
 % max norm for the (\ell _\delta ^1)^4 space
 
+if isintval(M)
+    norms = intval(0)*zeros(4,4);
+else
     norms = zeros(4,4);
+end
 
     for i = 1:4
         for j = 1:4

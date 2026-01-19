@@ -25,16 +25,6 @@ for i = 1:4
 end
 
 
-% h = [U_vp_cheb(:,1);
-%     U_vp_cheb(:,2);
-%     U_vp_cheb(:,3);
-%     U_vp_cheb(:,4)]';
-% 
-% norm(chebF(h,U_vp_ICvec,phi_cheb,ord,params),1)
-
-
-%
-
 phi = chebfun(1);
 phi.domain = [-1,1];
 phi.funs{1,1}.onefun.coeffs = [phi_cheb(1),2*phi_cheb(2:end)]';
@@ -81,54 +71,16 @@ Ch12ODE.lbc = intICvec;
 % Set the coefficients into the form we want(a single 4 x ord matrix)
 
 n = length(h1);
-ord = 600;
 phi_cheb = [phi_cheb, zeros(1,ord)];
 phi_cheb = phi_cheb(1:ord);
 
 U_1_cheb = zeros(ord,4);
-U_1_cheb(1:n,1) = chebcoeffs(h1)/2;
+U_1_cheb(1:n,1) = chebcoeffs(h1)/2; %breaks if n>ord
 U_1_cheb(1:n,2) = chebcoeffs(h2)/2;
 U_1_cheb(1:n,3) = chebcoeffs(h3)/2;
 U_1_cheb(1:n,4) = chebcoeffs(h4)/2;
 U_1_cheb(1,:) = 2*U_1_cheb(1,:);
 
-% U_1_cheb = zeros(1,4*ord);
-% U_1_cheb(1:n) = chebcoeffs(h1)/2;
-% U_1_cheb(1) = U_1_cheb(1)*2;
-% U_1_cheb(ord+1:ord+n) = chebcoeffs(h2)/2;
-% U_1_cheb(ord+1) = U_1_cheb(ord+1)*2;
-% U_1_cheb(2*ord+1:2*ord+n) = chebcoeffs(h3)/2;
-% U_1_cheb(2*ord+1) = U_1_cheb(2*ord+1)*2;
-% U_1_cheb(3*ord+1:3*ord+n) = chebcoeffs(h4)/2;
-% U_1_cheb(3*ord+1) = U_1_cheb(3*ord+1)*2;
-
-% for j = 1:1
-% 
-%     h = h - (chebDF(phi_cheb,ord,params)\chebF(h,intICvec,phi_cheb,ord,params))';
-% 
-% end
-% 
-% disp('norm of F(h) after Newton:')
-% disp(norm(chebF(h,intICvec,phi_cheb,ord,params)))
-%
-% i = 1; plot(h1)
-% hold on
-% plot(linspace(-1,1,201),chebcoeff_to_function(h(((i-1)*ord)+1:i*ord)))
-%
-% plot(log(abs(h((i-1)*ord+1:i*ord))))
-%
-% figure;
-% 
-% subplot(4, 1, 1);
-% plot(h1);
-% subplot(4, 1, 2);
-% plot(h2);
-% subplot(4, 1, 3);
-% plot(h3);
-% subplot(4, 1, 4);
-% plot(h4);
-% 
-% sgtitle('Numerical Solution');
 
 m = length(U_1_cheb)/4;
 h_cheb = [U_1_cheb(1:m); U_1_cheb(m+1:2*m); U_1_cheb(2*m+1:3*m); U_1_cheb(3*m+1:4*m)]';

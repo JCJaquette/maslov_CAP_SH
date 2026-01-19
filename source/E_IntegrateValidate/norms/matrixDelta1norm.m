@@ -5,11 +5,21 @@ function normout = matrixDelta1norm(mat,del)
 
     delvec = del.^(0:1:n-1);
 
-    weightedcolsums = delvec*abs(mat); % Shouldn't we need to take an absolute value of mat here? 
+    weightedcolsums = delvec*abs(mat); 
+    
+    if isintval(mat)
 
-    [mx,ind] = max(weightedcolsums);
+        weightedcolsums = weightedcolsums.sup;
+        [mx,ind] = max(weightedcolsums);
 
-    normout = mx/del^(ind-1);
+        normout = intval(1)*mx/del^(ind-1);
+
+    else
+
+        [mx,ind] = max(weightedcolsums);
+        normout = mx/del^(ind-1);
+        
+    end
 
 end
 

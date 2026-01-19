@@ -1,5 +1,11 @@
 function [out] = chebDF(b,N,params)
 
+if params.isIntval
+    zero = intval(0);
+else
+    zero = 0;
+end
+
     alt = ones(1,N-1);
     for k = 1:N-1
 
@@ -11,7 +17,7 @@ function [out] = chebDF(b,N,params)
 
     twos = 2*alt.*ones(1,N-1);
 
-    lowright = zeros(N-1,N-1);
+    lowright = zero*zeros(N-1,N-1);
 
     for i = 1:N-1
         lowright(i,i) = 2*i;
@@ -19,10 +25,10 @@ function [out] = chebDF(b,N,params)
 
     diagM = [1,twos;
            zeros(N-1,1),lowright];
-    % diagM is derivative of psi_i wrt (a_i), appears as
-    % the diagonal blocks
+    % diagM is derivative of psi_i wrt (a_i) and appears as
+    % the diagonal blocks 
  
-    subLOL = zeros(N-1,N);
+    subLOL = zero*zeros(N-1,N);
     
     for i = 1:N-1
 
