@@ -21,21 +21,38 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
                                            % better bounds
     y3tail = params.nu * prod_2 - 3*prod_3new;
     
-    for i = 1:3*N
-
-        if i < N
-            y3tail(i) = 0;
-        else
-            y3tail(i) = y3tail(i)/(i+1);
-        end
-
-    end
+    % for i = 1:N
+    % 
+    %     if i < N
+    %         y3tail(i) = 0;
+    %     else
+    %         y3tail(i) = y3tail(i)/(i+1);
+    %     end
+    % 
+    % end
+    
+    y3tail=y3tail./(2:(3*N+1));
+    y3tail(1:N)=0*y3tail(1:N);
 
     y3tail_sum = vectorDelta1norm(y3tail,del);
 
     Y0s(3) = Y0s(3) + y3tail_sum;
 
     Y0 = max(Y0s);
+
+return
+
+
+figure
+plot(log(sup(abs(prod_2)))/log(10),'.')
+figure
+plot(log(abs(sup(prod_3new)))/log(10),'.')
+figure
+plot(log(abs(sup(params.nu * prod_2 - 3*prod_3new)))/log(10),'.')
+figure
+plot(sup(abs(y3tail)),'.')
+figure
+plot([sup(abs(finitepart(2*N+1:3*N)));sup(abs(y3tail(N+1:3*N)))],'.')
 
 end
 

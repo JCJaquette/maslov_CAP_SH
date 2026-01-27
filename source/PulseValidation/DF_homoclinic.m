@@ -1,5 +1,5 @@
 function DF = DF_homoclinic(x, params, mflds)
-    m = params.cheb.order;
+    m = params.pulse.order;
     if params.isIntval
         DF = intval(1)*zeros(4*m + 3, 4*m + 3);
     else

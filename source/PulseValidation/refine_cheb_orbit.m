@@ -9,7 +9,7 @@ end
 
     disp('Refining Chebyshev coefficients via Newtons method.')
     k=0;
-    m=params.cheb.order;
+    m=params.pulse.order;
     while k < 150
         disp(['Newton iteration: ', num2str(k)])
                     

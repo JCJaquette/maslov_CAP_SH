@@ -75,7 +75,7 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     phi1 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),1);
     phi2 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),2);
 
-    y = chebfuncoeffs(Lsoln,params.cheb.order);
+    y = chebfuncoeffs(Lsoln,params.pulse.order);
     y.phi1 = phi1;
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));

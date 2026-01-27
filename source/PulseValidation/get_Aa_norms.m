@@ -1,5 +1,5 @@
 function Aa_norms = get_Aa_norms(nu, x, params, mflds)
-    m = params.cheb.order;
+    m = params.pulse.order;
 
     nu_power=nu.^(0:m-1);
 

@@ -7,9 +7,6 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     
     r = 0;
     disp('First we check that the matrix Am is injective.')
-    
-    % TODO: Mike, please work out what the appropriate bound is here.
-    %       Make sure to take note of the norm of r_min used in Paper2
 
     % r_min is defined as in eqn 4.8 in paper 2
     mflds.stable.error = mflds.stable.r_min;
@@ -90,7 +87,8 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     end
 
     if verif==1
-        r=(I(1)+I(2))/2;
+        r=I(1)*1.1;
+
         
         p1_r=Z(1,3)*r^3+Z(1,2)*r^2+(Z0(1)+Z(1,1)-1)*r+Y(1);
         p2_r=Z(2,3)*r^3+Z(2,2)*r^2+(Z0(2)+Z(2,1)-1)*r+Y(2);

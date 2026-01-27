@@ -1,5 +1,5 @@
 function satisfied = check_last_BC(rad, nu, x, params, mflds)
-    m = params.cheb.order;
+    m = params.pulse.order;
     N = params.mfld.order;
     
     irad = intval(rad);

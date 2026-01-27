@@ -1,5 +1,5 @@
 function injective = check_A_injective(x,params,mflds)
-    m = params.cheb.order;
+    m = params.pulse.order;
 
     DF=DF_homoclinic(x,params,mflds);
     Am=DF^(-1);

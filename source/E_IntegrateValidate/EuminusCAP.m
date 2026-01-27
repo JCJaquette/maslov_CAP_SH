@@ -1,11 +1,10 @@
-function good_r = EuminusCAP(params,y,U_1_cheb)
+function good_r = EuminusCAP(params,phi_cheb,U_1_cheb)
 % CAP
-ord = params.cheb.order;
+ord = params.Eu.order;
 a = zeros(4*ord,1);
 ICvec = zeros(4,1);
-phi_cheb = y.a1(1:ord)';
 
-for i = 1:4
+for i = 1:4 
     a((i-1)*ord+1:i*ord) = U_1_cheb(:,i);
     ICvec(i) = chebSum(U_1_cheb(:,i),-1);
 end
@@ -29,6 +28,4 @@ radii_poly = Y0 + Y0hat - (1-Z0-Z1-Z2hat)*rs;
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat))
 
-% pulse3 soln validated by leaving chebstar2 without fft in y3tail of Y0
-% function (takes a while)
 end

@@ -6,10 +6,10 @@ function vec = chebstar2(a,b,order)
     M=max(size(b));
     
     if (max(size(a)) == order) == 0
-        a=[a,zeros(1,order-N)];
+        a=[a',zeros(1,order-N)];
     end
     if (max(size(b)) == order) == 0
-        b=[b,zeros(1,order-M)];
+        b=[b',zeros(1,order-M)];
     end
     
         
@@ -26,5 +26,6 @@ function vec = chebstar2(a,b,order)
         end
         vec=[vec,dubsum];
     end
+    vec = vec';
 
 end

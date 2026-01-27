@@ -29,7 +29,7 @@ end
     % f_4 to f_6  %
     %%%%%%%%%%%%%%%
     
-    m = params.cheb.order;
+    m = params.pulse.order;
     pm_ones = (-ones(1,m)).^(1:m);
     
     if max(size(x.a1)) == m

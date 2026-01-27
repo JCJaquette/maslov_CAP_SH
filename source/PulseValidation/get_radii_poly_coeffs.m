@@ -6,7 +6,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
         zero = 0;
     end
 
-    m = params.cheb.order;
+    m = params.pulse.order;
     N = params.mfld.order;
     
     norms = get_Aa_norms(nu, x, params, mflds);
