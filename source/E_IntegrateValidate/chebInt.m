@@ -55,14 +55,16 @@ ODE.lbc = intICvec;
 
 % Set the coefficients into the form we want(a single 4 x ord matrix)
 
-n = length(h1);
+length_vec = [length(h1);length(h2);length(h3);length(h4)];
+
+n = max(length_vec);
 phi_cheb = [phi_cheb, zeros(1,ord)];
 phi_cheb = phi_cheb(1:ord);
 
 nonzero = 2^(ceil(log2(n)));
 
-U_1_cheb = zeros(ord,4);
-U_1_cheb(1:n,1) = chebcoeffs(h1)/2; %breaks if n>ord
+U_1_cheb = zeros(nonzero,4);
+U_1_cheb(1:n,1) = chebcoeffs(h1)/2; 
 U_1_cheb(1:n,2) = chebcoeffs(h2)/2;
 U_1_cheb(1:n,3) = chebcoeffs(h3)/2;
 U_1_cheb(1:n,4) = chebcoeffs(h4)/2;

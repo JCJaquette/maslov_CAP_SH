@@ -76,7 +76,7 @@ end
 params.Eu.order = 2^10;
 disp('Computing Eu-')
 
-params.del = 1.01;%ask: Does this need to be the same as with the pulse?
+params.del = 1.01;
 % TODO: get this stuff manually, move inside a function vv
 maxphi = max(abs(pulse4D.phi1),abs(pulse4D.phi2)); 
 mani_error = mflds.unstable.r_min; %not quite i believe since in the fn we use doubles
@@ -123,8 +123,11 @@ ICerror = 2*pi/log(1/maxphi) * mani_error; %Error of manifold's tangent bundle, 
 
 pulse4D.r = 1.8e-11;
 phi_cheb = pulse4D.a1(1:params.nonzero)';
-trunc_error = 
+tail = pulse4D.a1' - [phi_cheb;zeros(params.Eu.order-params.nonzero,1)];
+tail_error = vectorDelta1norm(tail,1.01);
 
-params.rho = max(pulse4D.r,ICerror); %See corollary 3.1
+pulseerror = pulse4D.r + tail_error;
 
-r = EuminusCAP(params,pulse4D,U_1);
+params.rho = max(pulseerror,ICerror); %See corollary 3.1
+
+r = EuminusCAP(params,phi_cheb,U_1);
