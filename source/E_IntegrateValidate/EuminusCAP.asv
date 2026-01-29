@@ -3,7 +3,8 @@ function good_r = EuminusCAP(params,phi_cheb,U_1_cheb)
 ord = params.Eu.order;
 nz_ord = params.nonzero;
 phi_chebN = [phi_cheb;zeros(ord - nz_ord,1)];
-
+phi_cheb2 = chebstar2fft(phi_cheb,phi_cheb);
+phi_chebN2 = [phi_cheb2; zeros()];
 
 a = zeros(4*ord,1);
 ICvec = zeros(4,1);

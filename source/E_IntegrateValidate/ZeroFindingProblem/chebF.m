@@ -14,7 +14,6 @@ end
     h3 = [h(2*N+1:3*N)];
     h4 = [h(3*N+1:4*N)];
 
-
     Fai0 = zero*zeros(4,1);
     alt = ones(1,N-1);
     for k = 1:N-1

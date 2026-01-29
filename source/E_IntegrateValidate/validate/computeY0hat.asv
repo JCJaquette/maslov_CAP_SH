@@ -10,10 +10,8 @@ function out = computeY0hat(A,Rho,L,del,nu,a1,b)
     end                                                                     
 
     norms1 = 0*norms2;
-    for j = 0:3 %Do the finite vector norms in the first part of the Yhat bound
-        for i = 0:3 
-            norms1(j+1) = norms1(j+1) + Rho*vectorDelta1norm(A(j*N+1:(j+1)*N,i*N+1),del);
-        end
+    for i = 1:4 %Do the finite vector norms in the first part of the Yhat bound
+        norms1(i) = norms1(i) + params.rho*vectorDelta1norm(A((i-1)*N+1:i*N,1),del);
     end
 
     norms = norms1 + norms2;

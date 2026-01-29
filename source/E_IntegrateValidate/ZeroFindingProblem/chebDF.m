@@ -6,6 +6,8 @@ else
     zero = 0;
 end
 
+nz = params.nonzero;
+
     alt = ones(1,N-1);
     for k = 1:N-1
 
@@ -45,8 +47,10 @@ end
 
     shftfwd = diag(ones(1,N-1),1);
     shftbkwd = diag(ones(1,N-1),-1);    
-    DcPP = DcPProd(b,b);
     DcP = DcProd(b);
+    b2 = chebstar2fft(b,b);
+    b2 = [b2(1:2*nz); zeros(N - 2*nz,1)];
+    DcPP = DcProd(b2);
 
     Dc = 2*params.nu*DcP - 3*DcPP;
     % derivative of cProds in c_3 wrt a_1

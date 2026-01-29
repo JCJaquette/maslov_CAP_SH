@@ -2,7 +2,7 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
 
     nz = params.nonzero;
 
-    finitepart = A*chebF(a_bar,v,b,N,params);
+    finitepart = A*chebF(a_bar,v,b,N,params); %Compute first sum in lemma 8.1
 
     Y0s = zeros(1,4)*intval(0);
 
@@ -13,8 +13,8 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
         Y0s(4) = vectorDelta1norm(finitepart(3*N+1:4*N),del);
     end
 
-
-    if 3*nz > N
+    %The tail will be contained in the above if 3*nz \leq N
+    if 3*nz > N %If the nonzero order gives a tail bigger than N then compute that too
 
         a_bar3 = a_bar(2*N+1:2*N + nz);
         prod_2 = chebstar2fft(b(1:nz),a_bar3);
@@ -29,7 +29,7 @@ function Y0 = computeY0(A,a_bar,b,params,N,v,del)
     
         y3tail_sum = vectorDelta1norm(y3tail,del);
     
-        Y0s(3) = Y0s(3) + y3tail_sum;
+        Y0s(3) = Y0s(3) + y3tail_sum; %Nonlinearity only appears in the third sequence
 
     end
 

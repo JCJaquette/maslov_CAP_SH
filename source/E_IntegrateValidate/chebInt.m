@@ -37,7 +37,7 @@ phi.funs{1,1}.onefun.coeffs = [phi_cheb(1),2*phi_cheb(2:end)]';
 unstableVec_re = real(unstableVec1);
 unstableVec_im = imag(unstableVec1);
 
-% transform to symplectic coord 
+% transform to symplectic coordinates
 
 unstableVec_re_sym = Q*unstableVec_re;
 unstableVec_im_sym = Q*unstableVec_im;
@@ -68,17 +68,6 @@ U_1_cheb(1:n,1) = chebcoeffs(h1)/2;
 U_1_cheb(1:n,2) = chebcoeffs(h2)/2;
 U_1_cheb(1:n,3) = chebcoeffs(h3)/2;
 U_1_cheb(1:n,4) = chebcoeffs(h4)/2;
-U_1_cheb(1,:) = 2*U_1_cheb(1,:);
-
-
-m = length(U_1_cheb)/4;
-h_cheb = [U_1_cheb(1:m); U_1_cheb(m+1:2*m); U_1_cheb(2*m+1:3*m); U_1_cheb(3*m+1:4*m)]';
-phiPrime_cheb = U_vpp_cheb;
-phi_cheb = pulse_skewSym_cheb';
-% E_h = good_r;
-% E_phi = 0;
-% 
-% save('varbs3','phi_cheb','h_cheb','phiPrime_cheb','E_h','E_phi')
-
+U_1_cheb(1,:) = 2*U_1_cheb(1,:); 
 
 end
