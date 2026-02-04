@@ -1,4 +1,4 @@
-function plots=plot_manifold(coeff,order,color)
+function plots=plot_manifold(coeff,order,color,scale)
 % This function evaluates the function P on a grid of points and plots them
 % Inputs: coeff - corresponds to the coefficients computed for either the
 %                 stable or unstable manifold
@@ -9,7 +9,7 @@ function plots=plot_manifold(coeff,order,color)
     p=50;
     
     % We plot them in polar coordinates 
-    r=linspace(0,1,p);
+    r=linspace(0,scale,p);
     theta=linspace(0,2*pi, p);
 
     plotpoints=zeros(p,p,4);
@@ -31,7 +31,7 @@ function plots=plot_manifold(coeff,order,color)
         end
     end
     % surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color, 'FaceAlpha',.75,'EdgeColor','none');  
-surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4), 'FaceColor',color,'EdgeColor','none');  
+surf(plotpoints(:,:,1),plotpoints(:,:,2),plotpoints(:,:,4),'FaceAlpha', 0.5, 'FaceColor',color,'EdgeColor','none');  
     xlabel('x1')
     ylabel('x2')
     zlabel('x4')

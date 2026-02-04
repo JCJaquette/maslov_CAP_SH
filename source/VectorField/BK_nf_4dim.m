@@ -1,6 +1,7 @@
-function sol=BK_nf_4dim(params,phi,L, half)
+function sol=BK_nf_4dim(params,L, half)
     r = params.mu; 
     nu = params.nu;
+    phi = params.xi;
     gam = 38*nu^2/9-3;
     
     if half == 1
@@ -27,5 +28,9 @@ function sol=BK_nf_4dim(params,phi,L, half)
         + (5.*r^(3/2).*sinh(r^(1/2).*x./2).*cos(phi + x).*(2.*r./gam)^(1/2))./(4.*cosh(r^(1/2).*x./2).^2) ...
         - (3.*r.*sinh(r^(1/2).*x./2).^2.*sin(phi + x).*(2.*r./gam)^(1/2))./cosh(r^(1/2).*x./2).^3 ...
         - (3.*r^(3/2).*sinh(r^(1/2).*x./2).^3.*cos(phi + x).*(2.*r./gam)^(1/2))./(2.*cosh(r^(1/2).*x./2).^4);
-    
+   
+    if r == .2
+        sol(:,2:5) = 3*sol(:,2:5);
+    end
+
 end

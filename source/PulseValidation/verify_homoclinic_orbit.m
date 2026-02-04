@@ -3,19 +3,26 @@
 % coefficients lying in the Banach space. This variable nu was denoted by
 % delta in my dissertation.  
 
-function verif = verify_homoclinic_orbit(params, mflds, x, nu)
+function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     
+    r = 0;
     disp('First we check that the matrix Am is injective.')
+
+    % r_min is defined as in eqn 4.8 in paper 2
+    mflds.stable.error = mflds.stable.r_min;
+    mflds.unstable.error = mflds.unstable.r_min;
     
-    mflds.stable.error = 1e-12;
-    mflds.unstable.error = 1e-12;
     
     injective = check_A_injective(x,params,mflds);
     
     disp('Now we compute the coefficients for the radii polynomial.')
     [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params);
 
-
+    if params.isIntval
+        Z = sup(Z);
+        Z0 = sup(Z0);
+        Y = sup(Y);
+    end
 
     p1=[Z(1,3) Z(1,2) Z0(1)+Z(1,1)-1 Y(1)];
     p2=[Z(2,3) Z(2,2) Z0(2)+Z(2,1)-1 Y(2)];
@@ -59,6 +66,16 @@ function verif = verify_homoclinic_orbit(params, mflds, x, nu)
         I=[-1 1];
     elseif I(1)<0
         disp('Stop! The smallest root is negative.')
+        disp('These are the roots of each polynomial:')
+        format long
+        R1
+        R2
+        R3
+        R4
+        R5
+        R6
+        R7
+        format short
         I=[-1 1];
     elseif I(2)<I(1)
         disp('Stop! The interval between the roots is not well defined!')
@@ -70,7 +87,8 @@ function verif = verify_homoclinic_orbit(params, mflds, x, nu)
     end
 
     if verif==1
-        r=(I(1)+I(2))/2;
+        r=I(1)*1.1;
+
         
         p1_r=Z(1,3)*r^3+Z(1,2)*r^2+(Z0(1)+Z(1,1)-1)*r+Y(1);
         p2_r=Z(2,3)*r^3+Z(2,2)*r^2+(Z0(2)+Z(2,1)-1)*r+Y(2);

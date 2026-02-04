@@ -10,9 +10,12 @@ clear
 % ODE Parameters
 params.mu = 0.2; 
 params.nu = 1.6;
+
+% For pulse 3(mu,nu = .2,1.6): scale = .3, order = 15
+
 % Computational Parameters
-params.scale = 1/200;
-order = 2; 
+params.scale = .3;
+order = 15; 
 % Interval Arithmetic
 params.isIntval =1;
 if params.isIntval 
@@ -26,7 +29,7 @@ end
 BOOL_plot = 1;
 BOOL_save_image = 0;
 BOOL_save_data =0;
-BOOL_Lminus = 0;
+BOOL_Lminus = 1;
 
 % Potential parameter for finding 
 params.lambda = 0; 
@@ -54,7 +57,7 @@ disp('Computing Radii Poly Bounds')
 [mflds,r_min_s,data_mfld_poly_s ]=mfld_poly(params, mflds,BOOL_stable );
 r_min_s
 
- time_mfld_poly = toc
+time_mfld_poly = toc
 
 if isnan(r_min_s )
     return

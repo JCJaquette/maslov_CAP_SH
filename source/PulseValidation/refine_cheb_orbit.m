@@ -1,7 +1,15 @@
 function x = refine_cheb_orbit(x, mflds, params)
+
+if params.isIntval
+    mflds = struct_intvaltodouble(mflds);
+    params = struct_intvaltodouble(params);
+    params.isIntval = 0;
+end
+
+
     disp('Refining Chebyshev coefficients via Newtons method.')
     k=0;
-    m=params.cheb.order;
+    m=params.pulse.order;
     while k < 150
         disp(['Newton iteration: ', num2str(k)])
                     

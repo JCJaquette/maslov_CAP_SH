@@ -1,11 +1,11 @@
 clear all 
 
-params.mu = 0.2; 
+params.mu = 0.05; 
 params.nu = 1.6; 
-params.scale = 1/2;
+params.scale = .12;
 params.lambda = 0;
 
-order = 30;  % Manifold
+order = 65;  % Manifold
 
 params.order = order; % TODO Why do we have two orders?
 params.mfld.order = order; 

@@ -1,5 +1,5 @@
 function Aa_norms = get_Aa_norms(nu, x, params, mflds)
-    m = params.cheb.order;
+    m = params.pulse.order;
 
     nu_power=nu.^(0:m-1);
 
@@ -20,7 +20,11 @@ function Aa_norms = get_Aa_norms(nu, x, params, mflds)
 
     Am = (DF_homoclinic(x,params,mflds))^(-1);
     
-    A_norms=zeros(7,7);
+    if params.isIntval
+        A_norms=intval(1)*zeros(7,7);
+    else
+        A_norms=zeros(7,7);
+    end
     A_norms(1:3,1:3)=abs(Am(1:3,1:3));
     for j=4:7
         A_norms(1:3,j)=max(abs(Am(1:3,3+1+(j-4)*m:3+(j-3)*m).*repmat(nu.^-(0:m-1),3,1)),[],2);
