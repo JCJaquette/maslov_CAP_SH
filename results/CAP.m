@@ -1,4 +1,4 @@
-clear %update to github
+clear 
 
 %% Manually define parameters
 
