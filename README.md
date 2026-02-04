@@ -2,11 +2,9 @@
 This code is written by Hannah Pieper, Jonathan Jaquette and Mike Storm and aims to develop a computer-assisted proof of stability of pulses to the Swift-Hohenberg equation using Maslov index based methods.
 
 ## Subdirectories 
-[exploratory work](exploratory<>work): Contains scripts for exploratory work that is not included in the dissertation.
-
 [results](results): Contains scripts for the results that are included in the dissertation. 
 
-[source](source): Contains the source code that generates the results presented in the dissertation as well as some exploratory work. The first 3 modules, [Fourier Series](source/@FourierSeries), [Pulse Solution](source/@PulseSolution), and [Conjugate Points](source/@ConjugatePoints) generate the results presented in Part 1. The remaining modules contain the results and exploratory work discussed in Part 2 of the dissertation. See this [README.md](source/README.md) for a more thorough description of the modules. 
+[source](source): Contains the source code that generates the results. See this [README.md](source/README.md) for a more thorough description of the modules. 
 
 [test](test): Contains some unit tests to check the code. 
 
