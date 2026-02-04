@@ -1,5 +1,6 @@
 function good_r = EuminusCAP(params,phi_cheb,U_1_cheb)
-% CAP
+% CAP for the chebyshev coefficients of E^u_- found in chebInt
+
 ord = params.Eu.order;
 nz_ord = params.nonzero;
 phi_chebN = [phi_cheb;zeros(ord - nz_ord,1)];

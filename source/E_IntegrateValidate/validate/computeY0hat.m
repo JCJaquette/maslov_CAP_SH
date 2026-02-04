@@ -6,7 +6,7 @@ function out = computeY0hat(A,Rho,L,del,nu,a1,b)
         8*Rho*(nu + 3*vectorDelta1norm(b,del) + 6*Rho) /del;%calculation right above lemma 8.2
 
     for i = 4:-1:1 %Do the norm in the second part of Yhat bound
-        norms2(i) = matrixDelta1norm(A((i-1)*N+1:i*N,2*N+1:3*N),del) * normDiff;
+        norms2(i) = matrixDelta1norm(A((i-1)*N+1:i*N,2*N+1:3*N),del) * normDiff;%why is this bigger?
     end                                                                     
 
     norms1 = 0*norms2;

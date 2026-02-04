@@ -18,7 +18,6 @@ pulse_natural_cheb = [y.a1; y.a2; y.a3; y.a4];
 pulse_natural_cheb = [pulse_natural_cheb, zeros(4,ord - length(pulse_natural_cheb))];
 pulse_natural_cheb = pulse_natural_cheb(:,1:ord);
 phi_cheb = pulse_natural_cheb(1,:);
-pulse_skewSym_cheb = Q*pulse_natural_cheb;
 
 pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params);
 U_vpp_cheb = (Q*pulsePrime_natural_cheb)';
@@ -58,16 +57,13 @@ ODE.lbc = intICvec;
 length_vec = [length(h1);length(h2);length(h3);length(h4)];
 
 n = max(length_vec);
-phi_cheb = [phi_cheb, zeros(1,ord)];
-phi_cheb = phi_cheb(1:ord);
-
 nonzero = 2^(ceil(log2(n)));
 
 U_1_cheb = zeros(nonzero,4);
-U_1_cheb(1:n,1) = chebcoeffs(h1)/2; 
-U_1_cheb(1:n,2) = chebcoeffs(h2)/2;
-U_1_cheb(1:n,3) = chebcoeffs(h3)/2;
-U_1_cheb(1:n,4) = chebcoeffs(h4)/2;
+U_1_cheb(1:length_vec(1),1) = chebcoeffs(h1)/2; 
+U_1_cheb(1:length_vec(2),2) = chebcoeffs(h2)/2;
+U_1_cheb(1:length_vec(3),3) = chebcoeffs(h3)/2;
+U_1_cheb(1:length_vec(4),4) = chebcoeffs(h4)/2;
 U_1_cheb(1,:) = 2*U_1_cheb(1,:); 
 
 end

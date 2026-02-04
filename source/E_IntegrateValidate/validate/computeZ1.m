@@ -1,4 +1,5 @@
 function out = computeZ1(A,N,b,del,params)
+%See lemmas 8.4-8.8
 
     %to bound A_N \pi_N D\psi \pi_\infty 
 
@@ -7,7 +8,7 @@ function out = computeZ1(A,N,b,del,params)
     % norm of A*(the B part)
 
     B_rNorm = 2/del^(N+1);
-    AB_contribution = Anorm*B_rNorm;
+    ZB_contribution = Anorm*B_rNorm;
 
     % norm of A*(the L part)
     
@@ -44,7 +45,7 @@ function out = computeZ1(A,N,b,del,params)
         Lnorms(i,4) = vectorDelta1norm(vec,del);
     end
 
-    AL_contribution = norm(Lnorms,inf)/del^(N+1);
+    ZL_contribution = norm(Lnorms,inf)/del^(N+1);
 
     % norm of A*(the C part)
     % Since the C part is only the (1,3) element in the matrix of operators 
@@ -78,28 +79,28 @@ function out = computeZ1(A,N,b,del,params)
     Dcmns = shftbkwd*bigDc;
     Dcpls = shftfwd*bigDc;
 
-    bigZ = -params.Lbvp*(Dcmns - Dcpls);
-    bigZ(N,N+1) = bigZ(N,N+1) - params.Lbvp*(1+params.mu);
-    bigZ(N+1,N+2) = bigZ(N+1,N+2) - params.Lbvp*(1+params.mu);
+    bigC = -params.Lbvp*(Dcmns - Dcpls);
+    bigC(N,N+1) = bigC(N,N+1) - params.Lbvp*(1+params.mu);
+    bigC(N+1,N+2) = bigC(N+1,N+2) - params.Lbvp*(1+params.mu);
 
-    AZnorms = intval(0)*zeros(1,4);
+    ACnorms = intval(0)*zeros(1,4);
 
-    AZnorms(1) = matrixDelta1norm(bigA13*bigZ,del);
-    AZnorms(2) = matrixDelta1norm(bigA23*bigZ,del);
-    AZnorms(3) = matrixDelta1norm(bigA33*bigZ,del);
-    AZnorms(4) = matrixDelta1norm(bigA43*bigZ,del);
+    ACnorms(1) = matrixDelta1norm(bigA13*bigC,del);
+    ACnorms(2) = matrixDelta1norm(bigA23*bigC,del);
+    ACnorms(3) = matrixDelta1norm(bigA33*bigC,del);
+    ACnorms(4) = matrixDelta1norm(bigA43*bigC,del);
 
-    AZ_contribution = max(AZnorms);
+    ZC_contribution = max(ACnorms);
 
-    z1a = AB_contribution + AL_contribution + AZ_contribution;
+    z1a = ZB_contribution + ZL_contribution + ZC_contribution;
 
     %to bound \pi_\infty [.5K^{-1} D\psi - I]
 
     bigDF = Dphi_forZ1(longb,3*N,params);
 
-    z1b = matrix4Ellnorm(bigDF,3*N,del)/(2*N);
+    ZD = matrix4Ellnorm(bigDF,3*N,del)/(2*N);
 
-    out = z1a + z1b;
+    out = z1a + ZD;
 
 end
 

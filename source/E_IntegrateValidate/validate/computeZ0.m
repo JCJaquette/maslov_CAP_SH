@@ -1,6 +1,7 @@
 function Z0 = computeZ0(A,Ad,N,del)
+%See lemma 8.3
 
-    B = eye(4*N) - A*Ad;
+    B = eye(4*N) - A*Ad; 
     Zijs = intval(0)*zeros(4,4);
 
     for i = 1:4
@@ -12,7 +13,7 @@ function Z0 = computeZ0(A,Ad,N,del)
     B_rowsums = intval(0)*zeros(4,1);
 
     for i = 1:4
-        B_rowsums(i) = norm(Zijs(i,:),1);
+        B_rowsums(i) = norm(Zijs(i,:),1); 
     end
 
     Z0 = max(B_rowsums);
