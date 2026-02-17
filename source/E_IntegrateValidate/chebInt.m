@@ -59,12 +59,12 @@ length_vec = [length(h1);length(h2);length(h3);length(h4)];
 n = max(length_vec);
 Eu.nonzero = 2^(ceil(log2(n)));
 
-U_1_cheb = zeros(Eu.nonzero,4);
-U_1_cheb(1:length_vec(1),1) = chebcoeffs(h1)/2; 
-U_1_cheb(1:length_vec(2),2) = chebcoeffs(h2)/2;
-U_1_cheb(1:length_vec(3),3) = chebcoeffs(h3)/2;
-U_1_cheb(1:length_vec(4),4) = chebcoeffs(h4)/2;
-U_1_cheb(1,:) = 2*U_1_cheb(1,:); 
-Eu.U_1_cheb = U_1_cheb;
+h_cheb = zeros(Eu.nonzero,4);
+h_cheb(1:length_vec(1),1) = chebcoeffs(h1)/2; 
+h_cheb(1:length_vec(2),2) = chebcoeffs(h2)/2;
+h_cheb(1:length_vec(3),3) = chebcoeffs(h3)/2;
+h_cheb(1:length_vec(4),4) = chebcoeffs(h4)/2;
+h_cheb(1,:) = 2*h_cheb(1,:); 
+Eu.U_1_cheb = h_cheb;
 
 end
