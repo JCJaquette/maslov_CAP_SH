@@ -1,7 +1,5 @@
-function [c] = make_c(a1,a2,a3,a4,b,params,N)
+function [c] = make_c(a1,a2,a3,a4,b,params,N,nz)
 % makes c from thesis p231
-
-    nz = params.nonzero;
 
     ba1 = chebstar2fft(b,a1);
     ba1 = [ba1(1:2*nz); zeros(N - 2*nz, 1)];

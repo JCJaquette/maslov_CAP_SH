@@ -2,7 +2,7 @@ clear
 
 %% Manually define parameters
 
-Case_number = 3; 
+Case_number = 1; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
@@ -84,6 +84,11 @@ end
 
 %% Pulse Computation
 
+if Case_number == 2 %need to change saved varbs for bndl
+    params.xi = pi;
+else
+    params.xi = 0;
+end
 
 if BOOL_load_pulse
 
@@ -108,7 +113,7 @@ else
     disp('Computing pulse')
 
     % Get seed for Newton
-    [seed,params.Lbvp] = get_newton_seed(params,mflds);     
+    seed = get_newton_seed(params,mflds);     
     
     % Refine with Newton
     pulse4D = refine_cheb_orbit(seed,mflds,params);
@@ -137,17 +142,15 @@ if BOOL_load_Euminus
 else
 
     disp('Computing Eu-')
-    
+   
     params.del = 1.01;%two dels?
-    
+    pulse4D.Lbvp = params.Lbvp;
     %Get U_{\varphi'} and U_1
-    [U_vp, U_1, params.nonzero] = chebInt(params,mflds,pulse4D); 
-    %We may work with lower order here (but still keep some tail of 0s for proof)
-    phi_cheb = pulse4D.a1(1:params.nonzero)';  
+    Eu = chebInt(params,mflds,pulse4D);  
     
-    params.rho = get_rho(params,mflds,pulse4D,phi_cheb);
-    
-    r = EuminusCAP(params,phi_cheb,U_1);
+    disp('Getting CAP for Eu-')
+
+    r = EuminusCAP(params,mflds,pulse4D,Eu);
 
 end
 

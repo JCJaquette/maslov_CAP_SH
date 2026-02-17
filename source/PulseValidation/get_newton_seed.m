@@ -1,4 +1,4 @@
-function [y,Lbvp] = get_newton_seed(params,mflds)
+function y = get_newton_seed(params,mflds)
 
     
     mflds = struct_intvaltodouble(mflds);
@@ -54,10 +54,10 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
 
     % Define k as the offset from the middle point
     if abs(L_pls) >= abs(L_mns)
-        Lbvp = abs(L_pls);
+        L = abs(L_pls);
         k = k_s-1;
     else
-        Lbvp = abs(L_mns);
+        L = abs(L_mns);
         k = (n-k_u)+1;
     end
 
@@ -79,6 +79,7 @@ function [y,Lbvp] = get_newton_seed(params,mflds)
     y.phi1 = phi1;
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
+    y.Lbvp = L;
     
     % Plotting
 

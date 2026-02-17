@@ -63,5 +63,6 @@ end
     end
     disp('Error after performing Newtons method: ')
     disp(vecnorm(real(DF^(-1)*fcn_vec')))
+
 end
 

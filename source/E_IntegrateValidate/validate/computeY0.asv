@@ -1,6 +1,8 @@
-function Y0 = computeY0(A,a_bar,b,params,N,v,del,nz,Lbvp)
+function Y0 = computeY0(A,a_bar,b,params,N,v,del)
 
-    finitepart = A*chebF(a_bar,v,b,N,Lbvp,params,nz); %Compute first sum in lemma 8.1
+    nz = params.nonzero;
+
+    finitepart = abs(A)*chebF(a_bar,v,b,N,params); %Compute first sum in lemma 8.1
 
     Y0s = zeros(1,4)*intval(0);
 
