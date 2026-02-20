@@ -65,6 +65,7 @@ h_cheb(1:length_vec(2),2) = chebcoeffs(h2)/2;
 h_cheb(1:length_vec(3),3) = chebcoeffs(h3)/2;
 h_cheb(1:length_vec(4),4) = chebcoeffs(h4)/2;
 h_cheb(1,:) = 2*h_cheb(1,:); 
+
 Eu.U_1_cheb = h_cheb;
 
 end

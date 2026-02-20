@@ -2,7 +2,7 @@ clear
 
 %% Manually define parameters
 
-Case_number = 1; 
+Case_number = 3; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
@@ -14,7 +14,7 @@ BOOL_load_Euminus = 0;
 BOOL_save_Euminus = 0;
 
 % Parameters for the pulse validation
-params.rho = .99; %This is delta_s in paper 3
+params.rho = .99; %This is rho from section 2 in paper 3
 params.pulse.order = 2^10; %cheb coeffs of pulse
 params.Eu.order = 2^9; %cheb coeffs of Eu-
 params.tol=4e-14;
@@ -179,7 +179,7 @@ else
             data_str = "data_Eu_nu_1p6_mu_0p2";
         end
     
-        save(data_str, 'Eu', 'params')
+        save(data_str,'params','Eu')
         disp(['Saved Eu- for case ',int2str(Case_number)])
 
     end
@@ -189,4 +189,7 @@ end
 %% L+ Computation
 disp('Computing L+')
 
-computeLplus(params,bndl,mflds,U_1,sig0);
+sig0 = [real(params.rho*exp(pulse4D.psi*1i));
+        imag(params.rho*exp(pulse4D.psi*1i))];
+
+computeLplus(params,bndl,mflds,Eu.U_1_cheb,sig0);

@@ -69,9 +69,6 @@ function y = get_newton_seed(params,mflds)
 
     Lsoln = psoln(n+1-k:n+1+k,2:end);
 
-    left_endpt_u = closest_pts_on_u(k_half_ind_left,:);    
-    right_endpt_s = closest_pts_on_s(k_half_ind_right,:);
-
     phi1 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),1);
     phi2 = u_phi1phi2s(manifold_index_u(k_half_ind_left,1),manifold_index_u(k_half_ind_left,2),2);
 
@@ -80,16 +77,5 @@ function y = get_newton_seed(params,mflds)
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
     y.Lbvp = L;
-    
-    % Plotting
-
-    hold on
-    plot_manifold(mflds.stable.coeffs,params.mfld.order,'blue',1)
-    plot_manifold(mflds.unstable.coeffs,params.mfld.order,'red',1)
-    plot3(Lsoln(:,1),Lsoln(:,2),Lsoln(:,4),'black','LineWidth',1)  
-    plot3(right_endpt_s(1),right_endpt_s(2),right_endpt_s(4),'. blue','MarkerSize',16);
-    plot3(left_endpt_u(1),left_endpt_u(2),left_endpt_u(4),'. red','MarkerSize',16);    
-    plot3(Lsoln(1,1),Lsoln(1,2),Lsoln(1,4),'. black','MarkerSize',16)
-    plot3(Lsoln(end,1),Lsoln(end,2),Lsoln(end,4),'. black','MarkerSize',16)
 
 end 
