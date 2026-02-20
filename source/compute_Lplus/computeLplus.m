@@ -1,11 +1,13 @@
-function L_out = computeLplus(params,bndl,mflds,U_1,sig0)
+function L_out = computeLplus(params,bndl,mflds,U_1)
 
-     S = [1, 0, 0, 0; 
-          0, 0, 1, 0;
-          0, 2, 0, 1;
-          0, 1, 0, 0];
+    S = [1, 0, 0, 0; 
+         0, 0, 1, 0;
+         0, 2, 0, 1;
+         0, 1, 0, 0];
+    sig0 = mflds.sig0;
 
     W_sig0 = bndl_one_point(sig0(1),sig0(2),bndl,params);
+    %work out error in sig0, bndl
     U1_L = zeros(4,1);
     for i = 1:4
         U1_L(i) = chebSum(U_1(:,i),1);
@@ -15,7 +17,7 @@ function L_out = computeLplus(params,bndl,mflds,U_1,sig0)
 
     tbeta = x(1:2); tgamma = x(3:4);
 
-    mu = abs(real(mflds.values.u));
+    mu_s = abs(real(mflds.values.u(1)));
     
     V = [mflds.vectors.u, mflds.vectors.s];
 
@@ -40,12 +42,13 @@ function L_out = computeLplus(params,bndl,mflds,U_1,sig0)
     
     C = manifold_norm *(2*params.nu + 6*manifold_norm );
 
-    tau = @(L) Vnorm1*Vnorm * C * exp(-mu*L)/mu; %This bound comes from similar reasoning to eqn 5.1
+    tau = @(L) Vnorm1*Vnorm * C * exp(-mu_s*L)/mu_s; %This bound comes from similar reasoning to eqn 5.1
 
     eps_0 = @(L) tau(L)/(1 - tau(L))*biggestVec; %See 
+    % ^ should it be possible for this to be negative? 
 
-    eps_beta = @(L) exp(-mu*L) * norm(tbeta);
-    eps_gamma = @(L) exp(-mu*L) / norm(tgamma);
+    eps_beta = @(L) exp(-mu_s*L) * norm(tbeta);
+    eps_gamma = @(L) exp(-mu_s*L) / norm(tgamma);
 
     Vu14 = Vcheck([1,4],1:2);
     Vu12 = Vcheck([1,2],1:2);
@@ -61,12 +64,15 @@ function L_out = computeLplus(params,bndl,mflds,U_1,sig0)
     C_M3 = @(L) 2*(norm(Vs34) + norm(Vs12)) + 2*eps_0(L);
 
     MM = (M2'*M1)'*(M2'*M1);
-   [~,D] = verifyeig(MM);
-    sig_min = sqrt(min(abs(sum(D))));
+   [v,d] = eig(mid(MM));
+   [m_,ind] = min(diag(d));
+   [mu,~] = verifyeig(MM,m_,v(:,ind));
+   sigmin = sqrt(abs(mu)); %See eqn 3.34 in paper 2
+
 
     to_bound = @(L) eps_0(L)*C_M3(L)*norm(M2) + ...
         (eps_0(L)*C_M3(L) + norm(M1))*(eps_0(L)*C_M4(L) + eps_beta(L)*eps_gamma(L));
 
-    L_out = Lplus_bisection(to_bound, @(L) eps_0(L)*norm(inv(Vs14)), sig_min);
+    L_out = Lplus_bisection(to_bound, @(L) eps_0(L)*norm(inv(Vs14)), sigmin);
 
 end

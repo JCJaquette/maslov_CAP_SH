@@ -1,9 +1,9 @@
 function Lplus = Lplus_bisection(fn,eps0V,sigmin)
 %given functions fn, and eps0 find Lplus such that eps0V<1 and fn<sigmin
 
-L_int = infsup(1,2);
+L_int = infsup(0,1);
 
-while fn(L_int.sup) >= sigmin || eps0V(L_int.sup) >= 1
+while fn(L_int.sup) >= sigmin || eps0V(L_int.sup) >= 1 || fn(L_int.sup) < 0 || eps0V(L_int.sup) < 0
     L_int = infsup(L_int.sup,2*L_int.sup);
 end
 
@@ -16,8 +16,5 @@ while L_int.rad > .5
 end
 
 Lplus = L_int.sup;
-
-%When i tested this with fn = @(x) 10/x, eps0V = @(x) 20*exp(-x), 
-% sigmin = .5, this returns 20, which seems good.
 
 end

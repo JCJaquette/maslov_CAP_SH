@@ -2,13 +2,13 @@ clear
 
 %% Manually define parameters
 
-Case_number = 1; 
+Case_number = 3; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
 
 BOOL_load_bndl = 1;
-BOOL_load_pulse = 0;
+BOOL_load_pulse = 1;
 BOOL_save_pulse = 0;
 BOOL_load_Euminus = 0;
 BOOL_save_Euminus = 0;
