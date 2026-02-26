@@ -9,7 +9,7 @@ Case_number = 1;
 
 BOOL_load_bndl = 1;
 BOOL_load_pulse = 0;
-BOOL_save_pulse = 0;
+BOOL_save_pulse = 1;
 BOOL_load_Euminus = 0;
 BOOL_save_Euminus = 0;
 
@@ -159,7 +159,8 @@ else
     pulse4D.Lbvp = params.Lbvp;
     %Get U_{\varphi'} and U_1
     Eu = chebInt(params,mflds,pulse4D);  
-    
+    psoln.r = 1.8e-11;
+
     disp('Getting CAP for Eu-')
 
     Eu.r = EuminusCAP(params,mflds,pulse4D,Eu);
@@ -191,4 +192,7 @@ mflds.Lplus = computeLplus(params,bndl,mflds,Eu.U_1_cheb);
 
 %% Counting Zeros/Conjugate Points
 
-
+zerocount = 0;
+pulse4D.r = 1.8e-11;
+zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,10e-5);
+zerocount = zerocount + countBVP(pulse4D,Eu,10e-5);

@@ -43,9 +43,8 @@ function L_out = computeLplus(params,bndl,mflds,U_1)
     C = manifold_norm *(2*params.nu + 6*manifold_norm );
 
     tau = @(L) Vnorm1*Vnorm * C * exp(-mu_s*L)/mu_s; %This bound comes from similar reasoning to eqn 5.1
-
+    %Need tau<1 for a good L, add as condition in theorem
     eps_0 = @(L) tau(L)/(1 - tau(L))*biggestVec; %See 
-    % ^ should it be possible for this to be negative? 
 
     eps_beta = @(L) exp(-mu_s*L) * norm(tbeta);
     eps_gamma = @(L) exp(-mu_s*L) / norm(tgamma);

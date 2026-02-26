@@ -1,6 +1,6 @@
 function Eu = chebInt(params,mflds,y)
 % Get initial condition and integrate it
-
+y.r = 1.8e-11;
 params = struct_intvaltodouble(params);%Standard numerics, we use doubles
 mflds = struct_intvaltodouble(mflds);
 y = struct_intvaltodouble(y);
@@ -21,6 +21,8 @@ phi_cheb = pulse_natural_cheb(1,:);
 
 pulsePrime_natural_cheb = RHSofODE_coeffs(pulse_natural_cheb,params,y.Lbvp);
 Eu.U_vpp_cheb = (Q*pulsePrime_natural_cheb)';
+Eu.U_vpp_r = Q*[y.r; y.r; y.r; 
+              (params.mu + 3)*y.r + 4*params.nu*y.r^2 + 16*y.r^3];
 
 
 for i = 1:4
@@ -67,5 +69,7 @@ h_cheb(1:length_vec(4),4) = chebcoeffs(h4)/2;
 h_cheb(1,:) = 2*h_cheb(1,:); 
 
 Eu.U_1_cheb = h_cheb;
+Eu.U_vpp_r = max(Eu.U_vpp_r' + sum(abs(Eu.U_vpp_cheb(n+1:end,:))));
+Eu.U_vpp_cheb = Eu.U_vpp_cheb(1:Eu.nonzero,:);
 
 end
