@@ -1,8 +1,5 @@
-function injective = check_A_injective(x,params,mflds)
+function injective = check_A_injective(params,DF,Am)
     m = params.pulse.order;
-
-    DF=DF_homoclinic(x,params,mflds);
-    Am=DF^(-1);
 
     disp('Norm of I - ADF: ')
     disp(norm(mag(eye(4*m+3)-Am*DF)))

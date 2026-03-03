@@ -1,4 +1,4 @@
-function [count_out,flag] = countBVP(pulse4D,Euminus,tol)
+function [count_out,flag] = countBVP(pulse4D,Euminus,tol,BOOL_plot)
 % Count zeros of the determinant on [-L_bvp, L_bvp]
 
 global_min = -1;
@@ -21,6 +21,6 @@ APrime_cheb = chebstar2fft(h_cheb(:,1),phiPrime_cheb(:,2)) ...
 f = @(x) chebSum(A_cheb,x);
 df = @(x) chebSum(APrime_cheb,x);
 
-[count_out, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol);
+[count_out, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol, BOOL_plot);
 
 end

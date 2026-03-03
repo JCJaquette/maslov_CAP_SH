@@ -74,6 +74,6 @@ numdf = @(t) ( f(t+10^-6) - f(t))/10^-6;
 
 tol = 1e-5;
 
-[count0s, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol);
+[count0s, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol, BOOL_plot);
 
 count0s

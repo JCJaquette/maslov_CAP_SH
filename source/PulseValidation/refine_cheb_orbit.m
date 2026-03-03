@@ -61,7 +61,7 @@ end
         
         k=k+1;
     end
-    x.Lbvp = seed.Lbvp;
+
     disp('Error after performing Newtons method: ')
     disp(vecnorm(real(DF^(-1)*fcn_vec')))
 

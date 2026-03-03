@@ -11,12 +11,14 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     % r_min is defined as in eqn 4.8 in paper 2
     mflds.stable.error = mflds.stable.r_min;
     mflds.unstable.error = mflds.unstable.r_min;
-    
-    
-    injective = check_A_injective(x,params,mflds);
+
+    DF=DF_homoclinic(x,params,mflds);
+    Am=DF^(-1);
+
+    injective = check_A_injective(params,DF,Am);
     
     disp('Now we compute the coefficients for the radii polynomial.')
-    [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params);
+    [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am);
 
     if params.isIntval
         Z = sup(Z);

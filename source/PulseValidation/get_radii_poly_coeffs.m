@@ -1,4 +1,4 @@
-function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
+function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am)
 
     if params.isIntval
         zero = intval('0');
@@ -9,7 +9,7 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     m = params.pulse.order;
     N = params.mfld.order;
     
-    norms = get_Aa_norms(nu, x, params, mflds);
+    norms = get_Aa_norms(nu, x, params, Am);
 
     disp('Computing Y.')
 
@@ -22,9 +22,6 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params)
     epsilon_u = mflds.unstable.error;
 
     F(1:7) = F(1:7)+[epsilon_s*ones(3,1);epsilon_u*ones(4,1)];
-    
-    DF = DF_homoclinic(x, params, mflds);
-    Am = DF^(-1);
 
     vF_1=abs(Am(1,:)*F);
     vF_2=abs(Am(2,:)*F);
