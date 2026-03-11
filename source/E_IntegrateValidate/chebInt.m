@@ -1,6 +1,6 @@
 function Eu = chebInt(params,mflds,y)
 % Get initial condition and integrate it
-y.r = 1.8e-11;
+
 params = struct_intvaltodouble(params);%Standard numerics, we use doubles
 mflds = struct_intvaltodouble(mflds);
 y = struct_intvaltodouble(y);

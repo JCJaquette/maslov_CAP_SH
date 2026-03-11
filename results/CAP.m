@@ -2,24 +2,25 @@ clear
 
 %% Manually define parameters
 
-Case_number = 1; 
+Case_number = 3; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
 
-BOOL_load_bndl = 1;
-BOOL_load_pulse = 1;
-BOOL_save_pulse = 0;
+BOOL_load_bndl = 0;
+BOOL_load_pulse = 0;
+BOOL_save_pulse = 1;
 BOOL_load_Euminus = 0;
-BOOL_save_Euminus = 0;
+BOOL_save_Euminus = 1;
 
 % Parameters for the pulse validation
 params.rho = .99; %This is rho from section 2 in paper 3
 params.pulse.order = 2^10; %cheb coeffs of pulse
-params.Eu.order = 2^9; %cheb coeffs of Eu-
 params.tol=4e-14;
 params.bd_scale = .2;%This sets how close the pulse gets to the manifold when we cut it off
 params.new = 1.01;%new=delta in the paper, nu in the code for pulse existence CAP
+
+params.Eu.order = 2^9; %cheb coeffs of Eu-
 
 
     %ODE Parameters
@@ -36,7 +37,7 @@ end
 if Case_number == 2 
     params.xi = pi;
 else
-    params.xi = 10;
+    params.xi = 0;
 end
 
 params.nu = 1.6;
@@ -151,11 +152,8 @@ else
     disp('Computing Eu-')
    
     params.del = 1.01;%two dels?
-    pulse4D.Lbvp = params.Lbvp;
-    pulse4D.r = 1.8e-11;%todo: fix
     %Get U_{\varphi'} and U_1
     Eu = chebInt(params,mflds,pulse4D);  
-    psoln.r = 1.8e-11;%todo: fix
 
     disp('Getting CAP for Eu-')
 
@@ -182,14 +180,11 @@ end
 
 disp('Computing L+')
 
-pulse4D.r = 1.8e-11;%todo: fix
-mflds.sig0 = get_sig0(params,pulse4D);
-mflds.Lplus = computeLplus(params,bndl,mflds,Eu.U_1_cheb);
+mflds.Lplus = computeLplus(params,bndl,mflds,pulse4D,Eu.U_1_cheb);
 
 %% Counting Zeros/Conjugate Points
 
 zerocount = 0;
-pulse4D.r = 1.8e-11;%todo: fix
 zerofinder_tol = 10e-5;
 BOOLzf_plot = 0;
 

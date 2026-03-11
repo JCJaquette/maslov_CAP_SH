@@ -32,7 +32,7 @@ fprintf('Y bounds computed, Y0 = %d, Y0hat = %d\n', sup(Y0), sup(Y0hat));
 
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
 Z1 = computeZ1(A_N,ord,phi_chebN,params.del,params);
-Z2hat = computeZ2hat(A_N,params.Lbvp,params.del,params.nu,params.rho_error);
+Z2hat = computeZ2hat(A_N,pulse4D.Lbvp,params.del,params.nu,params.rho_error);
 fprintf('Z bounds computed, Z0 = %d, Z1 = %d, Z2hat = %d\n', mid(Z0), mid(Z1), mid(Z2hat));
 
 good_r = sup((Y0 + Y0hat)/(1-Z0-Z1-Z2hat)); %Radii poly is linear

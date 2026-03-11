@@ -8,7 +8,7 @@ mani_error = max(mani_coeff_error + mani_tail_error*ones(4,1));%check this?
 
 IC_error = 2*pi/log(1/maxphi) * mani_error;%Error of manifold's tangent bundle, lemma 8 in hexagon paper
 
-tail = psoln.a1' - [phi_cheb;zeros(params.Eu.order-nonzero,1)];
+tail = psoln.a1' - [phi_cheb;zeros(params.pulse.order-nonzero,1)];
 tail_error = vectorDelta1norm(tail,params.del);
 
 pulse_error = psoln.r + tail_error;

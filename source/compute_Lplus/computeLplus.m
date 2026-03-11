@@ -1,10 +1,10 @@
-function L_out = computeLplus(params,bndl,mflds,U_1)
+function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
 
     S = [1, 0, 0, 0; 
          0, 0, 1, 0;
          0, 2, 0, 1;
          0, 1, 0, 0];
-    sig0 = mflds.sig0;
+    sig0 = get_sig0(params,pulse4D);
 
     W_sig0 = bndl_one_point(sig0(1),sig0(2),bndl,params);
     %work out error in sig0, bndl

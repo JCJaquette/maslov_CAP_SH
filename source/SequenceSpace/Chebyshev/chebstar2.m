@@ -26,6 +26,5 @@ function vec = chebstar2(a,b,order)
         end
         vec=[vec,dubsum];
     end
-    vec = vec';
 
 end
