@@ -7,7 +7,7 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
     sig0 = get_sig0(params,pulse4D);
 
     W_sig0 = bndl_one_point(sig0(1),sig0(2),bndl,params);
-    %work out error in sig0, bndl
+    
     U1_L = zeros(4,1);
     for i = 1:4
         U1_L(i) = chebSum(U_1(:,i),1);

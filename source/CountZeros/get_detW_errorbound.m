@@ -1,5 +1,5 @@
 function [ferror, dferror] = get_detW_errorbound(W1coeffs, W2coeffs, W1Primecoeffs, W2Primecoeffs, mflds, phi, Lambda)
-%Fix the W_error calculation!!!!!!!!!!!!!!
+%check mani_error?
 nu = max(abs(phi));
 
 mani_tail_error = mflds.unstable.r_min; 
