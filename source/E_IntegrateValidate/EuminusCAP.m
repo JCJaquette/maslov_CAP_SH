@@ -23,15 +23,19 @@ end
 
 Ad_N = chebDF(phi_chebN,ord,params,Lbvp,nz_ord);
 A_N = Ad_N^-1;
-a_bar = intval(1)*a;
+if params.isIntval
+    a_bar = intval(1)*a;
+else
+    a_bar = a;
+end
 
 
 Y0 = computeY0(A_N,a_bar,phi_chebN,params,ord,ICvec,params.del,nz_ord,Lbvp);
-Y0hat = computeY0hat(A_N,params.rho_error,params.Lbvp,params.del,params.nu,a_bar(1:ord),phi_chebN);
+Y0hat = computeY0hat(A_N,params.rho_error,pulse4D.Lbvp,params.del,params.nu,a_bar(1:ord),phi_chebN);
 fprintf('Y bounds computed, Y0 = %d, Y0hat = %d\n', sup(Y0), sup(Y0hat));
 
 Z0 = computeZ0(A_N,Ad_N,ord,params.del);
-Z1 = computeZ1(A_N,ord,phi_chebN,params.del,params);
+Z1 = computeZ1(A_N,ord,phi_chebN,params.del,pulse4D.Lbvp,params);
 Z2hat = computeZ2hat(A_N,pulse4D.Lbvp,params.del,params.nu,params.rho_error);
 fprintf('Z bounds computed, Z0 = %d, Z1 = %d, Z2hat = %d\n', mid(Z0), mid(Z1), mid(Z2hat));
 

@@ -2,7 +2,7 @@ clear
 
 %% Manually define parameters
 
-Case_number = 3; 
+Case_number = 1; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  

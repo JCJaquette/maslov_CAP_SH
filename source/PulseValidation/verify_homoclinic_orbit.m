@@ -3,7 +3,7 @@
 % coefficients lying in the Banach space. This variable nu was denoted by
 % delta in my dissertation.  
 
-function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
+function [verif,r,vali_data] = verify_homoclinic_orbit(params, mflds, x, nu)%remove vali_data if things work
     
     r = 0;
     disp('First we check that the matrix Am is injective.')
@@ -61,6 +61,11 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     I(1)=max([R1(1);R2(1);R3(1);R4(1);R5(1);R6(1);R7(1)]);
     I(2)=min([R1(2);R2(2);R3(2);R4(2);R5(2);R6(2);R7(2)]);
 
+    vali_data.Rs = [R1,R2,R3,R4,R5,R6,R7]';
+    vali_data.Z = Z;
+    vali_data.Z0 = Z0;
+    vali_data.Y = Y;
+
     verif=0;
 
     if norm(imag(I))>0
@@ -82,6 +87,16 @@ function [verif,r] = verify_homoclinic_orbit(params, mflds, x, nu)
     elseif I(2)<I(1)
         disp('Stop! The interval between the roots is not well defined!')
         I=[-1,1];
+                disp('These are the roots of each polynomial:')
+        format long
+        R1
+        R2
+        R3
+        R4
+        R5
+        R6
+        R7
+        format short
     else    
         disp('Good to go! The interval is I = ')
         disp(I)

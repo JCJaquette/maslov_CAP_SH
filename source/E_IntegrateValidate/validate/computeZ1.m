@@ -1,4 +1,4 @@
-function out = computeZ1(A,N,b,del,params)
+function out = computeZ1(A,N,b,del,Lbvp,params)
 %See lemmas 8.4-8.8
 
     %to bound A_N \pi_N D\psi \pi_\infty 
@@ -14,7 +14,7 @@ function out = computeZ1(A,N,b,del,params)
     
     AL_rs = intval(0)*zeros(4,4,N);
     lvec = zeros(N,1);
-    lvec(end) = params.Lbvp;
+    lvec(end) = Lbvp;
 
     for i = 1:4
         for j = 1:4
@@ -79,9 +79,9 @@ function out = computeZ1(A,N,b,del,params)
     Dcmns = shftbkwd*bigDc;
     Dcpls = shftfwd*bigDc;
 
-    bigC = -params.Lbvp*(Dcmns - Dcpls);
-    bigC(N,N+1) = bigC(N,N+1) - params.Lbvp*(1+params.mu);
-    bigC(N+1,N+2) = bigC(N+1,N+2) - params.Lbvp*(1+params.mu);
+    bigC = -Lbvp*(Dcmns - Dcpls);
+    bigC(N,N+1) = bigC(N,N+1) - Lbvp*(1+params.mu);
+    bigC(N+1,N+2) = bigC(N+1,N+2) - Lbvp*(1+params.mu);
 
     ACnorms = intval(0)*zeros(1,4);
 
@@ -96,7 +96,7 @@ function out = computeZ1(A,N,b,del,params)
 
     %to bound \pi_\infty [.5K^{-1} D\psi - I]
 
-    bigDF = Dphi_forZ1(longb,3*N,params);
+    bigDF = Dphi_forZ1(longb,3*N,Lbvp,params);
 
     ZD = matrix4Ellnorm(bigDF,3*N,del)/(2*N);
 
