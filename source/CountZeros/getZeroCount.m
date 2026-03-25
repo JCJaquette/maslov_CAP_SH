@@ -1,12 +1,16 @@
-function [count,flag] = getZeroCount(domain_interval, f, f_error, df, df_error, tol)
+function [count,flag] = getZeroCount(domain_interval, f, f_error, df, df_error, tol, BOOL_plot)
 
-hold on
-z = linspace(domain_interval.inf,domain_interval.sup,500);
-for k = 1:500
-    fz(k) = real(f(z(k)));
+if BOOL_plot
+
+    hold on
+    z = linspace(domain_interval.inf,domain_interval.sup,500);
+    for k = 1:500
+        fz(k) = real(f(z(k)));
+    end
+    plot(z,fz,'Color','black')
+    hold on
+
 end
-plot(z,fz,'Color','black')
-hold on
 
 count = 0; flag = intval(1)*[];
 
@@ -20,15 +24,21 @@ while isempty(domain_interval) == 0
     if abs(F(b)) > 0
 
         domain_interval(end) = [];
-        plot([b.inf,b.sup],[0,0],'color','blue')
+
+        if BOOL_plot
+            plot([b.inf,b.sup],[0,0],'color','blue')
+        end
 
     else
         
         if F(b.inf)*F(b.sup) < 0 && abs(dF(b)) > 0
 
             domain_interval(end) = [];
-            plot([b.inf,b.sup],[0,0],'color','green')
             count = count+1;
+            
+            if BOOL_plot
+                plot([b.inf,b.sup],[0,0],'color','green')
+            end
 
         else
 

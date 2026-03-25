@@ -119,9 +119,9 @@ function DF = DF_homoclinic(x, params, mflds)
     for k = 1:m-1
         for l = 0:m-1
             if l==k-1
-                DF(3+1+k, 3+m+l+1) = -params.Lbvp;
+                DF(3+1+k, 3+m+l+1) = -x.Lbvp;
             elseif l==k+1
-                DF(3+1+k, 3+m+l+1) = +params.Lbvp;
+                DF(3+1+k, 3+m+l+1) = +x.Lbvp;
             end
         end
     end
@@ -145,9 +145,9 @@ function DF = DF_homoclinic(x, params, mflds)
   for k = 1:m-1
         for l = 0:m-1
             if l==k-1
-                DF(3+1+m+k, 3+2*m+l+1) = -params.Lbvp;
+                DF(3+1+m+k, 3+2*m+l+1) = -x.Lbvp;
             elseif l==k+1
-                DF(3+1+m+k, 3+2*m+l+1) = +params.Lbvp;
+                DF(3+1+m+k, 3+2*m+l+1) = +x.Lbvp;
             end
         end
    end
@@ -170,9 +170,9 @@ function DF = DF_homoclinic(x, params, mflds)
   for k = 1:m-1
         for l = 0:m-1
             if l==k-1
-                DF(3+1+2*m+k, 3+3*m+l+1) = -params.Lbvp;
+                DF(3+1+2*m+k, 3+3*m+l+1) = -x.Lbvp;
             elseif l==k+1
-                DF(3+1+2*m+k, 3+3*m+l+1) = +params.Lbvp;
+                DF(3+1+2*m+k, 3+3*m+l+1) = +x.Lbvp;
             end
         end
    end
@@ -189,21 +189,21 @@ function DF = DF_homoclinic(x, params, mflds)
     for k = 1:m-1
         for l = 0:m-1
             if l == 0
-                DF(4+3*m+k, 4+l) = -params.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)) ...
+                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)) ...
                                     - 3*(a1a1(abs(k-1-l)+1)) ...
                                     - 2*params.nu*(x.a1(abs(k+1-l)+1))...
                                     + 3*(a1a1(abs(k+1-l)+1)));
             else
-                DF(4+3*m+k, 4+l) = -params.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)+x.a1(abs(k-1+l)+1)) ...
+                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)+x.a1(abs(k-1+l)+1)) ...
                                     -3*(a1a1(abs(k-1-l)+1)+a1a1(abs(k-1+l)+1)) ...
                                     - 2*params.nu*(x.a1(abs(k+1-l)+1)+x.a1(abs(k+1+l)+1))...
                                     + 3*(a1a1(abs(k+1-l)+1)+a1a1(abs(k+1+l)+1))); 
             end
 
             if l==k-1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) - params.Lbvp*(-1-params.mu);
+                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) - x.Lbvp*(-1-params.mu);
             elseif l==k+1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) + params.Lbvp*(-1-params.mu);
+                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) + x.Lbvp*(-1-params.mu);
             end
         end
     end
@@ -221,9 +221,9 @@ function DF = DF_homoclinic(x, params, mflds)
        for k = 1:m-1
             for l = 0:m-1
                 if l==k-1
-                    DF(3+1+3*m+k, 3+2*m+l+1) = 2*params.Lbvp;
+                    DF(3+1+3*m+k, 3+2*m+l+1) = 2*x.Lbvp;
                 elseif l==k+1
-                    DF(3+1+3*m+k, 3+2*m+l+1) = -2*params.Lbvp; 
+                    DF(3+1+3*m+k, 3+2*m+l+1) = -2*x.Lbvp; 
                 end
             end
        end

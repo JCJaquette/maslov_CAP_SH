@@ -1,4 +1,4 @@
-function Aa_norms = get_Aa_norms(nu, x, params, mflds)
+function Aa_norms = get_Aa_norms(nu, x, params, Am)
     m = params.pulse.order;
 
     nu_power=nu.^(0:m-1);
@@ -17,8 +17,6 @@ function Aa_norms = get_Aa_norms(nu, x, params, mflds)
     disp(['The nu-norm of a2 is = ',num2str(a2_nu_norm)])
     disp(['The nu-norm of a3 is = ',num2str(a3_nu_norm)])
     disp(['The nu-norm of a4 is = ',num2str(a4_nu_norm)])
-
-    Am = (DF_homoclinic(x,params,mflds))^(-1);
     
     if params.isIntval
         A_norms=intval(1)*zeros(7,7);

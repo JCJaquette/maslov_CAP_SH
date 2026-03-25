@@ -47,9 +47,9 @@ end
     f4to6(3,1) = x.a3(1) + 2*sum(pm_ones.*x.a3(2:end)) - Q(3);
     
     for i = 1:m-1
-        f4to6(1,i+1) = 2*i*x.a1(i+1) - params.Lbvp*(x.a2(i)-x.a2(i+2));
-        f4to6(2,i+1) = 2*i*x.a2(i+1) - params.Lbvp*(x.a3(i)-x.a3(i+2));
-        f4to6(3,i+1) = 2*i*x.a3(i+1) - params.Lbvp*(x.a4(i)-x.a4(i+2));
+        f4to6(1,i+1) = 2*i*x.a1(i+1) - x.Lbvp*(x.a2(i)-x.a2(i+2));
+        f4to6(2,i+1) = 2*i*x.a2(i+1) - x.Lbvp*(x.a3(i)-x.a3(i+2));
+        f4to6(3,i+1) = 2*i*x.a3(i+1) - x.Lbvp*(x.a4(i)-x.a4(i+2));
     end
     
     fun{4} = f4to6(1,:);
@@ -75,7 +75,7 @@ end
     end
     
     for i = 1:m-1
-        f7(i+1) = 2*i*x.a4(i+1) - params.Lbvp*(c4(i) - c4(i+2));
+        f7(i+1) = 2*i*x.a4(i+1) - x.Lbvp*(c4(i) - c4(i+2));
     end
     
     fun{7} = f7;

@@ -1,4 +1,4 @@
-function [out] = Dphi_forZ1(b,N,params)
+function [out] = Dphi_forZ1(b,N,Lbvp,params)
 %copy paste of DF but without the diagonal which comes from LHS of the
 %functional equation
 
@@ -24,9 +24,9 @@ function [out] = Dphi_forZ1(b,N,params)
     
     for i = 1:N-1
 
-        subLOL(i,i) = -params.Lbvp;
+        subLOL(i,i) = -Lbvp;
         if i ~= N-1
-            subLOL(i,i+2) = params.Lbvp;
+            subLOL(i,i+2) = Lbvp;
         end
 
     end
@@ -46,7 +46,7 @@ function [out] = Dphi_forZ1(b,N,params)
     Dcmns = shftbkwd*Dc;
     Dcpls = shftfwd*Dc;
 
-    C = -params.Lbvp*(Dcmns - Dcpls) - (1+params.mu)*LOL;
+    C = -Lbvp*(Dcmns - Dcpls) - (1+params.mu)*LOL;
     C(1,1:N) = zeros(1,N);
     % C is derivative of psi_3 wrt a_1 which is a bit more complicated due
     % to cProds

@@ -1,4 +1,4 @@
-function phiprime_cheb = RHSofODE_coeffs(pulse_cheb,params)
+function phiprime_cheb = RHSofODE_coeffs(pulse_cheb,params,Lbvp)
 %gives coeffs of eqn 9.4 in thesis
 
     phiprime_cheb = 0*pulse_cheb;
@@ -15,7 +15,7 @@ function phiprime_cheb = RHSofODE_coeffs(pulse_cheb,params)
     phiprime_cheb(4,:) = -2*pulse_cheb(3,:) - (params.mu + 1)*pulse_cheb(1,:) ...
                         + params.nu*phi2(1:ord) - phi3(1:ord);
 
-    phiprime_cheb = phiprime_cheb*params.Lbvp;
+    phiprime_cheb = phiprime_cheb*Lbvp;
 
 end
 
