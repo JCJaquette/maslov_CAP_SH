@@ -1,5 +1,6 @@
 function [outputArg1,outputArg2] = get_function(params,bndl,mflds,pulse4D,x)
 %todo: figure out error
+%note: there nothing assigned to output
 
 Lambda = get_Lambda(params,'s');
 
