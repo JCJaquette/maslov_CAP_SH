@@ -1,5 +1,6 @@
 function fx = get_function(params,bndl,mflds,pulse4D,tildes,x)
 %todo: figure out error
+%note: there nothing assigned to output
 
 % Get the solutions V(x)
 

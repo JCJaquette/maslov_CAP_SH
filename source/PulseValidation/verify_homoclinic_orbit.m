@@ -15,7 +15,14 @@ function [verif,r,vali_data] = verify_homoclinic_orbit(params, mflds, x, nu)%rem
     DF=DF_homoclinic(x,params,mflds);
     Am=DF^(-1);
 
-    injective = check_A_injective(params,DF,Am);
+    injective = check_A_injective(params,DF,Am); %
+
+    if injective ==0 
+        verif =0;
+        r = NaN;
+        vali_data = NaN;
+        return
+    end
     
     disp('Now we compute the coefficients for the radii polynomial.')
     [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am);
