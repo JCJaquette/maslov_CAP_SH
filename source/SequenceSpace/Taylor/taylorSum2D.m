@@ -1,16 +1,29 @@
 function out = taylorSum2D(coeffs,x1,x2)
-% taylor coefficients(size order x order) and 2D point in, series at that point out
+% taylor coefficients(size order x order) and 2D point in, series value at that point out
     
     order = length(coeffs(1,:))-1;
-    N = [];
-    for i = 0:order    
-        N = [N;0:order];       
+    N = 0:order;
+
+    try
+        x1M = x1.^N';
+    catch
+        x1M = zeros(order+1,1);
+        for m = 0:order
+            x1M(m+1) = x1^m;
+        end
     end
-    M = N';
+    
+    try
+        x2N = x2.^N;
+    catch
+        x2N = zeros(1,order+1);
+        for n = 0:order
+            x2N(n+1) = x2^n;
+        end
+    end
 
-    x1x2Mat = (x1.^M).*(x2.^N);
+    x1x2Mat = x1M * x2N;
     series = x1x2Mat.*coeffs;
-
     out = sum(sum(series));
 
 end

@@ -1,16 +1,27 @@
 function val = mfld_one_point(phi1, phi2, coeff, params)
-    order=params.mfld.order;
-    val=zeros(4,1);
-    for n=0:order
-        for m=0:n
-            point=reshape(coeff(n-m+1,m+1,:),[4,1]);
-            val=val+point.*(phi1+1i*phi2)^(n-m)*(phi1-1i*phi2)^m;
 
+    x1 = phi1+1i*phi2; x2 = phi1-1i*phi2;
+    if isintval(coeff)
+        val = intval(1)*zeros(4,1);
+    else
+        val = zeros(4,1);
+    end
+
+    for k = 1:4
+        val(k) = taylorSum2D(coeff(:,:,k),x1,x2);
+    end
+
+    if isnan(sum(val))
+        val = intval(1)*zeros(size(val));
+        for k = 1:4
+            val(k) = taylorSum2D_alt(coeff(:,:,k),x1,x2);
         end
     end
-       if norm(val-real(val)) > 1e-10
-            msg = 'Error occurred. The manifold is complex valued.';
-            %error(msg);
-       end
+
+    if norm(val-real(val)) > 1e-10
+         msg = 'Error occurred. The manifold is complex valued.';
+         %error(msg);
+    end
+
 end 
 

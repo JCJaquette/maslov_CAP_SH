@@ -23,7 +23,7 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
 
     biggestVec = intval(zeros(1,4));
     for i = 1:4
-        biggestVec(i) = norm(V(:,1));
+        biggestVec(i) = norm(V(:,i));
     end
     biggestVec = max(biggestVec);
 

@@ -2,7 +2,7 @@ clear
 
 %% Manually define parameters
 
-Case_number = 3; 
+Case_number = 1; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
@@ -11,8 +11,8 @@ BOOL_load_bndl = 1;
 bndl_BOOL.save_data = 0;
 BOOL_load_pulse = 1;
 BOOL_save_pulse = 0;
-BOOL_load_Euminus = 0;
-BOOL_save_Euminus = 1;
+BOOL_load_Euminus = 1;
+BOOL_save_Euminus = 0;
 
 % Parameters for the pulse validation
 params.rho = .99; %This is rho from section 2 in paper 3
@@ -193,11 +193,16 @@ mflds.Lplus = computeLplus(params,bndl,mflds,pulse4D,Eu.U_1_cheb);
 
 %% Counting Zeros/Conjugate Points
 
+disp('Counting zeros of determinant')
+
 zerocount = 0;
 zerofinder_tol = 10e-5;
 BOOLzf_plot = 0;
 
+disp('Finding zeros on [-L_conj,-L_bvp]')
 zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,zerofinder_tol,BOOLzf_plot);
+disp('Finding zeros on [-L_bvp,L_bvp]')
 zerocount = zerocount + countBVP(pulse4D,Eu,zerofinder_tol,BOOLzf_plot);
-zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,zerofinder_tol,BOOLzf_plot);
+disp('Finding zeros on [L_bvp,L_conj]')
+zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,Eu,zerofinder_tol,BOOLzf_plot);
 

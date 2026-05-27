@@ -2,6 +2,7 @@ function [count,flag] = getZeroCount(domain_interval, f, f_error, df, df_error, 
 
 if BOOL_plot
 
+    figure
     hold on
     z = linspace(domain_interval.inf,domain_interval.sup,500);
     for k = 1:500
