@@ -1,5 +1,6 @@
 function y = get_newton_seed(params,mflds)
 
+letsplot = 0;
     
     mflds = struct_intvaltodouble(mflds);
     params = struct_intvaltodouble(params);     
@@ -77,5 +78,137 @@ function y = get_newton_seed(params,mflds)
     y.phi2 = phi2;
     y.psi = thetas(manifold_index_s(k_half_ind_right,2));
     y.Lbvp = L;
+
+
+if letsplot
+
+%%%%%%%%%%%%%%%%%
+% Generate Plots 
+%%%%%%%%%%%%%%%%
+
+y1 = chebcoeff_to_function(y.a1);
+y2 = chebcoeff_to_function(y.a2);
+y3 = chebcoeff_to_function(y.a3);
+y4 = chebcoeff_to_function(y.a4);
+
+dom = -1:.05:1;
+
+ figure
+ tiledlayout(4,1)
+ nexttile
+ plot(dom,y1)
+ nexttile
+ plot(dom,y2)
+ nexttile
+ plot(dom,y3)
+ nexttile
+ plot(dom,y4)
+ title('Solution obtained via Newtons method.')
+
+
+figure 
+hold on 
+plot(dom, y1, linewidth = 1.5, color = "#A2142F")
+plot(dom(1), y1(1), 'o', 'MarkerFaceColor', "#A2142F")
+plot(dom(end), y1(end), 'o', 'MarkerFaceColor', "#A2142F")
+hold off
+xlabel('$t$', Interpreter = 'latex', FontSize=14)
+ylabel('$\varphi(t)$', Interpreter = 'latex', FontSize=14)
+
+ 
+ 
+ dom = params.L*dom;
+ 
+ figure 
+ tiledlayout(4,1)
+ nexttile
+ hold on
+ plot(time_vec,sol(:,1))
+ plot(dom,yo1)
+ plot(dom,y1)
+ legend('BK Solution','Chebyshev Rep.', 'Refined Chebyshev Rep.')
+ hold off
+ nexttile
+ hold on
+ plot(time_vec,sol(:,2))
+ plot(dom,yo2)
+ plot(dom,y2)
+ hold off
+ nexttile
+ hold on
+ plot(time_vec,sol(:,3))
+ plot(dom,yo3)
+ plot(dom,y3)
+ hold off
+ nexttile
+ hold on 
+ plot(time_vec,sol(:,4))
+ plot(dom,yo4)
+ plot(dom,y4)
+ hold off 
+ 
+ 
+figure
+tiledlayout(2,1)
+nexttile
+plot_coeff(mflds.unstable.coeffs, params.mfld.order);
+title('Unstable Mfld Coeff.')
+nexttile
+plot_coeff(mflds.stable.coeffs, params.mfld.order);
+title('Stable Mfld Coeff.')
+
+
+mflds.pts.s=mfld_points(mflds.stable.coeffs, params);
+mflds.pts.u=mfld_points(mflds.unstable.coeffs, params);
+
+figure
+hold on
+surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceColor','r', 'FaceAlpha',0.5, 'EdgeColor','none');  
+xlabel('x1');
+ylabel('x2');
+zlabel('x4');
+surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4), 'FaceColor','g', 'FaceAlpha',0.5, 'EdgeColor','none');  
+plot3(y1,y2,y4);
+title('Stable and Unstable Manifolds');
+legend('Stable','Unstable','Hom. Orbit');
+hold off
+
+
+
+figure
+grid on 
+hold on
+colormap(spring)
+surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), mflds.pts.s(:,:,3), 'FaceAlpha',0.4, 'EdgeColor', '#554b1c');
+xlabel('$x_1$', Interpreter = 'latex');
+ylabel('$x_2$', Interpreter = 'latex');
+zlabel('$x_4$', Interpreter = 'latex')
+surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4);  
+plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
+plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
+plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
+%title('Validated Manifolds and $\varphi(x)$ Trajectory from ');
+legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
+hold off
+
+% color_stable = '#554b1c';
+% color_unstable = "#7E2F8E";
+color_stable = 'b';
+color_unstable = 'r';
+figure
+hold on
+surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceAlpha',0.4, 'FaceColor', color_stable , edgeColor = "none");
+xlabel('$x_1$', Interpreter = 'latex');
+ylabel('$x_2$', Interpreter = 'latex');
+zlabel('$x_4$', Interpreter = 'latex')
+surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4, 'FaceColor',color_unstable, edgeColor = "none"); 
+plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
+plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
+plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
+%title('Validated Manifolds and $\varphi(x)$ Trajectory from ');
+legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
+hold off
+
+end
 
 end 

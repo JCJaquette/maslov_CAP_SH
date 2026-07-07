@@ -55,7 +55,7 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
     Vs12 = Vcheck([1,2],3:4);
     Vs34 = Vcheck([3,4],3:4);
 
-    M1 = Vs34'*Vu12 + Vu12'*Vs34;%This is right, fix mistake in paper3
+    M1 = Vs34'*Vu12 + Vu12'*Vs34;
     M2 = inv(Vs14)*Vu14;
     disp('WARNING in computeLplus: Check how eps is defined')
     C_M4 = @(L) norm(M2)*(norm(inv(Vu14)) + norm(inv(Vs14)) * (1 + eps(L)*norm(inv(Vu14))) ...

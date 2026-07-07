@@ -13,11 +13,16 @@ teta = getLinSolnCoords(params,bndl,Eu.U_vpp_cheb,pulse4D);
 
 tildes = [tbeta,tgamma,teta];
 
-f = @(x) get_function(params,bndl,mflds,pulse4D,tildes,x);
-df = @(x) 1;
-f_error = 0;
-df_error = 0;
+S = [1, 0, 0, 0; 
+     0, 0, 1, 0;
+     0, 2, 0, 1;
+     0, 1, 0, 0];
 
-[count0s, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol, BOOL_plot);
+f = @(x) get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S);
+df = @(x) get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S);
+
+[count0s, flag] = getZeroCount(domINT, f, 0, df, 0, tol, BOOL_plot);
+%note ferror and dferror set to zero since it's all contained in intvals
+%^^ TODO: CHECK THIS ^^
 
 end
