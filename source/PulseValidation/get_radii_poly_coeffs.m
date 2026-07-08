@@ -128,16 +128,30 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am)
     % We compute the bounds LAMBDA^{(s,i)}
     
     
-    powers_s11 = zeros(N+1, N+1);
-    powers_s21 = zeros(N+1, N+1);
-    powers_s22 = zeros(N+1, N+1);
-    powers_s1 = zeros(N+1, N+1);
-    powers_s2 = zeros(N+1, N+1);
-    
-    
-    powers_u11 = zeros(N+1, N+1);
-    powers_u21 = zeros(N+1, N+1);
-    powers_u22 = zeros(N+1, N+1);
+    % powers_s* involve the stable-boundary point a1,a2 = rho*exp(+-i psi),
+    % which are intval when rho is intervalized -> preallocate accordingly.
+    if params.isIntval
+        powers_s11 = intval(zeros(N+1, N+1));
+        powers_s21 = intval(zeros(N+1, N+1));
+        powers_s22 = intval(zeros(N+1, N+1));
+        powers_s1  = intval(zeros(N+1, N+1));
+        powers_s2  = intval(zeros(N+1, N+1));
+
+        powers_u11 = intval(zeros(N+1, N+1));
+        powers_u21 = intval(zeros(N+1, N+1));
+        powers_u22 = intval(zeros(N+1, N+1));
+    else
+        powers_s11 = zeros(N+1, N+1);
+        powers_s21 = zeros(N+1, N+1);
+        powers_s22 = zeros(N+1, N+1);
+        powers_s1 = zeros(N+1, N+1);
+        powers_s2 = zeros(N+1, N+1);
+
+
+        powers_u11 = zeros(N+1, N+1);
+        powers_u21 = zeros(N+1, N+1);
+        powers_u22 = zeros(N+1, N+1);
+    end
     
     a1 = params.rho*cos(x.psi) + 1i*params.rho*sin(x.psi);
     a2 = params.rho*cos(x.psi) - 1i*params.rho*sin(x.psi); 

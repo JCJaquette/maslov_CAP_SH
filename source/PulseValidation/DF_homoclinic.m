@@ -13,10 +13,20 @@ function DF = DF_homoclinic(x, params, mflds)
     
     N = params.mfld.order;
 
-    theta_pow1=zeros(N+1);
-    theta_pow2=zeros(N+1);
-    phi_pow1=zeros(N+1);
-    phi_pow2=zeros(N+1);
+    % Preallocate as intval when running rigorously: theta involves the
+    % (possibly interval) parameter rho, so theta_pow* must accept intval
+    % entries.  phi_pow* preallocated the same way for uniformity.
+    if params.isIntval
+        theta_pow1=intval(zeros(N+1));
+        theta_pow2=intval(zeros(N+1));
+        phi_pow1=intval(zeros(N+1));
+        phi_pow2=intval(zeros(N+1));
+    else
+        theta_pow1=zeros(N+1);
+        theta_pow2=zeros(N+1);
+        phi_pow1=zeros(N+1);
+        phi_pow2=zeros(N+1);
+    end
     
     for k = 0:N
         for j=0:N
@@ -186,27 +196,43 @@ function DF = DF_homoclinic(x, params, mflds)
 
     x.a1=[x.a1, zeros(1,size(x.a1,2))];
 
-    for k = 1:m-1
-        for l = 0:m-1
-            if l == 0
-                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)) ...
-                                    - 3*(a1a1(abs(k-1-l)+1)) ...
-                                    - 2*params.nu*(x.a1(abs(k+1-l)+1))...
-                                    + 3*(a1a1(abs(k+1-l)+1)));
-            else
-                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)+x.a1(abs(k-1+l)+1)) ...
-                                    -3*(a1a1(abs(k-1-l)+1)+a1a1(abs(k-1+l)+1)) ...
-                                    - 2*params.nu*(x.a1(abs(k+1-l)+1)+x.a1(abs(k+1+l)+1))...
-                                    + 3*(a1a1(abs(k+1-l)+1)+a1a1(abs(k+1+l)+1))); 
-            end
+    % Vectorized build of the d(f7)_k/d(a1)_l block (k=1..m-1, l=0..m-1).
+    % x.a1, a1a1 and x.Lbvp are doubles; only params.nu / params.mu can be
+    % intervals.  The original scalar double loop performed ~m^2 INTLAB
+    % operations (and ~m^2 indexed assignments into an intval matrix), which
+    % completely dominated the rigorous run.  Here we gather the double sums
+    % first and touch INTLAB only a handful of times.  The term grouping is
+    % kept identical to the original loop, so the double path is unchanged.
+    K = (1:m-1)';        % k, as a column
+    L = (0:m-1);         % l, as a row
 
-            if l==k-1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) - x.Lbvp*(-1-params.mu);
-            elseif l==k+1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) + x.Lbvp*(-1-params.mu);
-            end
-        end
+    I1 = abs(K-1-L)+1;
+    I2 = abs(K-1+L)+1;
+    I3 = abs(K+1-L)+1;
+    I4 = abs(K+1+L)+1;
+
+    Sa_m = x.a1(I1) + x.a1(I2);    Sb_m = a1a1(I1) + a1a1(I2);
+    Sa_p = x.a1(I3) + x.a1(I4);    Sb_p = a1a1(I3) + a1a1(I4);
+
+    % For l==0 we have I1==I2 and I3==I4, so the general form double-counts.
+    % (dividing an exact doubling by 2 is exact in IEEE arithmetic)
+    Sa_m(:,1) = Sa_m(:,1)/2;   Sb_m(:,1) = Sb_m(:,1)/2;
+    Sa_p(:,1) = Sa_p(:,1)/2;   Sb_p(:,1) = Sb_p(:,1)/2;
+
+    f7blk = (-x.Lbvp).*( (2*params.nu).*Sa_m - 3*Sb_m ...
+                       - (2*params.nu).*Sa_p + 3*Sb_p );
+
+    % corrections on the l==k-1 and l==k+1 diagonals
+    d = x.Lbvp*(-1-params.mu);
+    lin1 = sub2ind([m-1, m], (1:m-1)', (1:m-1)');       % l == k-1  -> col k
+    f7blk(lin1) = f7blk(lin1) - d;
+    if m >= 3
+        kk = (1:m-2)';
+        lin2 = sub2ind([m-1, m], kk, kk+2);              % l == k+1  -> col k+2
+        f7blk(lin2) = f7blk(lin2) + d;
     end
+
+    DF(4+3*m+(1:m-1), 4+(0:m-1)) = f7blk;
 
 
         % d(f7)_0 da4 
