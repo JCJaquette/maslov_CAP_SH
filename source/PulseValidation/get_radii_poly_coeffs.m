@@ -21,7 +21,15 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am)
     epsilon_s = mflds.stable.error; %Do these things match up with what we want?
     epsilon_u = mflds.unstable.error;
 
-    F(1:7) = F(1:7)+[epsilon_s*ones(3,1);epsilon_u*ones(4,1)];
+    % The manifold-error terms belong on the seven boundary-condition rows.
+    % The 3 stable BCs are F{1},F{2},F{3}       -> entries 1, 2, 3.
+    % The 4 unstable BCs are the FIRST entry of each of F{4},F{5},F{6},F{7}
+    %                                           -> entries 4, 3+m+1, 3+2m+1, 3+3m+1.
+    % (The previous code used entries 4:7 for epsilon_u, which put it on three
+    %  interior a1 equations and left three unstable BCs with no error term.)
+    idx_u = [4; 3+m+1; 3+2*m+1; 3+3*m+1];
+    F(1:3)   = F(1:3)   + epsilon_s;
+    F(idx_u) = F(idx_u) + epsilon_u;
 
     vF_1=abs(Am(1,:)*F);
     vF_2=abs(Am(2,:)*F);
