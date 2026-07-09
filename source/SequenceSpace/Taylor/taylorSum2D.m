@@ -3,9 +3,10 @@ function out = taylorSum2D(coeffs,x1,x2)
     
     order = length(coeffs(1,:))-1;
     N = 0:order;
+    M = N';
 
     try
-        x1M = x1.^N';
+        x1M = x1.^M;
     catch
         x1M = zeros(order+1,1);
         for m = 0:order

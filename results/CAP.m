@@ -11,7 +11,7 @@ BOOL_load_bndl = 1;
 bndl_BOOL.save_data = 0;
 BOOL_load_pulse = 0;
 BOOL_save_pulse = 0;
-BOOL_load_Euminus = 1;
+BOOL_load_Euminus = 0;
 BOOL_save_Euminus = 0;
 
 % Parameters for the pulse validation
@@ -46,7 +46,7 @@ params.nu = 1.6;
 params.mfld.order = params.order;
   
 % Interval Arithmetic  
-params.isIntval = 0;
+params.isIntval = 1;
 if params.isIntval 
     params.mu = intval(num2str(params.mu));  
     params.nu = intval('1.6');
@@ -133,13 +133,13 @@ else
 
 end
 
-file_str = ['save_MO',int2str(params.order),'_MSc',num2str(params.scale),...
-    '_PO',int2str(params.pulse.order)];
-
-z = flattenstruct(vali_data, '');
-data_Table = struct2table(z,'AsArray',true);
-
-save(file_str,'data_Table')
+% file_str = ['save_MO',int2str(params.order),'_MSc',num2str(params.scale),...
+%    '_PO',int2str(params.pulse.order)];
+% 
+% z = flattenstruct(vali_data, '');
+% data_Table = struct2table(z,'AsArray',true);
+% 
+% save(file_str,'data_Table')
 
 
 %% Eu- Computation
