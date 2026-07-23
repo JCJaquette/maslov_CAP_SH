@@ -11,17 +11,10 @@ function val = mfld_one_point(phi1, phi2, coeff, params)
         val(k) = taylorSum2D(coeff(:,:,k),x1,x2);
     end
 
-    if isnan(sum(val))
-        val = intval(1)*zeros(size(val));
-        for k = 1:4
-            val(k) = taylorSum2D_alt(coeff(:,:,k),x1,x2);
-        end
-    end
-
-    if norm(val-real(val)) > 1e-10
-         msg = 'Error occurred. The manifold is complex valued.';
-         %error(msg);
-    end
+    % if norm(val-real(val)) > 1e-10 
+    %      msg = 'Error occurred. The manifold is complex valued.';
+    %      error(msg);
+    % end %removed because this function is used to compute bundles as well
 
 end 
 

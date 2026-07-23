@@ -1,4 +1,4 @@
-function dfx = get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S)
+function fx = get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S)
 
 sig = get_sig_afterBVP(params,pulse4D,x); %get sigma(x)
 
@@ -14,6 +14,9 @@ ax = teta(1)*V1s + teta(2)*V2s;
 
 bx = tbeta(1)*V1s + tbeta(2)*V2s + tgamma(1)*V1u + tgamma(2)*V2u;
 
-dfx = ax(1)*bx(2) - ax(2)*bx(1);
+ax = real(ax);
+bx = real(bx);
+
+fx = ax(1)*bx(4) - ax(4)*bx(1);
 
 end

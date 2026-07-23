@@ -5,7 +5,12 @@ function ab = cauchyProd2D(a,b)
     bL = length(b(1,:)); bH = length(b(:,1));   
     m = aH+bH;
     n = aL+bL;
-    ab = zeros(m-1,n-1);
+    
+    if isintval(a) || isintval(b)
+        ab = intval(1)*zeros(m-1,n-1);
+    else
+        ab = zeros(m-1,n-1);
+    end
 
     for i = 1:m-1
         for j = 1:n-1

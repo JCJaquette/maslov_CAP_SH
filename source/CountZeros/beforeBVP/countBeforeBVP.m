@@ -6,7 +6,8 @@ global_max = 0;
 domINT = infsup(global_min,global_max);
 
 [W1,W2] = differentiate_mani(mid(mflds.unstable.coeffs));
-W1 = 1i*W1;
+W1 = intval(1)*1i*W1;
+W2 = intval(1)*W2;
 
 Lambda = get_Lambda(params,'u');
 

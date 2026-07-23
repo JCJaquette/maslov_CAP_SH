@@ -25,4 +25,33 @@ df = @(x) get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S);
 %note ferror and dferror set to zero since it's all contained in intvals
 %^^ TODO: CHECK THIS ^^
 
+if 1
+
+    figure
+    testX = linspace(global_min,global_max,1000);
+    fX = intval(0)*testX; testdf = fX; numdf = fX;
+    dx = testX(2)-testX(1);
+    for i = 2:999
+        numdf(i) = (f(testX(i+1)) - f(testX(i-1)))/(2*dx);
+    end
+    for i = 2:999
+        testdf(i) = get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,testX(i),S);
+    end
+    for i = 2:999
+        fX(i) = get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,testX(i),S);
+    end
+
+    % plot(testX,mid(numdf))
+    % hold on
+    % plot(testX,mid(testdf))
+    % plot(testX,mid(fX))
+
+    plot(testX,numdf)
+    hold on
+    plot(testX,testdf)
+    plot(testX,fX)
+
+%in df function also test for a' and b'
+end
+
 end

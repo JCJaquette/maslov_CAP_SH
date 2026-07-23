@@ -6,7 +6,7 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
          0, 1, 0, 0];
     sig0 = get_sig0(params,pulse4D);
 
-    W_sig0 = bndl_one_point(sig0(1),sig0(2),bndl,params);
+    W_sig0 = bndl_one_point(real(sig0(1)),imag(sig0(1)),bndl,params);
     
     U1_L = zeros(4,1);
     for i = 1:4

@@ -5,8 +5,8 @@ global_min = -1;
 global_max = 1;
 domINT = infsup(global_min,global_max);
 
-phiPrime_cheb = Euminus.U_vpp_cheb;
-h_cheb = Euminus.U_1_cheb;
+phiPrime_cheb = intval(1)*Euminus.U_vpp_cheb;
+h_cheb = intval(1)*Euminus.U_1_cheb;
 
 [f_errbd,df_errbd] = get_det_error(pulse4D,Euminus);
 

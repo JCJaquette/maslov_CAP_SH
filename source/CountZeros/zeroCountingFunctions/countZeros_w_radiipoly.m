@@ -7,22 +7,20 @@ n = 500;
 dom = global_min:1/n:global_max;
 domINT = infsup(global_min,global_max);
 
-f = @(x) x.^2 + sin(20*x);
-df = @(x) 2*x + 20*cos(20*x);
-f_error = 0; df_error = 0;
+% f = @(x) x.^2 + sin(20*x);
+% df = @(x) 2*x + 20*cos(20*x);
+% f_error = 0; df_error = 0;
 
-% seriesLength = 30;
-% sgns = (-1).^round(rand(seriesLength,1)); 
-% a = 10*rand(seriesLength,1);
-% a = a.*sgns;
-% a(1) = 0;
-% A = IntegrateCheb(a);
-% 
-% df = @(x) chebSum(a,x);
-% f = @(x) chebSum(A,x);
-% 
-% f = @(x) chebSum(A_cheb,x);
-% df = @(x) chebSum(APrime_cheb,x);
+seriesLength = 30;
+sgns = (-1).^round(rand(seriesLength,1)); 
+a = 10*rand(seriesLength,1);
+a = a.*sgns;
+a(1) = 0;
+A = IntegrateCheb(a);
+
+df = @(x) chebSum(a,x);
+f = @(x) chebSum(A,x);
+f_error = 0; df_error = 0;
 
 [roots,flag] = FindZero1D(dom,f(dom));
 grid_breakup = [global_min;roots;global_max];
@@ -49,7 +47,7 @@ newDom = INTsetminus(domINT,unique0);
 
 rejects = intval(0)*[];
 
-tol = 1e-5;
+tol = 1e-8;
 while isempty(newDom) == 0
 
     b = newDom(end);
