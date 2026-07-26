@@ -1,8 +1,8 @@
-function fx = get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S)
+function fx = get_F_afterBVP(params,bndl,mflds,sig,pulse4D,tildes,x,S)
 
-sig = get_sig_afterBVP(params,pulse4D,x); %get sigma(x)
+%sig = get_sig_afterBVP(params,pulse4D,x); %get sigma(x)
 
-[V1s,V2s,V1u,V2u] = get_Vs(params,bndl,mflds,sig(1),sig(2),x,S); %get each soln V(x)
+[V1s,V2s,V1u,V2u] = get_Vs(params,bndl,mflds,pulse4D,sig(1),sig(2),x,S); %get each soln V(x)
 
 %compute U_1 and U_{\varphi'} using eqn 4.6 from paper3
 

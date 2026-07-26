@@ -8,9 +8,7 @@ if BOOL_plot
         z = linspace(domain_interval.inf,domain_interval.sup,500);
         for k = 1:500
             fzk = f(z(k));
-            %inffz(k) = inf(real(fzk));
             fz(k) = mid(real(fzk));
-            %supfz(k) = sup(real(fzk));
         end
         plot(z,fz,'Color','black')
         hold on
@@ -99,7 +97,6 @@ end
 if BOOL_plot
     figure
     plot(list_domain,real(list_f))
-    figure
 
 end
 

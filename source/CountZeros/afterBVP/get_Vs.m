@@ -1,4 +1,4 @@
-function [V1s,V2s,V1u,V2u] = get_Vs(params,bndl,mflds,sig1,sig2,x,S)
+function [V1s,V2s,V1u,V2u] = get_Vs(params,bndl,mflds,pulse4D,sig1,sig2,x,S)
 
 %Start by finding \tilde{V}(x), see eqns below lemma 5.8
 
@@ -17,7 +17,9 @@ tV2u = [a_res(1,2)*x * sig1*sig2 * exp(mflds.values.s(1) *x);
         0;
         exp(mflds.values.u(2) *x)];
 
-W_sig = bndl_one_point(real(sig1),imag(sig1),bndl,params);
+sigx = get_sig_afterBVP(params,pulse4D,x);
+
+W_sig = bndl_one_point(real(sigx(1)),imag(sigx(1)),bndl,params);
 W_sig = W_sig + infsup(-bndl.r_min.sup,bndl.r_min.sup);
 
 %get V(x) from \tilde{V}(x)

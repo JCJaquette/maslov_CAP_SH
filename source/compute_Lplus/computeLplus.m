@@ -44,7 +44,7 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
 
     tau = @(L) Vnorm1*Vnorm * C * exp(-mu_s*L)/mu_s; %This bound comes from similar reasoning to eqn 5.1
     %Need tau<1 for a good L, add as condition in theorem
-    eps_0 = @(L) tau(L)/(1 - tau(L))*biggestVec; %See 
+    eps_0 = @(L) tau(L)/(1 - tau(L))*biggestVec; %See sec 4.1.2
 
     eps_beta = @(L) exp(-mu_s*L) * norm(tbeta);
     eps_gamma = @(L) exp(-mu_s*L) / norm(tgamma);
@@ -57,7 +57,6 @@ function L_out = computeLplus(params,bndl,mflds,pulse4D,U_1)
 
     M1 = Vs34'*Vu12 + Vu12'*Vs34;
     M2 = inv(Vs14)*Vu14;
-    disp('WARNING in computeLplus: Check how eps is defined')
     C_M4 = @(L) norm(M2)*(norm(inv(Vu14)) + norm(inv(Vs14)) * (1 + eps(L)*norm(inv(Vu14))) ...
                                                             / (1 - eps(L)*norm(inv(Vs14))));
     C_M3 = @(L) 2*(norm(Vs34) + norm(Vs12)) + 2*eps_0(L);

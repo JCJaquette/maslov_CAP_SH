@@ -13,13 +13,15 @@ teta = getLinSolnCoords(params,bndl,Eu.U_vpp_cheb,pulse4D);
 
 tildes = [tbeta,tgamma,teta];
 
+sig0 = get_sig0(params,pulse4D);
+
 S = [1, 0, 0, 0; 
      0, 0, 1, 0;
      0, 2, 0, 1;
      0, 1, 0, 0];
 
-f = @(x) get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S);
-df = @(x) get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,x,S);
+f = @(x) get_F_afterBVP(params,bndl,mflds,sig0,pulse4D,tildes,x,S);
+df = @(x) get_df_afterBVP(params,bndl,mflds,sig0,pulse4D,tildes,x,S);
 
 [count0s, flag] = getZeroCount(domINT, f, 0, df, 0, tol, BOOL_plot);
 %note ferror and dferror set to zero since it's all contained in intvals
@@ -35,21 +37,21 @@ if 1
         numdf(i) = (f(testX(i+1)) - f(testX(i-1)))/(2*dx);
     end
     for i = 2:999
-        testdf(i) = get_df_afterBVP(params,bndl,mflds,pulse4D,tildes,testX(i),S);
+        testdf(i) = get_df_afterBVP(params,bndl,mflds,sig0,pulse4D,tildes,testX(i),S);
     end
     for i = 2:999
-        fX(i) = get_F_afterBVP(params,bndl,mflds,pulse4D,tildes,testX(i),S);
+        fX(i) = get_F_afterBVP(params,bndl,mflds,sig0,pulse4D,tildes,testX(i),S);
     end
 
-    % plot(testX,mid(numdf))
-    % hold on
-    % plot(testX,mid(testdf))
-    % plot(testX,mid(fX))
-
-    plot(testX,numdf)
+    plot(testX,mid(numdf))
     hold on
-    plot(testX,testdf)
-    plot(testX,fX)
+    plot(testX,mid(testdf))
+    plot(testX,mid(fX))
+
+    % plot(testX,numdf)
+    % hold on
+    % plot(testX,testdf)
+    % plot(testX,fX)
 
 %in df function also test for a' and b'
 end
