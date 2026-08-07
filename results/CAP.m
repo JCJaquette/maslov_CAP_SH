@@ -2,16 +2,16 @@ clear
 
 %% Manually define parameters
 
-Case_number = 1; 
+Case_number = 3; 
 % Case 1 : params.mu = 0.1; 
 % Case 2 : params.mu = 0.1; 
 % Case 3 : params.mu = 0.2;  
 
 BOOL_load_bndl = 1;
 bndl_BOOL.save_data = 0;
-BOOL_load_pulse = 1;
+BOOL_load_pulse = 0;
 BOOL_save_pulse = 0;
-BOOL_load_Euminus = 1;
+BOOL_load_Euminus = 0;
 BOOL_save_Euminus = 0;
 
 % Parameters for the pulse validation
@@ -106,10 +106,12 @@ if BOOL_load_pulse
 
 else    
 
+    BOOL_pulseplot = 1;
+
     disp('Computing pulse')
 
     % Get seed for Newton
-    seed = get_newton_seed(params,mflds);     
+    seed = get_newton_seed(params,mflds,BOOL_pulseplot);     
     
     % Refine with Newton
     pulse4D = refine_cheb_orbit(seed,mflds,params);
@@ -160,13 +162,15 @@ if BOOL_load_Euminus
 
 else
 
+    BOOL_Euplot = 1;
+
     disp('Computing Eu-')
     if Case_number == 3
         params.Eu.order = 2^10;   
     end
     params.del = 1.01;%two dels?
     %Get U_{\varphi'} and U_1
-    Eu = chebInt(params,mflds,pulse4D);  
+    Eu = chebInt(params,mflds,pulse4D,BOOL_Euplot);  
 
     disp('Getting CAP for Eu-')
 
@@ -202,14 +206,15 @@ disp('Counting zeros of determinant')
 zerocount = 0;
 zerofinder_tol = 1e-5;
 
-BOOLzf_plot = 1;
-
+BOOLzf.plot = 1;
+BOOLzf.plotblocks = 1;
+%PUT DET CHECK IN EACH FUNCTION
 disp('Finding zeros on [-L_conj,-L_bvp]')
-zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,zerofinder_tol,BOOLzf_plot);
+zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,zerofinder_tol,BOOLzf);
 
 disp('Finding zeros on [-L_bvp,L_bvp]')
-zerocount = zerocount + countBVP(pulse4D,Eu,zerofinder_tol,BOOLzf_plot);
+zerocount = zerocount + countBVP(pulse4D,Eu,zerofinder_tol,BOOLzf);
 
 disp('Finding zeros on [L_bvp,L_conj]')
-zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,Eu,zerofinder_tol,BOOLzf_plot);
+zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,Eu,zerofinder_tol,BOOLzf);
 

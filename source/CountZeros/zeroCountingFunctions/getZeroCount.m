@@ -1,6 +1,6 @@
-function [count,flag] = getZeroCount(domain_interval, f, f_error, df, df_error, tol, BOOL_plot)
+function [count,zero_int,flag] = getZeroCount(domain_interval, f, f_error, df, df_error, tol, BOOL_plot)
 
-if BOOL_plot
+if BOOL_plot.plot
 %plotting the function
     if isintval(f(0))
         figure
@@ -27,6 +27,7 @@ end
 
 %counting zeros 
 count = 0; flag = intval(1)*[];
+zero_int = intval(1)*[];
 
 F = @(x) f(x) + f_error;
 dF = @(x) df(x) + df_error;
@@ -45,7 +46,7 @@ while isempty(domain_interval) == 0
         list_f(end+1) = Fb;
         domain_interval(end) = [];
 
-        if BOOL_plot
+        if BOOL_plot.plot
             plot([b.inf,b.sup],[0,0],'color','blue')
         end
 
@@ -60,8 +61,9 @@ while isempty(domain_interval) == 0
             list_f(end+1) = Fb;
             domain_interval(end) = [];
             count = count+1;
+            zero_int = [zero_int,b];
             
-            if BOOL_plot
+            if BOOL_plot.plot
                 plot([b.inf,b.sup],[0,0],'color','green')
             end
 
@@ -71,7 +73,7 @@ while isempty(domain_interval) == 0
             list_f(end+1) = Fb;
             domain_interval(end) = [];
     
-            if BOOL_plot
+            if BOOL_plot.plot
                 plot([b.inf,b.sup],[0,0],'color','blue')
             end
 
@@ -94,9 +96,17 @@ while isempty(domain_interval) == 0
 
 end
 
-if BOOL_plot
+if BOOL_plot.plotblocks
+
     figure
+    hold on
     plot(list_domain,real(list_f))
+    z = linspace(inf(list_domain(end)),sup(list_domain(1)),500);
+    for k = 1:500
+        fzk = f(z(k));
+        fz(k) = mid(real(fzk));
+    end
+    plot(z,fz,'Color','black')
 
 end
 

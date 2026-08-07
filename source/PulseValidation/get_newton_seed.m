@@ -1,6 +1,4 @@
-function y = get_newton_seed(params,mflds)
-
-letsplot = 0;
+function y = get_newton_seed(params,mflds,pulseplot)
     
     mflds = struct_intvaltodouble(mflds);
     params = struct_intvaltodouble(params);     
@@ -80,7 +78,7 @@ letsplot = 0;
     y.Lbvp = L;
 
 
-if letsplot
+if pulseplot
 
 %%%%%%%%%%%%%%%%%
 % Generate Plots 
@@ -92,6 +90,14 @@ y3 = chebcoeff_to_function(y.a3);
 y4 = chebcoeff_to_function(y.a4);
 
 dom = -1:.05:1;
+
+raw_times = psoln(n+1-k:n+1+k,1);
+raw_times_norm = (raw_times - raw_times(1)) / (raw_times(end) - raw_times(1)) * 2 - 1;
+
+yo1 = interp1(raw_times_norm, Lsoln(:,1), dom, 'pchip');
+yo2 = interp1(raw_times_norm, Lsoln(:,2), dom, 'pchip');
+yo3 = interp1(raw_times_norm, Lsoln(:,3), dom, 'pchip');
+yo4 = interp1(raw_times_norm, Lsoln(:,4), dom, 'pchip');
 
  figure
  tiledlayout(4,1)
@@ -112,37 +118,33 @@ plot(dom, y1, linewidth = 1.5, color = "#A2142F")
 plot(dom(1), y1(1), 'o', 'MarkerFaceColor', "#A2142F")
 plot(dom(end), y1(end), 'o', 'MarkerFaceColor', "#A2142F")
 hold off
-xlabel('$t$', Interpreter = 'latex', FontSize=14)
-ylabel('$\varphi(t)$', Interpreter = 'latex', FontSize=14)
+%xlabel('$t$', Interpreter = 'latex', FontSize=14)
+%ylabel('$\varphi(t)$', Interpreter = 'latex', FontSize=14)
 
  
  
- dom = params.L*dom;
+ dom = L*dom;
  
  figure 
  tiledlayout(4,1)
  nexttile
  hold on
- plot(time_vec,sol(:,1))
  plot(dom,yo1)
  plot(dom,y1)
- legend('BK Solution','Chebyshev Rep.', 'Refined Chebyshev Rep.')
+ legend('Chebyshev Rep.', 'Refined Chebyshev Rep.')
  hold off
  nexttile
  hold on
- plot(time_vec,sol(:,2))
  plot(dom,yo2)
  plot(dom,y2)
  hold off
  nexttile
  hold on
- plot(time_vec,sol(:,3))
  plot(dom,yo3)
  plot(dom,y3)
  hold off
  nexttile
  hold on 
- plot(time_vec,sol(:,4))
  plot(dom,yo4)
  plot(dom,y4)
  hold off 
@@ -162,6 +164,7 @@ mflds.pts.s=mfld_points(mflds.stable.coeffs, params);
 mflds.pts.u=mfld_points(mflds.unstable.coeffs, params);
 
 figure
+figure
 hold on
 surf(mflds.pts.s(:,:,1),mflds.pts.s(:,:,2),mflds.pts.s(:,:,4), 'FaceColor','r', 'FaceAlpha',0.5, 'EdgeColor','none');  
 xlabel('x1');
@@ -169,6 +172,8 @@ ylabel('x2');
 zlabel('x4');
 surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4), 'FaceColor','g', 'FaceAlpha',0.5, 'EdgeColor','none');  
 plot3(y1,y2,y4);
+text(y1(1), y2(1), y4(1), '  P(\theta)', 'Color', 'g', 'FontSize', 12, 'Interpreter', 'tex');
+text(y1(end), y2(end), y4(end), '  Q(\phi)', 'Color', 'r', 'FontSize', 12, 'Interpreter', 'tex');
 title('Stable and Unstable Manifolds');
 legend('Stable','Unstable','Hom. Orbit');
 hold off
@@ -187,6 +192,8 @@ surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4);
 plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
 plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
 plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
+text(y1(1), y2(1), y4(1), '  P(\theta)', 'Color', '#7E2F8E', 'FontSize', 12, 'Interpreter', 'tex');
+text(y1(end), y2(end), y4(end), '  Q(\phi)', 'Color', '#EDB120', 'FontSize', 12, 'Interpreter', 'tex');
 %title('Validated Manifolds and $\varphi(x)$ Trajectory from ');
 legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
 hold off
@@ -205,6 +212,8 @@ surf(mflds.pts.u(:,:,1),mflds.pts.u(:,:,2),mflds.pts.u(:,:,4),'FaceAlpha',0.4, '
 plot3(y1,y2,y4, lineWidth = 2, Color="#A2142F");
 plot3(y1(1), y2(1), y4(1), 'o', 'MarkerFaceColor', "#A2142F")
 plot3(y1(end), y2(end), y4(end), 'o', 'MarkerFaceColor', "#A2142F")
+text(y1(end), y2(end), y4(end), '  P(\theta)', 'Color', color_stable, 'FontSize', 12, 'Interpreter', 'tex');
+text(y1(1), y2(1), y4(1), '  Q(\phi)', 'Color', color_unstable, 'FontSize', 12, 'Interpreter', 'tex');
 %title('Validated Manifolds and $\varphi(x)$ Trajectory from ');
 legend('Stable manifold','Unstable manifold','$\varphi(x)$', Interpreter = 'latex');
 hold off
