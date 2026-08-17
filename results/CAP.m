@@ -9,18 +9,16 @@ Case_number = 3;
 
 BOOL_load_bndl = 1;
 bndl_BOOL.save_data = 0;
-BOOL_load_pulse = 1;
+BOOL_load_pulse = 0;
 BOOL_save_pulse = 0;
 BOOL_load_Euminus = 0;
-BOOL_save_Euminus = 1;
+BOOL_save_Euminus = 0;
 
 % Parameters for the pulse validation
 params.rho = .99; %This is rho from section 2 in paper 3
 params.tol=4e-14;
 params.bd_scale = .2; %This sets how close the pulse gets to the manifold when we cut it off
 params.new = 1.01; %new=delta in the paper, nu in the code for pulse existence CAP
-
-params.Eu.order = 2^9; %cheb coeffs of Eu-
 
 
     %ODE Parameters
@@ -29,11 +27,13 @@ if Case_number == 1 || Case_number == 2
     params.scale = .3;
     params.order = 40; %manifold taylor coeffs
     params.pulse.order = 2^10; %cheb coeffs of pulse
+    params.Eu.order = 2^9; %cheb coeffs of Eu-
 else
     params.mu = 0.2; 
     params.scale = .3;
     params.order = 26; %manifold taylor coeffs
     params.pulse.order = 2^11; %cheb coeffs of pulse
+    params.Eu.order = 2^10; %cheb coeffs of Eu-
 end
 
 if Case_number == 2 
@@ -69,6 +69,9 @@ if BOOL_load_bndl
     load(data_str)
     disp(['Loaded bundles and manifolds for case ',int2str(Case_number)])
 
+    if Case_number == 2
+        params.xi = pi;
+    end
 else
     
     % Computation 
@@ -103,10 +106,12 @@ if BOOL_load_pulse
 
 else    
 
+    BOOL_pulseplot = 1;
+
     disp('Computing pulse')
 
     % Get seed for Newton
-    seed = get_newton_seed(params,mflds);     
+    seed = get_newton_seed(params,mflds,BOOL_pulseplot);     
     
     % Refine with Newton
     pulse4D = refine_cheb_orbit(seed,mflds,params);
@@ -133,8 +138,7 @@ else
 
 end
 
-% file_str = ['save_MO',int2str(params.order),'_MSc',num2str(params.scale),...
-%     '_PO',int2str(params.pulse.order)];
+%    '_PO',int2str(params.pulse.order)];
 % 
 % z = flattenstruct(vali_data, '');
 % data_Table = struct2table(z,'AsArray',true);
@@ -158,11 +162,15 @@ if BOOL_load_Euminus
 
 else
 
+    BOOL_Euplot = 1;
+
     disp('Computing Eu-')
-   
+    if Case_number == 3
+        params.Eu.order = 2^10;   
+    end
     params.del = 1.01;%two dels?
     %Get U_{\varphi'} and U_1
-    Eu = chebInt(params,mflds,pulse4D);  
+    Eu = chebInt(params,mflds,pulse4D,BOOL_Euplot);  
 
     disp('Getting CAP for Eu-')
 
@@ -193,11 +201,20 @@ mflds.Lplus = computeLplus(params,bndl,mflds,pulse4D,Eu.U_1_cheb);
 
 %% Counting Zeros/Conjugate Points
 
-zerocount = 0;
-zerofinder_tol = 10e-5;
-BOOLzf_plot = 0;
+disp('Counting zeros of determinant')
 
-zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,zerofinder_tol,BOOLzf_plot);
-zerocount = zerocount + countBVP(pulse4D,Eu,zerofinder_tol,BOOLzf_plot);
-zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,zerofinder_tol,BOOLzf_plot);
+zerocount = 0;
+zerofinder_tol = 1e-5;
+
+BOOLzf.plot = 1;
+BOOLzf.plotblocks = 1;
+%PUT DET CHECK IN EACH FUNCTION
+disp('Finding zeros on [-L_conj,-L_bvp]')
+zerocount = zerocount + countBeforeBVP(params,mflds,pulse4D,zerofinder_tol,BOOLzf);
+
+disp('Finding zeros on [-L_bvp,L_bvp]')
+zerocount = zerocount + countBVP(pulse4D,Eu,zerofinder_tol,BOOLzf);
+
+disp('Finding zeros on [L_bvp,L_conj]')
+zerocount = zerocount + countAfterBVP(params,bndl,mflds,pulse4D,Eu,zerofinder_tol,BOOLzf);
 

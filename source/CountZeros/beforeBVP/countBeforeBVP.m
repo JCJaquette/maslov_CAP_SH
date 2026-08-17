@@ -1,12 +1,13 @@
-function [count0s,flag] = countBeforeBVP(params,mflds,pulse4D,tol,BOOL_plot)
+function [count_out,flag] = countBeforeBVP(params,mflds,pulse4D,tol,BOOL_plot)
 % Count zeros of the determinant on [-L_conj, -L_bvp]
 
-global_min = inf(-mflds.Lminus + pulse4D.Lbvp);
+global_min = inf(-mflds.Lminus + intval(pulse4D.Lbvp));
 global_max = 0;
 domINT = infsup(global_min,global_max);
 
 [W1,W2] = differentiate_mani(mid(mflds.unstable.coeffs));
-W1 = 1i*W1;
+W1 = intval(1)*1i*W1;
+W2 = intval(1)*W2;
 
 Lambda = get_Lambda(params,'u');
 
@@ -33,6 +34,26 @@ detAPrime_taylor = cauchyProd2D(W1Prime(:,:,1), W2(:,:,2)) ...
 f = @(t) taylorSum2D(detA_taylor,sig1(t),sig2(t));
 df = @(t) taylorSum2D(detAPrime_taylor,sig1(t),sig2(t));
 
-[count0s, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol, BOOL_plot);
+[count_out, zero_int, flag] = getZeroCount(domINT, f, f_error, df, df_error, tol, BOOL_plot);
+
+fprintf('%d zeros found\n', count_out);
+
+if ~isempty(zero_int)
+
+    z_check_l = length(zero_int);
+    
+    a1 = @(t) taylorsum2D(W1(:,:,1),sig1(t),sig2(t));
+    a4 = @(t) taylorsum2D(W1(:,:,2),sig1(t),sig2(t));
+    b1 = @(t) taylorsum2D(W2(:,:,1),sig1(t),sig2(t));
+    b4 = @(t) taylorsum2D(W2(:,:,2),sig1(t),sig2(t));
+    
+    for i = 1:z_check_l
+    
+        fprintf('%s for the %dth zero.\n', ...
+    intersectioncheck(zero_int, f, df, a1, a4, b1, b4), i);
+    
+    end
+
+end
 
 end

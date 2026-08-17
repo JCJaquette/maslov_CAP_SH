@@ -22,6 +22,11 @@ end
             disp('Tolerance met.')
             break
         end
+
+        if vecnorm(fcn_vec)> 10^6
+            disp('Newton diverged.')
+            break
+        end
         
         if mod(k,5) == 0
             G2=FHomoclinic(x, mflds, params);

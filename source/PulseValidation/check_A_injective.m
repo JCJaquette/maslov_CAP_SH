@@ -2,9 +2,10 @@ function injective = check_A_injective(params,DF,Am)
     m = params.pulse.order;
 
     disp('Norm of I - ADF: ')
-    disp(norm(mag(eye(4*m+3)-Am*DF)))
+    matnorm = norm(mag(eye(4*m+3)-Am*DF),inf);
+    disp(matnorm)
 
-    if norm(mag(eye(4*m+3)-Am*DF))>=1
+    if matnorm>=1
         disp('Stop! The matrix Am is not injective.');
         injective = 0;
         return

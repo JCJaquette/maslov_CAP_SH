@@ -13,7 +13,11 @@ function [verif,r,vali_data] = verify_homoclinic_orbit(params, mflds, x, nu)%rem
     mflds.unstable.error = mflds.unstable.r_min;
 
     DF=DF_homoclinic(x,params,mflds);
-    Am=DF^(-1);
+    if params.isIntval
+        Am = inv(mid(DF));
+    else
+        Am = inv(DF);
+    end
 
     injective = check_A_injective(params,DF,Am); %
 

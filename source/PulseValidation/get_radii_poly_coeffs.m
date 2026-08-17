@@ -21,7 +21,10 @@ function [Y,Z, Z0] = get_radii_poly_coeffs(nu,x,mflds,params,DF,Am)
     epsilon_s = mflds.stable.error; %Do these things match up with what we want?
     epsilon_u = mflds.unstable.error;
 
-    F(1:7) = F(1:7)+[epsilon_s*ones(3,1);epsilon_u*ones(4,1)];
+    F(1:3) = F(1:3)+epsilon_s*ones(3,1);
+    for k = 0:3
+        F(4+k*m) = F(4+k*m) + epsilon_u;
+    end
 
     vF_1=abs(Am(1,:)*F);
     vF_2=abs(Am(2,:)*F);

@@ -186,26 +186,31 @@ function DF = DF_homoclinic(x, params, mflds)
 
     x.a1=[x.a1, zeros(1,size(x.a1,2))];
 
-    for k = 1:m-1
-        for l = 0:m-1
-            if l == 0
-                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)) ...
-                                    - 3*(a1a1(abs(k-1-l)+1)) ...
-                                    - 2*params.nu*(x.a1(abs(k+1-l)+1))...
-                                    + 3*(a1a1(abs(k+1-l)+1)));
-            else
-                DF(4+3*m+k, 4+l) = -x.Lbvp*(2*params.nu*(x.a1(abs(k-1-l)+1)+x.a1(abs(k-1+l)+1)) ...
-                                    -3*(a1a1(abs(k-1-l)+1)+a1a1(abs(k-1+l)+1)) ...
-                                    - 2*params.nu*(x.a1(abs(k+1-l)+1)+x.a1(abs(k+1+l)+1))...
-                                    + 3*(a1a1(abs(k+1-l)+1)+a1a1(abs(k+1+l)+1))); 
-            end
+    k = (1:m-1)';           % column vector
+    l = 0:m-1;               % row vector
+    idx1 = abs(k-1-l)+1;     % (m-1) x m matrix of indices
+    idx2 = abs(k-1+l)+1;
+    idx3 = abs(k+1-l)+1;
+    idx4 = abs(k+1+l)+1;
+    
+    S1 = x.a1(idx1);  
+    S1(:,1) = x.a1(idx1(:,1));   % l==0 special case, no double count
+    S2 = a1a1(idx1);
+    % adding the "+l" term matrices except in column l==0
+    S1(:,2:end) = S1(:,2:end) + x.a1(idx2(:,2:end));
+    S2(:,2:end) = S2(:,2:end) + a1a1(idx2(:,2:end));
+    S3 = x.a1(idx3); 
+    S3(:,2:end) = S3(:,2:end) + x.a1(idx4(:,2:end));
+    S4 = a1a1(idx3); 
+    S4(:,2:end) = S4(:,2:end) + a1a1(idx4(:,2:end));
 
-            if l==k-1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) - x.Lbvp*(-1-params.mu);
-            elseif l==k+1
-                DF(4+3*m+k, 4+l) = DF(4+3*m+k, 4+l) + x.Lbvp*(-1-params.mu);
-            end
-        end
+    DF(4+3*m+k, 4+l) = -x.Lbvp*( 2*params.nu*S1 - 3*S2 - 2*params.nu*S3 + 3*S4 );
+
+    for n = 1:m-2
+        DF(4+3*m+n,4+n+1) = DF(4+3*m+n,4+n+1) + x.Lbvp*(-1-params.mu);
+    end
+    for n = 1:m-1
+        DF(4+3*m+n,4+n-1) = DF(4+3*m+n,4+n-1) - x.Lbvp*(-1-params.mu);
     end
 
 

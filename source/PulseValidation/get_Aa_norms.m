@@ -13,10 +13,10 @@ function Aa_norms = get_Aa_norms(nu, x, params, Am)
     Aa_norms.a3 = a3_nu_norm;
     Aa_norms.a4 = a4_nu_norm;
     
-    disp(['The nu-norm of a1 is = ',num2str(a1_nu_norm)])
-    disp(['The nu-norm of a2 is = ',num2str(a2_nu_norm)])
-    disp(['The nu-norm of a3 is = ',num2str(a3_nu_norm)])
-    disp(['The nu-norm of a4 is = ',num2str(a4_nu_norm)])
+    disp(['The nu-norm of a1 is = ',num2str(sup(a1_nu_norm))])
+    disp(['The nu-norm of a2 is = ',num2str(sup(a2_nu_norm))])
+    disp(['The nu-norm of a3 is = ',num2str(sup(a3_nu_norm))])
+    disp(['The nu-norm of a4 is = ',num2str(sup(a4_nu_norm))])
     
     if params.isIntval
         A_norms=intval(1)*zeros(7,7);
